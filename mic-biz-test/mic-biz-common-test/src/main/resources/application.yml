@@ -44,7 +44,7 @@ knife4j:
 mic-swagger:
   groupName: 测试
   #基础controller包路径
-  base-package: cn.mic.cloud.biz.swagger.controller
+  base-package: cn.mic.cloud
   #停用
   enable: true
   #接口文档名称

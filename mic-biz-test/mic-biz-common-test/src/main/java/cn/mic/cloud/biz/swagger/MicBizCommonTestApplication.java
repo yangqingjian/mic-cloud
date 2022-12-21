@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date : 2022/12/20
  */
 @SpringBootApplication
-public class MicBizSwaggerTestApplication {
+public class MicBizCommonTestApplication {
     public static void main(String[] args) {
-        SpringApplication.run(MicBizSwaggerTestApplication.class, args);
+        SpringApplication.run(MicBizCommonTestApplication.class, args);
     }
 }
