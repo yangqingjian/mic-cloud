@@ -22,10 +22,20 @@
         <!-- maven -->
         <java.version>8</java.version>
         <project.encoding>UTF-8</project.encoding>
+        <!-- hu-tool -->
+        <hutool.version>5.8.10</hutool.version>
+        <!-- swagger -->
+        <lombok.version>1.18.20</lombok.version>
+        <knife4j.version>2.0.9</knife4j.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
             <!-- 统一依赖管理 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -70,6 +80,19 @@
                         <artifactId>mockito-core</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <!-- hu-tool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <!--引入Knife4j的官方start包,Swagger2基于Springfox2.10.5项目-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <!--使用Swagger2-->
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

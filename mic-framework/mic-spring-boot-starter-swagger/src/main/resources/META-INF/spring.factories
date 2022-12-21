@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.mic.cloud.framework.swagger.config.SwaggerProperties,\
+  cn.mic.cloud.framework.swagger.config.SwaggerConfiguration
