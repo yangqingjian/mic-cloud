@@ -10,7 +10,7 @@
     </parent>
     <packaging>pom</packaging>
     <modules>
-        <module>mic-biz-swagger-test</module>
+        <module>mic-biz-common-test</module>
     </modules>
 
     <artifactId>mic-biz-test</artifactId>

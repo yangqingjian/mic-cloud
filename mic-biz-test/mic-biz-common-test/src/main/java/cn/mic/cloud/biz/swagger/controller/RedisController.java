@@ -2,11 +2,16 @@ package cn.mic.cloud.biz.swagger.controller;
 
 import cn.mic.cloud.framework.redis.anno.RedisLockAnnotation;
 import cn.mic.cloud.framework.redis.common.RedisLockTypeEnum;
+import cn.mic.cloud.framework.redis.comp.RedisKit;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -17,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequestMapping("/redis")
 public class RedisController {
+
+    @Autowired
+    private RedisKit redisKit;
 
     /**
      * 测试锁
@@ -36,6 +44,17 @@ public class RedisController {
             return "error" + e.getMessage();
         }
         return "测试中文："+String.valueOf(sleep);
+    }
+
+    /**
+     * 测试redis的读写
+     * @return
+     */
+    @GetMapping("/testWriteAndRead")
+    public String testWriteAndRead(){
+        String key = UUID.randomUUID().toString() ;
+        redisKit.set( key,key , 20 , TimeUnit.SECONDS);
+        return redisKit.getStr(key);
     }
 
 

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mic-biz-swagger-test</artifactId>
+    <artifactId>mic-biz-common-test</artifactId>
 
     <dependencies>
         <dependency>
