@@ -21,6 +21,10 @@ public class SwaggerProperties {
      * swagger会解析的包路径
      **/
     private String basePackage = "";
+    /**
+     * 是否启用
+     */
+    private Boolean enable = true;
 
     /**
      * 标题

@@ -44,7 +44,7 @@ public class SwaggerConfiguration {
                 .paths(PathSelectors.any())
                 .paths(PathSelectors.regex("^(?!auth).*$"))
                 .build()
-                .enable(true)
+                .enable(swaggerProperties.getEnable())
                 .securitySchemes(securitySchemes())//接口头部信息验证
                 .securityContexts(securityContexts());//设置哪些头部信息需要验证
         if (StrUtil.isNotBlank(swaggerProperties.getHost())) {

@@ -21,6 +21,13 @@
       "type": "java.lang.String",
       "description": "扫描包",
       "defaultValue": false
+    },
+    {
+      "name": "mic-swagger.enable",
+      "sourceType": "cn.mic.cloud.framework.swagger.config.SwaggerProperties",
+      "type": "java.lang.Boolean",
+      "description": "是否启用",
+      "defaultValue": true
     }
   ]
 }
