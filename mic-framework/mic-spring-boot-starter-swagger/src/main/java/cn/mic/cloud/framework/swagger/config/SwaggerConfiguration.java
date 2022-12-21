@@ -1,6 +1,7 @@
 package cn.mic.cloud.framework.swagger.config;
 
 import cn.hutool.core.util.StrUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,6 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +23,17 @@ import java.util.List;
 @Slf4j
 @Configuration
 @EnableSwagger2WebMvc
+@RequiredArgsConstructor
 public class SwaggerConfiguration {
 
-    @Resource
-    private SwaggerProperties swaggerProperties;
+    private final SwaggerProperties swaggerProperties;
 
-    @Bean(value = "dockerBean")
+    @Bean
     public Docket dockerBean() {
+        if (StrUtil.isBlank(swaggerProperties.getBasePackage())) {
+            log.warn("swagger扫描包未配置，已忽略swagger配置");
+            return null;
+        }
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo(swaggerProperties))
                 //分组名称
@@ -38,7 +42,9 @@ public class SwaggerConfiguration {
                 //这里指定Controller扫描包路径
                 .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
                 .paths(PathSelectors.any())
+                .paths(PathSelectors.regex("^(?!auth).*$"))
                 .build()
+                .enable(true)
                 .securitySchemes(securitySchemes())//接口头部信息验证
                 .securityContexts(securityContexts());//设置哪些头部信息需要验证
         if (StrUtil.isNotBlank(swaggerProperties.getHost())) {

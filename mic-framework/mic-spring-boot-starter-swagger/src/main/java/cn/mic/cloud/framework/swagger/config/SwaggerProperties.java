@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "my-swagger")
+@ConfigurationProperties(prefix = "mic-swagger")
 public class SwaggerProperties {
     /**
      * 分组名称
@@ -20,8 +20,7 @@ public class SwaggerProperties {
     /**
      * swagger会解析的包路径
      **/
-    private String basePackage = "cn.mic.cloud";
-
+    private String basePackage = "";
 
     /**
      * 标题

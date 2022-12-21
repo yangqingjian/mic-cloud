@@ -1,0 +1,26 @@
+{
+  "groups": [
+    {
+      "name": "mic-swagger",
+      "sourceType": "cn.mic.cloud.framework.swagger.config.SwaggerProperties",
+      "type": "cn.mic.cloud.framework.swagger.config.SwaggerProperties",
+      "description": "swagger配置"
+    }
+  ],
+  "properties": [
+    {
+      "name": "mic-swagger.groupName",
+      "sourceType": "cn.mic.cloud.framework.swagger.config.SwaggerProperties",
+      "type": "java.lang.String",
+      "description": "分组名称",
+      "defaultValue": true
+    },
+    {
+      "name": "mic-swagger.basePackage",
+      "sourceType": "cn.mic.cloud.framework.swagger.config.SwaggerProperties",
+      "type": "java.lang.String",
+      "description": "扫描包",
+      "defaultValue": false
+    }
+  ]
+}

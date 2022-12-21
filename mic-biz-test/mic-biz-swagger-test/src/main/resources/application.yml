@@ -20,7 +20,7 @@ knife4j:
     password: 123
 
 #swagger2参数配置
-my-swagger:
+mic-swagger:
   groupName: 测试
   #基础controller包路径
   base-package: cn.mic.cloud.biz.swagger.controller
