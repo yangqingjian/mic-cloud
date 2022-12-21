@@ -1,3 +1,7 @@
+# service 信息
+
+## 配置示例
+~~~
 server:
   port: 8081
 
@@ -108,6 +112,4 @@ mic-swagger:
   contactName: yqj
   contactEmail: yqj@qq.com
   contactUrl: gateway.shj.cn
-
-
-
+~~~

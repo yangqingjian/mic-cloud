@@ -14,23 +14,8 @@
     <dependencies>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
-            <artifactId>mic-spring-boot-stater-swagger</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <!-- Web 相关 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.mic.cloud</groupId>
-            <artifactId>mic-spring-boot-starter-redis</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.mic.cloud</groupId>
-            <artifactId>mic-spring-boot-starter-web</artifactId>
-            <version>${project.version}</version>
+            <artifactId>mic-spring-boot-stater-service</artifactId>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 

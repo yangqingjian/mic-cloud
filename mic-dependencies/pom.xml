@@ -40,6 +40,7 @@
         <ribbon-core.version>2.3.0</ribbon-core.version>
         <mybatis-plus-boot-starter.version>3.5.2</mybatis-plus-boot-starter.version>
         <swagger-annotations.version>1.5.22</swagger-annotations.version>
+        <mysql.driver.version>8.0.19</mysql.driver.version>
     </properties>
 
     <dependencyManagement>
@@ -150,6 +151,11 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.driver.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
