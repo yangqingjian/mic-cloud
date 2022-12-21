@@ -11,6 +11,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>mic-spring-boot-starter-swagger</module>
+        <module>mic-spring-boot-starter-redis</module>
+        <module>mic-common</module>
     </modules>
     <artifactId>mic-framework</artifactId>
     <description>

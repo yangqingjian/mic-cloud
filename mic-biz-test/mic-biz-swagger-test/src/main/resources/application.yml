@@ -3,6 +3,27 @@ server:
 
 #springboot大于2.4的都需要配置这个
 spring:
+  ##redis哨兵模式配置
+  redis:
+    mode: sentinel
+    password: abcdABCDshjSHJ
+    lettuce:
+      pool:
+        #最大连接数
+        max-active: 20
+        #最大阻塞等待时间(负数表示没限制)
+        max-wait: 5000
+        #最大空闲
+        max-idle: 10
+        #最小空闲
+        min-idle: 5
+    sentinel:
+      master: mymaster
+      nodes: 172.16.0.35:26377,172.16.0.35:26378,172.16.0.35:26379
+    redisson:
+      master-name: mymaster
+      sentinel-addresses: redis://172.16.0.35:26377,redis://172.16.0.35:26378,redis://172.16.0.35:26379
+      password: abcdABCDshjSHJ
   mvc:
     pathmatch:
       # 配置策略
@@ -36,3 +57,5 @@ mic-swagger:
   contactName: yqj
   contactEmail: yqj@qq.com
   contactUrl: gateway.shj.cn
+
+
