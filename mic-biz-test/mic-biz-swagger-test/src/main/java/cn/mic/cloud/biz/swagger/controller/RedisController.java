@@ -35,7 +35,7 @@ public class RedisController {
             log.info("has some error", e);
             return "error" + e.getMessage();
         }
-        return String.valueOf(sleep);
+        return "测试中文："+String.valueOf(sleep);
     }
 
 

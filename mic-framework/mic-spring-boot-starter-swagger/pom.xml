@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mic-spring-boot-stater-swagger</artifactId>
+    <artifactId>mic-spring-boot-starter-swagger</artifactId>
 
     <dependencies>
         <!-- hu-tool -->

@@ -171,7 +171,7 @@ public class RedisLockAop {
                 if (shouldExtend) {
                     holder.setLastModifyTime(curTime);
                     redisTemplate.expire(holder.getBusinessKey(), holder.getLockTime(), TimeUnit.SECONDS);
-                    log.info("businessKey : [" + holder.getBusinessKey() + "], 主动延迟时间 : " + holder.getCurrentCount());
+                    log.info("businessKey : [" + holder.getBusinessKey() + "], 主动延迟时间 : " + holder.getLockTime() + ",延迟次数：" + holder.getCurrentCount());
                     holder.setCurrentCount(holder.getCurrentCount() + 1);
                 }
             }
