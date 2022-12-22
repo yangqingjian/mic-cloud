@@ -1,6 +1,7 @@
 package cn.mic.cloud.freamework.common.vos;
 
 import lombok.Getter;
+import org.slf4j.MDC;
 
 import java.io.Serializable;
 
@@ -13,12 +14,24 @@ import java.io.Serializable;
 @Getter
 public class Result<T> implements Serializable {
 
+    private static final String REQUEST_ID = "request_id";
+
     private static final long serialVersionUID = 1L;
-
+    /**
+     * 错误代码
+     */
     private int code;
-
+    /**
+     * 消息提示
+     */
     private String message;
-
+    /**
+     * 请求ID
+     */
+    private String requestId;
+    /**
+     * 数据
+     */
     private T data;
 
     /**
@@ -30,57 +43,36 @@ public class Result<T> implements Serializable {
      */
     private String errorSystem;
 
-    private Result(int code, String message) {
+    /**
+     * 增加requestId
+     *
+     * @param code
+     * @param message
+     * @param data
+     * @param errorPath
+     * @param errorSystem
+     */
+    private Result(int code, String message, T data, String errorPath, String errorSystem) {
         this.code = code;
         this.message = message;
-    }
-
-    private Result(int code, String message, String errorPath) {
-        this.code = code;
-        this.message = message;
-        this.errorPath = errorPath;
-    }
-
-    private Result(int code, String message, String errorPath, String errorSystem) {
-        this.code = code;
-        this.message = message;
+        this.data = data;
         this.errorPath = errorPath;
         this.errorSystem = errorSystem;
+        this.requestId = MDC.get(REQUEST_ID);
     }
 
     public static Result ok() {
-        return new Result<>(ResultStatusEnum.SUCCESS.getCode(), ResultStatusEnum.SUCCESS.getMessage());
+        return new Result<>(ResultStatusEnum.SUCCESS.getCode(), ResultStatusEnum.SUCCESS.getMessage(), null, null, null);
     }
 
     public static <T> Result<T> ok(T data) {
-        Result<T> result = new Result<>(ResultStatusEnum.SUCCESS.getCode(), ResultStatusEnum.SUCCESS.getMessage());
-        result.put(data);
-        return result;
-    }
-
-    public static <T> Result<T> error(int code, String message) {
-        Result<T> result = new Result<>(code, message);
-        return result;
-    }
-
-    public static <T> Result<T> error(int code, String message, String errorPath) {
-        Result<T> result = new Result<>(code, message, errorPath);
+        Result<T> result = new Result<>(ResultStatusEnum.SUCCESS.getCode(), ResultStatusEnum.SUCCESS.getMessage(), data, null, null);
         return result;
     }
 
     public static <T> Result<T> error(int code, String message, String errorPath, String errorSystem) {
-        Result<T> result = new Result<>(code, message, errorPath, errorSystem);
+        Result<T> result = new Result<>(code, message, null, errorPath, errorSystem);
         return result;
-    }
-
-    public Result<T> put(T data) {
-        this.data = data;
-        return this;
-    }
-
-    public Result<T> msg(String msg) {
-        this.message = msg;
-        return this;
     }
 
 

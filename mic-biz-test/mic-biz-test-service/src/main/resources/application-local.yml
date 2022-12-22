@@ -1,0 +1,40 @@
+#springboot大于2.4的都需要配置这个
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/mic-test?useUnicode=true&serverTimezone=CTT&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&useSSL=false&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    tomcat:
+      max-active: 10
+      validation-interval: 30000
+      min-idle: 2
+      initial-size: 2
+      max-idle: 5
+      min-evictable-idle-time-millis: 6000
+
+  ##redis哨兵模式配置
+  redis:
+    mode: sentinel
+    password: abcdABCDshjSHJ
+    lettuce:
+      pool:
+        #最大连接数
+        max-active: 20
+        #最大阻塞等待时间(负数表示没限制)
+        max-wait: 5000
+        #最大空闲
+        max-idle: 10
+        #最小空闲
+        min-idle: 5
+    sentinel:
+      master: mymaster
+      nodes: 172.16.0.35:26377,172.16.0.35:26378,172.16.0.35:26379
+    redisson:
+      master-name: mymaster
+      sentinel-addresses: redis://172.16.0.35:26377,redis://172.16.0.35:26378,redis://172.16.0.35:26379
+      password: abcdABCDshjSHJ

@@ -17,6 +17,7 @@
         <module>mic-spring-boot-stater-service</module>
         <module>mic-spring-boot-starter-web</module>
         <module>mic-spring-boot-stater-mybatis-plus</module>
+        <module>mic-spring-boot-starter-mdc</module>
     </modules>
     <artifactId>mic-framework</artifactId>
     <description>

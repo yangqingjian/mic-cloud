@@ -42,6 +42,7 @@
         <swagger-annotations.version>1.5.22</swagger-annotations.version>
         <mysql.driver.version>8.0.19</mysql.driver.version>
         <spring-cloud-openfeign-core.version>3.1.1</spring-cloud-openfeign-core.version>
+        <org.slf4j.version>1.7.25</org.slf4j.version>
     </properties>
 
     <dependencyManagement>
@@ -174,6 +175,11 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-openfeign-core</artifactId>
                 <version>${spring-cloud-openfeign-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${org.slf4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
