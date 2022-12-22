@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 
 /**
@@ -16,11 +17,8 @@ import java.io.Serializable;
  */
 public abstract class AbstractBaseEntityController<T extends BaseEntity> {
 
+    @Resource
     private BaseEntityFeign<T> baseEntityFeign;
-
-    public AbstractBaseEntityController(BaseEntityFeign<T> baseEntityFeign){
-        this.baseEntityFeign = baseEntityFeign;
-    }
 
     /**
      * 根据ID删除
