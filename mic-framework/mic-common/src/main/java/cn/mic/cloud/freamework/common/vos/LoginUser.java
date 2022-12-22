@@ -16,12 +16,12 @@ public class LoginUser {
     /**
      * 用户ID
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 职位Id
      */
-    private Long depPosId;
+    private String depPosId;
 
 
 

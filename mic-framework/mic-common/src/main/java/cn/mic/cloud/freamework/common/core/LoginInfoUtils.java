@@ -2,6 +2,8 @@ package cn.mic.cloud.freamework.common.core;
 
 import cn.mic.cloud.freamework.common.vos.LoginUser;
 
+import java.io.Serializable;
+
 /**
  * 用户登录 本地线程信息
  * 需要 在业务系统内 继承 配置类 LoginUserConfig
@@ -18,14 +20,14 @@ public class LoginInfoUtils {
         return loginUserThreadLocal.get();
     }
 
-    public static Long getUserId() {
+    public static String getUserId() {
         if (getLoginUser() != null) {
             return getLoginUser().getUserId();
         }
         return null;
     }
 
-    public static Long getDepPosId() {
+    public static String getDepPosId() {
         if (getLoginUser() != null) {
             return getLoginUser().getDepPosId();
         }
