@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>cn.mic.cloud</groupId>
+    <artifactId>mic-framework</artifactId>
+    <version>0.1-snapshot</version>
+  </parent>
+  <groupId>cn.mic.cloud</groupId>
+  <artifactId>mic-spring-boot-stater-service</artifactId>
+  <version>0.1-snapshot</version>
+  <dependencies>
+    <dependency>
+      <groupId>cn.mic.cloud</groupId>
+      <artifactId>mic-spring-boot-starter-redis</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>cn.mic.cloud</groupId>
+      <artifactId>mic-spring-boot-stater-swagger</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>cn.mic.cloud</groupId>
+      <artifactId>mic-spring-boot-starter-common-web</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>cn.mic.cloud</groupId>
+      <artifactId>mic-spring-boot-stater-mybatis-plus</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+  </dependencies>
+</project>

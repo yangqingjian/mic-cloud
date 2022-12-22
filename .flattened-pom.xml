@@ -18,13 +18,13 @@
     <module>mic-dependencies</module>
   </modules>
   <properties>
-    <java.version>1.8</java.version>
     <revision>0.1-snapshot</revision>
+    <java.version>1.8</java.version>
     <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>${java.version}</maven.compiler.source>
-    <lombok.version>1.18.20</lombok.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>${java.version}</maven.compiler.target>
+    <lombok.version>1.18.20</lombok.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
   </properties>
   <dependencyManagement>

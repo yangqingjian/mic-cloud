@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   cn.mic.cloud.web.exception.CommonExceptionHandler,\
   cn.mic.cloud.web.config.WebConfiguration,\
-  cn.mic.cloud.web.controller.EnumController
+  cn.mic.cloud.web.controller.EnumController,\
+  cn.mic.cloud.web.core.BaseFeignConfig

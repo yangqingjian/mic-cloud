@@ -1,8 +1,6 @@
 package cn.mic.cloud.mybatis.plus.core;
 
-import cn.mic.cloud.mybatis.plus.entity.BaseEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 /**

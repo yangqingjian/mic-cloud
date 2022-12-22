@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Primary;
  * @date 2020-10-01
  */
 @Configuration
+@MapperScan(basePackages = {"${mybatis-plus.mapper-scanner:cn.mic.cloud.mybatis.config}"})
 public class MybatisAutoConfiguration {
 
     /**

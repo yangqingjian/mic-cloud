@@ -10,7 +10,11 @@
     </parent>
     <packaging>pom</packaging>
     <modules>
-        <module>mic-biz-common-test</module>
+        <module>mic-biz-test-service</module>
+        <module>mic-biz-test-domain</module>
+        <module>mic-biz-test-api</module>
+        <module>mic-biz-test-feign</module>
+        <module>mic-biz-test-web</module>
     </modules>
 
     <artifactId>mic-biz-test</artifactId>

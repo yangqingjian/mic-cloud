@@ -1,7 +1,7 @@
 package cn.mic.cloud.mybatis.plus.core;
 
+import cn.mic.cloud.freamework.common.core.BaseEntity;
 import cn.mic.cloud.freamework.common.core.LoginInfoUtils;
-import cn.mic.cloud.mybatis.plus.entity.BaseEntity;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;

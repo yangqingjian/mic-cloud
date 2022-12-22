@@ -5,7 +5,7 @@ package cn.mic.cloud.mybatis.plus.core;
  * @date : 2022/12/22
  */
 
-import cn.mic.cloud.mybatis.plus.entity.BaseEntity;
+import cn.mic.cloud.freamework.common.core.BaseEntity;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.io.Serializable;
 import java.util.List;
 
-public interface BaseEntityService<T extends BaseEntity> {
+/**
+ * 注意参考：cn.mic.cloud.web.core.BaseEntityFeign
+ * @param <T>
+ */
+public interface BaseEntityService<T extends BaseEntity>  {
 
     /**
      * 新增或者更新

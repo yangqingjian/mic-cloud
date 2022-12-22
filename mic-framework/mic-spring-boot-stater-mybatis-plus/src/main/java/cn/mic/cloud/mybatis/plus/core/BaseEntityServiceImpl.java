@@ -2,10 +2,10 @@ package cn.mic.cloud.mybatis.plus.core;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.mic.cloud.freamework.common.core.BaseEntity;
 import cn.mic.cloud.freamework.common.exception.BusinessException;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
 import cn.mic.cloud.mybatis.plus.constants.MybatisPlusConsts;
-import cn.mic.cloud.mybatis.plus.entity.BaseEntity;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -35,7 +35,6 @@ public class BaseEntityServiceImpl<T extends BaseEntity> implements BaseEntitySe
 
     @Autowired
     private BaseEntityRepository<T> repository;
-
 
     /**
      * 新增或者更新
