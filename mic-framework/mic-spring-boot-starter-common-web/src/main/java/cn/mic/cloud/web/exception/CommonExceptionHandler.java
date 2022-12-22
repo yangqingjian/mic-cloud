@@ -219,7 +219,7 @@ public class CommonExceptionHandler {
             } else {
                 message = "远程调用异常，接口【" + errorPath + "】不可用";
             }
-            return Result.error(errorCode, message, errorPath, errorSystem).put(stackTrace);
+            return Result.error(errorCode, message, errorPath, errorSystem , stackTrace);
         }
 
         if (StrUtil.isBlank(message)) {
@@ -242,7 +242,7 @@ public class CommonExceptionHandler {
                 message = statusEnum.getMessage();
                 break;
         }
-        return Result.error(statusEnum.getCode(), message, null, errorSystem).put(stackTrace);
+        return Result.error(statusEnum.getCode(), message, null, errorSystem,stackTrace);
     }
 
     /**

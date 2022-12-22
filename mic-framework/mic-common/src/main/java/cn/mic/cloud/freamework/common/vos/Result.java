@@ -66,14 +66,11 @@ public class Result<T> implements Serializable {
     }
 
     public static <T> Result<T> ok(T data) {
-        Result<T> result = new Result<>(ResultStatusEnum.SUCCESS.getCode(), ResultStatusEnum.SUCCESS.getMessage(), data, null, null);
-        return result;
+        return new Result<>(ResultStatusEnum.SUCCESS.getCode(), ResultStatusEnum.SUCCESS.getMessage(), data, null, null);
     }
 
-    public static <T> Result<T> error(int code, String message, String errorPath, String errorSystem) {
-        Result<T> result = new Result<>(code, message, null, errorPath, errorSystem);
-        return result;
+    public static <T> Result<T> error(int code, String message, String errorPath, String errorSystem, T data) {
+        return new Result<>(code, message, data, errorPath, errorSystem);
     }
-
 
 }
