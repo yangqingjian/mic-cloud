@@ -13,7 +13,7 @@
     <parent>
         <artifactId>mic-builder</artifactId>
         <groupId>cn.mic.cloud</groupId>
-        <version>${revision}</version>
+        <version>0.1-snapshot</version>
     </parent>
 
     <modules>
