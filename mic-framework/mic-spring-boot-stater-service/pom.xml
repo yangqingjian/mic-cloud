@@ -27,6 +27,11 @@
             <artifactId>mic-spring-boot-starter-common-web</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.mic.cloud</groupId>
+            <artifactId>mic-spring-boot-stater-mybatis-plus</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- mybatis-plus -->
         <dependency>
             <groupId>com.baomidou</groupId>

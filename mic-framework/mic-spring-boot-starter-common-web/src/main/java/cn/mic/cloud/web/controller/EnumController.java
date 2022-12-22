@@ -5,7 +5,7 @@ import cn.mic.cloud.freamework.common.constants.CommonEnum;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
 import cn.mic.cloud.freamework.common.utils.EnumUtils;
 import cn.mic.cloud.freamework.common.vos.EnumVo;
-import cn.mic.cloud.freamework.common.vos.R;
+import cn.mic.cloud.freamework.common.vos.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +37,8 @@ public class EnumController {
      */
     @ApiOperation(value = "查询指定的枚举类")
     @PostMapping("/all")
-    public R<List<EnumVo>> all(@RequestParam("path") String path) throws Exception {
-        return R.ok(EnumUtils.getListEnum(getClazzByPath(path)));
+    public Result<List<EnumVo>> all(@RequestParam("path") String path) throws Exception {
+        return Result.ok(EnumUtils.getListEnum(getClazzByPath(path)));
     }
 
     /**
@@ -49,8 +49,8 @@ public class EnumController {
      */
     @ApiOperation(value = "查询指定的枚举类的所有key")
     @PostMapping("/keys")
-    public R<List<String>> keys(@RequestParam("path") String path) {
-        return R.ok(EnumUtils.getListCode(getClazzByPath(path)));
+    public Result<List<String>> keys(@RequestParam("path") String path) {
+        return Result.ok(EnumUtils.getListCode(getClazzByPath(path)));
     }
 
     /**
@@ -61,8 +61,8 @@ public class EnumController {
      */
     @ApiOperation(value = "查询指定的枚举类的所有value")
     @PostMapping("/values")
-    public R<List<String>> values(@RequestParam("path") String path) {
-        return R.ok(EnumUtils.getListDesc(getClazzByPath(path)));
+    public Result<List<String>> values(@RequestParam("path") String path) {
+        return Result.ok(EnumUtils.getListDesc(getClazzByPath(path)));
     }
 
     private Class<CommonEnum> getClazzByPath(String path) {

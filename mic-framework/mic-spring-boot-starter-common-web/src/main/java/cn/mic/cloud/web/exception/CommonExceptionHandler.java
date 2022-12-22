@@ -4,10 +4,9 @@ import cn.hutool.core.util.StrUtil;
 import cn.mic.cloud.freamework.common.exception.BusinessException;
 import cn.mic.cloud.freamework.common.exception.CalculateException;
 import cn.mic.cloud.freamework.common.exception.RepeatRequestException;
-import cn.mic.cloud.freamework.common.vos.R;
+import cn.mic.cloud.freamework.common.vos.Result;
 import cn.mic.cloud.freamework.common.vos.ResultStatusEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Maps;
 import com.netflix.client.ClientException;
 import feign.FeignException;
 import feign.Request;
@@ -16,10 +15,8 @@ import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.omg.CORBA.SystemException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -59,28 +56,28 @@ public class CommonExceptionHandler {
      * @Valid抛出的异常
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<R> exceptionHandler(MethodArgumentNotValidException e) {
-        R r = constructExceptionByCode(e, ResultStatusEnum.INVALID_PARAM);
-        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Result> exceptionHandler(MethodArgumentNotValidException e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.INVALID_PARAM);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(FeignException.class)
-    public ResponseEntity<R> handleFeignException(FeignException e) {
-        R r = constructExceptionByCode(e, ResultStatusEnum.FEIGN_EXCEPTION);
-        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Result> handleFeignException(FeignException e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.FEIGN_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CalculateException.class)
-    public ResponseEntity<R> handleCalulateException(CalculateException e) {
-        R r = constructExceptionByCode(e, ResultStatusEnum.CALCULATE_EXCEPTION);
-        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Result> handleCalulateException(CalculateException e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.CALCULATE_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
 
     @ExceptionHandler(TooManyResultsException.class)
-    public ResponseEntity<R> handleTooManyResultsException(TooManyResultsException e) {
-        R r = constructExceptionByCode(e, ResultStatusEnum.TOO_MANY_RESULTS_EXCEPTION);
-        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Result> handleTooManyResultsException(TooManyResultsException e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.TOO_MANY_RESULTS_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -90,8 +87,8 @@ public class CommonExceptionHandler {
      * @return
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<R> handleException(Exception e) {
-        R r = null;
+    public ResponseEntity<Result> handleException(Exception e) {
+        Result result = null;
         if (null != e.getCause() && null != e.getCause().getClass() && e.getCause().getClass().equals(ClientException.class)) {
             /**
              * 主动设置异常
@@ -99,17 +96,17 @@ public class CommonExceptionHandler {
             String errorService = e.getMessage().replaceAll(CLIENT_EXCEPTION_START_WITH_STRING, "");
             errorService = "未发现的微服务【" + errorService + "】";
             e = new Exception(errorService);
-            r = constructExceptionByCode(e, ResultStatusEnum.CLIENT_EXCEPTION);
+            result = constructExceptionByCode(e, ResultStatusEnum.CLIENT_EXCEPTION);
         } else {
-            r = constructExceptionByCode(e, ResultStatusEnum.UNKNOWN_EXCEPTION);
+            result = constructExceptionByCode(e, ResultStatusEnum.UNKNOWN_EXCEPTION);
         }
-        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<R> handleBusinessException(Exception e) {
-        R r = constructExceptionByCode(e, ResultStatusEnum.BUSINESS_EXCEPTION);
-        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Result> handleBusinessException(Exception e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.BUSINESS_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -119,43 +116,43 @@ public class CommonExceptionHandler {
      * @return
      */
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<R> handleIllegalArgumentException(Exception e) {
-        R r = constructExceptionByCode(e, ResultStatusEnum.INVALID_PARAM);
-        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Result> handleIllegalArgumentException(Exception e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.INVALID_PARAM);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidParameterException.class)
-    public ResponseEntity<R> handleInvalidParameterException(Exception e) {
-        R r = constructExceptionByCode(e, ResultStatusEnum.INVALID_PARAM);
-        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Result> handleInvalidParameterException(Exception e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.INVALID_PARAM);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(SystemException.class)
-    public ResponseEntity<R> handleSystemException(Exception e) {
-        R r = constructExceptionByCode(e, ResultStatusEnum.SYSTEM_EXCEPTION);
-        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Result> handleSystemException(Exception e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.SYSTEM_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ClientException.class)
-    public ResponseEntity<R> handleSystemException(ClientException e) {
-        R r = constructExceptionByCode(e, ResultStatusEnum.CLIENT_EXCEPTION);
-        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Result> handleSystemException(ClientException e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.CLIENT_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RepeatRequestException.class)
-    public ResponseEntity<R> handleRepeatRequestException(Exception e) {
-        R r = constructExceptionByCode(e, ResultStatusEnum.REPEAT_REQUEST_EXCEPTION);
-        return new ResponseEntity<>(r, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Result> handleRepeatRequestException(Exception e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.REPEAT_REQUEST_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
 
     @ExceptionHandler(AccountExpiredException.class)
-    public ResponseEntity<R> handleAccountExpiredException(Exception e) {
-        R r = constructExceptionByCode(e, ResultStatusEnum.ACCOUNT_EXCEPTION);
-        return new ResponseEntity<>(r, HttpStatus.EXPECTATION_FAILED);
+    public ResponseEntity<Result> handleAccountExpiredException(Exception e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.ACCOUNT_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.EXPECTATION_FAILED);
     }
 
-    protected R constructExceptionByCode(Exception e, ResultStatusEnum statusEnum) {
+    protected Result constructExceptionByCode(Exception e, ResultStatusEnum statusEnum) {
         e = (Exception) recursionException(e);
         /**
          * 调用的path以及调用的系统
@@ -222,7 +219,7 @@ public class CommonExceptionHandler {
             } else {
                 message = "远程调用异常，接口【" + errorPath + "】不可用";
             }
-            return R.error(errorCode, message, errorPath, errorSystem).put(stackTrace);
+            return Result.error(errorCode, message, errorPath, errorSystem).put(stackTrace);
         }
 
         if (StrUtil.isBlank(message)) {
@@ -245,7 +242,7 @@ public class CommonExceptionHandler {
                 message = statusEnum.getMessage();
                 break;
         }
-        return R.error(statusEnum.getCode(), message, null, errorSystem).put(stackTrace);
+        return Result.error(statusEnum.getCode(), message, null, errorSystem).put(stackTrace);
     }
 
     /**

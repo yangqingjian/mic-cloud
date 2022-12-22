@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.mic.cloud.mybatis.plus.config.MybatisAutoConfiguration

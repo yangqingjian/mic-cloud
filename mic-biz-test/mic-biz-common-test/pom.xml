@@ -17,6 +17,10 @@
             <artifactId>mic-spring-boot-stater-service</artifactId>
             <version>${revision}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
