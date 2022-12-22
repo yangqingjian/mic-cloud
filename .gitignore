@@ -71,3 +71,6 @@ functions/mock
 screenshot
 .firebase
 sessionStore
+
+#版本插件生成的xml
+.flattened-pom.xml
