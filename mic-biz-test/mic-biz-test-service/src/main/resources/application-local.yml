@@ -4,6 +4,8 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+        group: ${spring.profiles.active}
+        namespace: ${spring.profiles.active}
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/mic-test?useUnicode=true&serverTimezone=CTT&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&useSSL=false&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
     username: root
@@ -38,3 +40,30 @@ spring:
       master-name: mymaster
       sentinel-addresses: redis://172.16.0.35:26377,redis://172.16.0.35:26378,redis://172.16.0.35:26379
       password: abcdABCDshjSHJ
+
+#seata config
+seata:
+  tx-service-group: my_test_tx_group
+#  service:
+#    grouplist:
+#      local-seata-server: 192.168.1.61:8091
+#  registry:
+#    type: nacos
+#    nacos:
+#      server-addr: 127.0.0.1:8848
+#      username: nacos
+#      password: nacos
+#      cluster: default
+#      group: local
+#      namespace: local
+#      application: local-seata-server
+#  config:
+#    type: nacos
+#    nacos:
+#      server-addr: 127.0.0.1:8848
+#      username: nacos
+#      password: nacos
+#      cluster: default
+#      group: local
+#      namespace: local
+#  application-id: ${spring.application.name}-${spring.profiles.active} # Seata 应用名称，默认使用 ${spring.application.name}
