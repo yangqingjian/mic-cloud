@@ -10,9 +10,9 @@
     </parent>
     <packaging>pom</packaging>
     <modules>
+        <module>mic-common</module>
         <module>mic-spring-boot-starter-swagger</module>
         <module>mic-spring-boot-starter-redis</module>
-        <module>mic-common</module>
         <module>mic-spring-boot-starter-common-web</module>
         <module>mic-spring-boot-stater-service</module>
         <module>mic-spring-boot-starter-web</module>

@@ -28,8 +28,6 @@
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-common</artifactId>
-            <version>${revision}</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

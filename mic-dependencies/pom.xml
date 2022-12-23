@@ -187,6 +187,59 @@
                 <artifactId>rocketmq-spring-boot-starter</artifactId>
                 <version>${rocketmq-spring-boot-starter.version}</version>
             </dependency>
+
+            <!-- mic框架本身 -->
+            <dependency>
+                <groupId>cn.mic.cloud</groupId>
+                <artifactId>mic-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.mic.cloud</groupId>
+                <artifactId>mic-spring-boot-starter-common-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.mic.cloud</groupId>
+                <artifactId>mic-spring-boot-starter-es</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.mic.cloud</groupId>
+                <artifactId>mic-spring-boot-starter-mdc</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.mic.cloud</groupId>
+                <artifactId>mic-spring-boot-starter-redis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.mic.cloud</groupId>
+                <artifactId>mic-spring-boot-starter-rocket-mq</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.mic.cloud</groupId>
+                <artifactId>mic-spring-boot-starter-swagger</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.mic.cloud</groupId>
+                <artifactId>mic-spring-boot-starter-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.mic.cloud</groupId>
+                <artifactId>mic-spring-boot-stater-mybatis-plus</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.mic.cloud</groupId>
+                <artifactId>mic-spring-boot-stater-service</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

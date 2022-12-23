@@ -35,7 +35,6 @@
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-common</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>

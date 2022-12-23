@@ -15,22 +15,18 @@
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-redis</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
-            <artifactId>mic-spring-boot-stater-swagger</artifactId>
-            <version>${project.version}</version>
+            <artifactId>mic-spring-boot-starter-swagger</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-common-web</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-stater-mybatis-plus</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <!-- mybatis-plus -->
         <dependency>
@@ -49,7 +45,11 @@
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-mdc</artifactId>
-            <version>${project.version}</version>
+        </dependency>
+        <!-- 集成mq -->
+        <dependency>
+            <groupId>cn.mic.cloud</groupId>
+            <artifactId>mic-spring-boot-starter-rocket-mq</artifactId>
         </dependency>
     </dependencies>
 

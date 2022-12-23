@@ -1,10 +1,10 @@
 package cn.mic.cloud.es.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.ihome.common.es.config.ElasticProperties;
-import com.ihome.common.es.vo.IdxVo;
-import com.ihome.common.exception.BusinessException;
-import com.ihome.common.exception.SystemException;
+import cn.mic.cloud.es.config.ElasticProperties;
+import cn.mic.cloud.es.vo.IdxVo;
+import cn.mic.cloud.freamework.common.exception.BusinessException;
+import cn.mic.cloud.freamework.common.exception.SystemException;
+import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.client.RequestOptions;
