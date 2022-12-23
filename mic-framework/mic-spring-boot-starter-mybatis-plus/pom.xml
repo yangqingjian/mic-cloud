@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mic-spring-boot-stater-mybatis-plus</artifactId>
+    <artifactId>mic-spring-boot-starter-mybatis-plus</artifactId>
     <dependencies>
         <!-- mybatis-plus -->
         <dependency>

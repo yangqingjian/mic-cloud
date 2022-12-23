@@ -14,12 +14,13 @@
         <module>mic-spring-boot-starter-swagger</module>
         <module>mic-spring-boot-starter-redis</module>
         <module>mic-spring-boot-starter-common-web</module>
-        <module>mic-spring-boot-stater-service</module>
+        <module>mic-spring-boot-starter-service</module>
         <module>mic-spring-boot-starter-web</module>
-        <module>mic-spring-boot-stater-mybatis-plus</module>
+        <module>mic-spring-boot-starter-mybatis-plus</module>
         <module>mic-spring-boot-starter-mdc</module>
         <module>mic-spring-boot-starter-es</module>
         <module>mic-spring-boot-starter-rocket-mq</module>
+        <module>mic-spring-boot-starter-security</module>
     </modules>
     <artifactId>mic-framework</artifactId>
     <description>

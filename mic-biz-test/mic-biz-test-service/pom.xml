@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
-            <artifactId>mic-spring-boot-stater-service</artifactId>
+            <artifactId>mic-spring-boot-starter-service</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
