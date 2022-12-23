@@ -18,6 +18,8 @@
         <module>mic-spring-boot-starter-web</module>
         <module>mic-spring-boot-stater-mybatis-plus</module>
         <module>mic-spring-boot-starter-mdc</module>
+        <module>mic-spring-boot-starter-es</module>
+        <module>mic-spring-boot-starter-rocket-mq</module>
     </modules>
     <artifactId>mic-framework</artifactId>
     <description>

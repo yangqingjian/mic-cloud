@@ -60,6 +60,12 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
         </dependency>
+        <!-- 集成mq -->
+        <dependency>
+            <groupId>cn.mic.cloud</groupId>
+            <artifactId>mic-spring-boot-starter-rocket-mq</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

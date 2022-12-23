@@ -2,6 +2,9 @@ package cn.mic.cloud.biz.test.web.controller;
 
 import cn.mic.cloud.biz.test.domain.Demo;
 import cn.mic.cloud.biz.test.feign.DemoFeign;
+import cn.mic.cloud.biz.test.vo.DemoMessageVo;
+import cn.mic.cloud.rocket.mq.constants.MqDelayLevel;
+import cn.mic.cloud.rocket.mq.mq.RocketMqKit;
 import cn.mic.cloud.web.core.AbstractBaseEntityController;
 import com.alibaba.fastjson2.JSON;
 import io.seata.spring.annotation.GlobalTransactional;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
 
 /**
  * @author : YangQingJian
@@ -27,6 +29,7 @@ import java.io.Serializable;
 public class DemoController extends AbstractBaseEntityController<Demo> {
 
     private final DemoFeign demoFeign;
+    private final RocketMqKit rocketMqKit;
 
     /**
      * 测试
@@ -34,7 +37,7 @@ public class DemoController extends AbstractBaseEntityController<Demo> {
      * @param word
      * @return
      */
-    @ApiOperation("测试服务是否通")
+    @ApiOperation("测试微服务")
     @GetMapping("/sayHello")
     public String sayHello(@RequestParam("word") String word) {
         return demoFeign.sayHello(word);
@@ -46,7 +49,7 @@ public class DemoController extends AbstractBaseEntityController<Demo> {
      * @param sleep
      * @return
      */
-    @ApiOperation("分布式事物大于3000即回滚")
+    @ApiOperation("测试seata-3000秒回滚")
     @GlobalTransactional(rollbackFor = Exception.class, timeoutMills = 1000)
     @GetMapping("/globalTransaction")
     public String globalTransaction(@RequestParam(value = "sleep") Integer sleep) throws Exception {
@@ -72,6 +75,32 @@ public class DemoController extends AbstractBaseEntityController<Demo> {
         } else {
             Assert.notNull(targetDemo, "事物没正常提交，请检查事物");
         }
+    }
+
+    /**
+     * 消息测试
+     *
+     * @param userName
+     */
+    @GetMapping("/testRocketMq")
+    @ApiOperation("消息测试")
+    public void testRocketMq(@RequestParam("userName") String userName) {
+        DemoMessageVo demoMessageVo = new DemoMessageVo();
+        demoMessageVo.setUserName(userName);
+        rocketMqKit.send(demoMessageVo);
+    }
+
+    /**
+     * 延迟消息测试,延迟五分钟
+     *
+     * @param userName
+     */
+    @ApiOperation("延迟消息测试")
+    @GetMapping("/testRocketMqDelay")
+    public void testRocketMqDelay(@RequestParam("userName") String userName) {
+        DemoMessageVo demoMessageVo = new DemoMessageVo();
+        demoMessageVo.setUserName(userName);
+        rocketMqKit.sendDelay(demoMessageVo, MqDelayLevel.DELAY_1M);
     }
 
 

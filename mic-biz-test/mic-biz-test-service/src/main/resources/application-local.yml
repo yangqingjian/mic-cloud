@@ -44,26 +44,12 @@ spring:
 #seata config
 seata:
   tx-service-group: my_test_tx_group
-#  service:
-#    grouplist:
-#      local-seata-server: 192.168.1.61:8091
-#  registry:
-#    type: nacos
-#    nacos:
-#      server-addr: 127.0.0.1:8848
-#      username: nacos
-#      password: nacos
-#      cluster: default
-#      group: local
-#      namespace: local
-#      application: local-seata-server
-#  config:
-#    type: nacos
-#    nacos:
-#      server-addr: 127.0.0.1:8848
-#      username: nacos
-#      password: nacos
-#      cluster: default
-#      group: local
-#      namespace: local
-#  application-id: ${spring.application.name}-${spring.profiles.active} # Seata 应用名称，默认使用 ${spring.application.name}
+
+#rocketmq
+rocketmq:
+  #2.54
+  name-server: 192.168.1.61:9876
+  producer:
+    sendMessageTimeout: 10000
+    group: mic-biz-test-service
+    topic: mic-biz-test-service-topic
