@@ -47,7 +47,7 @@ public class DemoController extends AbstractBaseEntityController<Demo> {
      * @return
      */
     @ApiOperation("分布式事物大于3000即回滚")
-    @GlobalTransactional(rollbackFor = Exception.class, timeoutMills = 3000)
+    @GlobalTransactional(rollbackFor = Exception.class, timeoutMills = 1000)
     @GetMapping("/globalTransaction")
     public String globalTransaction(@RequestParam(value = "sleep") Integer sleep) throws Exception {
         log.info("globalTransaction start");
