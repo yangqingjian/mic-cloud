@@ -2,6 +2,11 @@ package cn.mic.cloud.security.filter;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.mic.cloud.framework.redis.comp.RedisKit;
+import cn.mic.cloud.freamework.common.core.LoginUser;
+import cn.mic.cloud.freamework.common.exception.AuthenticationException;
+import cn.mic.cloud.security.core.HttpSecurityUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,42 +33,31 @@ import java.io.IOException;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisKit redisKit;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 获取AuthorizationToken
-        String authorization = getAuthorization(request);
+        String authorization = HttpSecurityUtils.getAuthorization(request);
         if (StrUtil.isBlank(authorization)) {
             filterChain.doFilter(request, response);
             return;
         }
         // 从缓存中获取用户信息
-        UserDetails userDetails = (UserDetails) redisTemplate.opsForValue().get(authorization);
-        if (ObjectUtil.isNull(userDetails)){
-            throw new CredentialsExpiredException("证书过期");
+        LoginUser loginUser = redisKit.getObj(authorization, LoginUser.class);
+        if (ObjectUtil.isNull(loginUser)) {
+            log.error("token=【%s】查询缓存失败", authorization);
+            throw new AuthenticationException("token【%s】过期", authorization);
         }
-
         // 构建AuthenticationToken
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
+        authentication.setDetails(loginUser);
         // 把AuthenticationToken放到当前线程,表示认证完成
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
-    }
-
-    /**
-     * 从 request 的 header 中获取 Authorization
-     *
-     * @param request 请求
-     * @return JWT
-     */
-    public String getAuthorization(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        return bearerToken;
     }
 
 }

@@ -24,6 +24,31 @@ public class SecurityCommonConfig {
      */
     private List<String> ignoreUrls;
 
+    /**
+     * 根据登录名获取用户信息
+     */
+    private String selectByLoginNameUrl = "lb://mic-biz-test-service/demo/selectByLoginName?username=%s";
+
+    /**
+     * 根据手机号获取用户信息
+     */
+    private String selectByMobileUrl = "lb://mic-biz-test-service/demo/selectByMobile?mobile=%s";;
+
+    /**
+     * 根据微信号获取用户信息
+     */
+    private String selectByWxChatUrl;
+
+    /**
+     * 超时时间为3秒
+     */
+    private Integer readTimeOut = 3000;
+
+    /**
+     * 连接时间为1秒
+     */
+    private Integer connectTimeOut = 1000;
+
 
 
 

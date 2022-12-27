@@ -30,7 +30,7 @@ public class LoginRequest implements Serializable {
     private String loginName;
 
     /**
-     * 密钥
+     * 密钥 : 前端完成加密过程
      */
     @NotBlank(message = "密钥不能为空")
     private String loginSecret;

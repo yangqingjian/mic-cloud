@@ -1,11 +1,17 @@
 package cn.mic.cloud.security.config;
 
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.mic.cloud.security.filter.TokenAuthenticationFilter;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,8 +21,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -27,7 +35,7 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Resource
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
@@ -102,5 +110,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         for (String temp : ignores) {
             http.authorizeRequests().antMatchers(temp).permitAll();
         }
+    }
+
+    // 配置 RestTemplate
+    @Bean
+    @LoadBalanced
+    public RestTemplate restTemplate() {
+        // 创建一个 httpClient 简单工厂
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        // 设置连接超时
+        factory.setConnectTimeout(securityCommonConfig.getConnectTimeOut());
+        // 设置读取超时
+        factory.setReadTimeout(securityCommonConfig.getReadTimeOut());
+        RestTemplate restTemplate = new RestTemplate(factory);
+        // 解决返回值乱码
+        List<HttpMessageConverter<?>> httpMessageConverters = restTemplate.getMessageConverters();
+        httpMessageConverters.stream().forEach(httpMessageConverter -> {
+            if (httpMessageConverter instanceof StringHttpMessageConverter) {
+                StringHttpMessageConverter messageConverter = (StringHttpMessageConverter) httpMessageConverter;
+                //设置编码为UTF-8
+                messageConverter.setDefaultCharset(Charset.forName(CharsetUtil.UTF_8));
+            }
+        });
+        return restTemplate;
     }
 }

@@ -19,18 +19,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.CredentialsExpiredException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.security.auth.login.AccountExpiredException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -174,11 +168,6 @@ public class CommonExceptionHandler {
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(RepeatRequestException.class)
-    public ResponseEntity<Result> handleRepeatRequestException(Exception e) {
-        Result result = constructExceptionByCode(e, ResultStatusEnum.REPEAT_REQUEST_EXCEPTION);
-        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-    }
 
     /*
     @ExceptionHandler(AccountExpiredException.class)
