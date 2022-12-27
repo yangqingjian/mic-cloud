@@ -14,6 +14,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class TokenResult {
 
+    /**
+     * 返回的token
+     */
     private String token;
 
     /**
@@ -21,7 +24,5 @@ public class TokenResult {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date expireDate;
-
-
 
 }

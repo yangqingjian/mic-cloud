@@ -15,6 +15,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,6 +28,11 @@ import java.util.List;
 public class SwaggerConfiguration {
 
     private final SwaggerProperties swaggerProperties;
+
+    /**
+     * 授权的header
+     */
+    private static String AUTHORIZATION = "Authorization";
 
     @Bean
     public Docket dockerBean() {
@@ -42,7 +48,7 @@ public class SwaggerConfiguration {
                 //这里指定Controller扫描包路径
                 .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
                 .paths(PathSelectors.any())
-                .paths(PathSelectors.regex("^(?!auth).*$"))
+                //.paths(PathSelectors.regex("^(?!auth).*$"))
                 .build()
                 .enable(swaggerProperties.getEnable())
                 .securitySchemes(securitySchemes())//接口头部信息验证
@@ -53,42 +59,6 @@ public class SwaggerConfiguration {
         return docket;
     }
 
-    /**
-     * 安全模式，这里指定token通过Authorization头请求头传递
-     */
-    private List<SecurityScheme> securitySchemes() {
-        List<SecurityScheme> apiKeyList = new ArrayList<SecurityScheme>();
-        apiKeyList.add(new ApiKey("Authorization", "Authorization", "header"));
-        return apiKeyList;
-    }
-
-    /**
-     * 安全上下文，设置哪些的接口需要进行头部认证，默认排除/auth验证路径
-     */
-    private List<SecurityContext> securityContexts() {
-        List<SecurityContext> securityContexts = new ArrayList<>();
-        securityContexts.add(
-                SecurityContext.builder()
-                        .forPaths(PathSelectors.regex("^.*(?<!auth)//.*$"))//排除掉认证的auth接口路径
-                        .securityReferences(defaultAuth())//添加全局借鉴，不需要每个接口都填写头部内容
-                        .build());
-        return securityContexts;
-    }
-
-    /**
-     * 默认的全局鉴权策略，头部认证，
-     *
-     * @return
-     */
-    private List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
-        List<SecurityReference> securityReferences = new ArrayList<>();
-        securityReferences.add(new SecurityReference("Authorization", authorizationScopes));
-        return securityReferences;
-    }
-
     private ApiInfo apiInfo(SwaggerProperties swaggerProperties) {
         return new ApiInfoBuilder()
                 .title(swaggerProperties.getTitle())//api名称
@@ -96,5 +66,28 @@ public class SwaggerConfiguration {
                 .contact(new Contact(swaggerProperties.getContactName(), swaggerProperties.getContactUrl(), swaggerProperties.getContactEmail()))//联系人信息
                 .version(swaggerProperties.getVersion())//版本号
                 .build();
+    }
+
+    private List<ApiKey> securitySchemes() {
+        List<ApiKey> apiKeys = new ArrayList<>();
+        apiKeys.add(new ApiKey(AUTHORIZATION, AUTHORIZATION, "header"));
+        return apiKeys;
+    }
+
+    private List<SecurityContext> securityContexts() {
+        List<SecurityContext> securityContexts = new ArrayList<>();
+        securityContexts.add(SecurityContext.builder()
+                .securityReferences(defaultAuth())
+                .forPaths(PathSelectors.regex("^(?!auth).*$")).build());
+        return securityContexts;
+    }
+
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        List<SecurityReference> securityReferences = new ArrayList<>();
+        securityReferences.add(new SecurityReference(AUTHORIZATION, authorizationScopes));
+        return securityReferences;
     }
 }

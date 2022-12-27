@@ -31,7 +31,6 @@ public class RedisKit {
         return redisTemplate.opsForValue().get(key);
     }
 
-
     public <T> T getObj(String key, Class<T> clzz) {
         String val = redisTemplate.opsForValue().get(key);
         if (StrUtil.isNotBlank(val)) {

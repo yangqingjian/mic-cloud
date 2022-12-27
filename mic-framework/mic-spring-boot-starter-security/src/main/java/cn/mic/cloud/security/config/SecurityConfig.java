@@ -1,8 +1,9 @@
 package cn.mic.cloud.security.config;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.mic.cloud.security.filter.TokenAuthenticationFilter;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,8 +14,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author : YangQingJian
@@ -24,14 +27,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //@Autowired
-    //private AccessDeniedHandler accessDeniedHandler;
-
-    @Autowired
+    @Resource
     private UserDetailsService userDetailsService;
 
     @Autowired
     private TokenAuthenticationFilter tokenAuthenticationFilter;
+
+    @Autowired
+    private SecurityCommonConfig securityCommonConfig;
 
     @Bean
     public BCryptPasswordEncoder encoder() {
@@ -51,6 +54,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        /**
+         * 组装默认的免登陆
+         */
+        assembleIgnoreUrls(getDefaultIgnores(), http);
+        /**
+         * 组装自定义的免登陆
+         */
+        assembleIgnoreUrls(securityCommonConfig.getIgnoreUrls(), http);
+
         // @formatter:off
         http.cors()
                 // 关闭 CSRF
@@ -60,11 +72,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 // 认证请求
                 .authorizeRequests()
-                // 登录和登出不需要认证
-                .antMatchers("/**")
-                .permitAll()
-                .antMatchers("/api/auth/**")
-                .permitAll()
                 // 所有请求都需要登录访问
                 .anyRequest()
                 .authenticated()
@@ -75,8 +82,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 因为使用了JWT，所以这里不管理Session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 // 异常处理
-                //.and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
-        // 添加自定义 JWT 过滤器
+
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    /**
+     * 登录以及swagger放开
+     *
+     * @return
+     */
+    private List<String> getDefaultIgnores() {
+        return Lists.newArrayList("/api/auth/**", "/v2/**", "/doc.html", "/swagger-resources/**", "/webjars/**");
+    }
+
+    private void assembleIgnoreUrls(List<String> ignores, HttpSecurity http) throws Exception {
+        if (ObjectUtil.isEmpty(ignores)) {
+            return;
+        }
+        for (String temp : ignores) {
+            http.authorizeRequests().antMatchers(temp).permitAll();
+        }
     }
 }

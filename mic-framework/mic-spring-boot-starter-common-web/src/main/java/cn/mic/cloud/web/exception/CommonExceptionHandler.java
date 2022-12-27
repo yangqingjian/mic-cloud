@@ -1,12 +1,14 @@
 package cn.mic.cloud.web.exception;
 
 import cn.hutool.core.util.StrUtil;
+import cn.mic.cloud.freamework.common.exception.AuthenticationException;
 import cn.mic.cloud.freamework.common.exception.BusinessException;
 import cn.mic.cloud.freamework.common.exception.CalculateException;
 import cn.mic.cloud.freamework.common.exception.RepeatRequestException;
 import cn.mic.cloud.freamework.common.vos.Result;
 import cn.mic.cloud.freamework.common.vos.ResultStatusEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.netflix.client.ClientException;
 import feign.FeignException;
 import feign.Request;
@@ -17,6 +19,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -52,9 +59,6 @@ public class CommonExceptionHandler {
     private static final String ERROR_SYSTEM_FIELD = "errorSystem";
     private static final String CLIENT_EXCEPTION_START_WITH_STRING = "com.netflix.client.ClientException: Load balancer does not have available server for client: ";
 
-    /**
-     * @Valid抛出的异常
-     */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<Result> exceptionHandler(MethodArgumentNotValidException e) {
         Result result = constructExceptionByCode(e, ResultStatusEnum.INVALID_PARAM);
@@ -103,6 +107,31 @@ public class CommonExceptionHandler {
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * 类型转换错误
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<Result> handleInvalidFormatException(InvalidFormatException e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.INVALID_FORMAT_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * 认证异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Result> handleAuthenticationException(AuthenticationException e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.AUTHENTICATION_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    }
+
+
+
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Result> handleBusinessException(Exception e) {
         Result result = constructExceptionByCode(e, ResultStatusEnum.BUSINESS_EXCEPTION);
@@ -145,12 +174,38 @@ public class CommonExceptionHandler {
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
-
+    /*
     @ExceptionHandler(AccountExpiredException.class)
     public ResponseEntity<Result> handleAccountExpiredException(Exception e) {
-        Result result = constructExceptionByCode(e, ResultStatusEnum.ACCOUNT_EXCEPTION);
-        return new ResponseEntity<>(result, HttpStatus.EXPECTATION_FAILED);
+        Result result = constructExceptionByCode(e, ResultStatusEnum.ACCOUNT_EXPIRED_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
     }
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<Result> handleDisabledException(Exception e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.DISABLED_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<Result> handleLockedException(Exception e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.LOCKED_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(CredentialsExpiredException.class)
+    public ResponseEntity<Result> handleCredentialsExpiredException(Exception e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.CREDENTIALS_EXPIRED_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Result> handleUsernameNotFoundException(Exception e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.USERNAME_NOT_FOUND_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Result> handleBadCredentialsException(Exception e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.AUTHENTICATION_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+    }
+    */
 
     protected Result constructExceptionByCode(Exception e, ResultStatusEnum statusEnum) {
         e = (Exception) recursionException(e);
@@ -159,12 +214,11 @@ public class CommonExceptionHandler {
          */
         String errorPath = null;
         String errorSystem = currentSystem;
-
         String stackTrace = getStackTrace(e);
         log.error(stackTrace);
         String message = null != e.getMessage() ? e.getMessage() : "";
         /**
-         * 针对@Valid，我们需要手动处理一下
+         * 处理校验异常
          */
         if (e instanceof MethodArgumentNotValidException) {
             BindingResult bindingResult = ((MethodArgumentNotValidException) e).getBindingResult();
@@ -175,7 +229,9 @@ public class CommonExceptionHandler {
             sb.deleteCharAt(sb.lastIndexOf(";"));
             message = sb.toString();
         }
-
+        /**
+         * 处理远程调用异常
+         */
         if (e instanceof FeignException) {
             int errorCode = statusEnum.getCode();
             FeignException feignException = (FeignException) e;
@@ -219,20 +275,20 @@ public class CommonExceptionHandler {
             } else {
                 message = "远程调用异常，接口【" + errorPath + "】不可用";
             }
-            return Result.error(errorCode, message, errorPath, errorSystem , stackTrace);
+            return Result.error(errorCode, message, errorPath, errorSystem, stackTrace);
         }
-
         if (StrUtil.isBlank(message)) {
             message = e.getClass().getName();
         }
         /**
          * 组装message
          */
-        message = "【" + errorSystem + "】" + statusEnum.getMessage() + ":" + message;
-
+        //message = "【" + errorSystem + "】" + statusEnum.getMessage() + ":" + message;
+        message = "【"+statusEnum.getMessage()+ "】" + message;
         /**
          * 处理message(针对如下异常，只显示)
          */
+        /*
         switch (statusEnum) {
             case TOO_MANY_RESULTS_EXCEPTION:
             case MYBATIS_SYSTEM_EXCEPTION:
@@ -242,7 +298,8 @@ public class CommonExceptionHandler {
                 message = statusEnum.getMessage();
                 break;
         }
-        return Result.error(statusEnum.getCode(), message, null, errorSystem,stackTrace);
+        */
+        return Result.error(statusEnum.getCode(), message, null, errorSystem, stackTrace);
     }
 
     /**

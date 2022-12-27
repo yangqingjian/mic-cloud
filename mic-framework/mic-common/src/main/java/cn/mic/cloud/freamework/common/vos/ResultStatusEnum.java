@@ -15,7 +15,6 @@ public enum ResultStatusEnum {
     SUCCESS(200, "成功"),
     OBJECT_ALREADY_EXISTS(305, "对象已存在"),
     CALCULATE_EXCEPTION(400, "计算式异常"),
-    ACCOUNT_EXCEPTION(417, "认证异常"),
     BUSINESS_EXCEPTION(500, "业务异常"),
     SYSTEM_EXCEPTION(600, "系统异常"),
     REPEAT_REQUEST_EXCEPTION(700, "重复请求异常"),
@@ -26,10 +25,21 @@ public enum ResultStatusEnum {
     INVALID_PARAM(300, "无效参数"),
     FEIGN_EXCEPTION(1000,"远程调用异常"),
     AUTHENTICATION_EXCEPTION(401, "认证异常"),
+
+   /*
+   ACCOUNT_EXPIRED_EXCEPTION(401, "认证过期异常"),
+    USERNAME_NOT_FOUND_EXCEPTION(401, "用户不存在"),
+    DISABLED_EXCEPTION(401, "用户已被禁用"),
+    BAD_CREDENTIALS_EXCEPTION(401, "密码错误"),
+    LOCKED_EXCEPTION(401, "账户锁定"),
+    CREDENTIALS_EXPIRED_EXCEPTION(401, "证书过期"),
+    */
+
     MYBATIS_SYSTEM_EXCEPTION(711, "数据库查询异常"),
     UNKNOWN_EXCEPTION(800, "未知异常"),
     PROCESS_ENGINE_EXCEPTION(730, "流程异常"),
-    RATE_LIMIT_EXCEPTION(429, "流量控制");
+    RATE_LIMIT_EXCEPTION(429, "流量控制"),
+    INVALID_FORMAT_EXCEPTION(601, "类型转换异常");
 
     @Getter
     private int code;

@@ -14,9 +14,10 @@ spring:
 #knife4j-swagger配置
 knife4j:
   # 开启增强配置
-  enable: true
+  enable: false
+  #有登录之后就不需要用basic了
   basic:
-    enable: true
+    enable: false
     # Basic认证用户名
     username: test
     # Basic认证密码
@@ -26,7 +27,7 @@ knife4j:
 mic-swagger:
   groupName: mic-biz-test-web
   #基础controller包路径
-  base-package: cn.mic.cloud.biz.test.web
+  base-package: cn.mic.cloud
   #停用
   enable: true
   #接口文档名称

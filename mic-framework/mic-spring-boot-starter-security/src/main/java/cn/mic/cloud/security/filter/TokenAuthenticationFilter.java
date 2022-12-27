@@ -1,9 +1,11 @@
 package cn.mic.cloud.security.filter;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,20 +35,18 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        filterChain.doFilter(request, response);
-        if(1==1){
-            return;
-        }
-
         // 获取AuthorizationToken
         String authorization = getAuthorization(request);
-        if (StrUtil.isBlank(authorization)){
-             filterChain.doFilter(request, response);
-             return;
+        if (StrUtil.isBlank(authorization)) {
+            filterChain.doFilter(request, response);
+            return;
         }
         // 从缓存中获取用户信息
         UserDetails userDetails = (UserDetails) redisTemplate.opsForValue().get(authorization);
-        Assert.notNull(userDetails, "登录已过期请重新登录");
+        if (ObjectUtil.isNull(userDetails)){
+            throw new CredentialsExpiredException("证书过期");
+        }
+
         // 构建AuthenticationToken
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

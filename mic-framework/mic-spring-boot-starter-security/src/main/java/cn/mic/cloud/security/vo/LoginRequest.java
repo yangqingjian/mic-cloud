@@ -4,6 +4,7 @@ import cn.mic.cloud.security.constants.LoginTypeEnum;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -19,8 +20,8 @@ public class LoginRequest implements Serializable {
      * 登录方式
      * 密码登录  验证码登录  微信登录
      */
-    @NotBlank(message = "登录方式不能为空")
-    private LoginTypeEnum loginType;
+    @NotNull(message = "登录方式不能为空")
+    private LoginTypeEnum loginType = LoginTypeEnum.USERNAME_PASSWORD;
 
     /**
      * 登录名
