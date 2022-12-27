@@ -60,8 +60,14 @@ public class CommonExceptionHandler {
     private static final String CLIENT_EXCEPTION_START_WITH_STRING = "com.netflix.client.ClientException: Load balancer does not have available server for client: ";
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<Result> exceptionHandler(MethodArgumentNotValidException e) {
+    public ResponseEntity<Result> handMethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         Result result = constructExceptionByCode(e, ResultStatusEnum.INVALID_PARAM);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = RepeatRequestException.class)
+    public ResponseEntity<Result> handleRepeatRequestExceptionHandler(RepeatRequestException e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.REPEAT_REQUEST_EXCEPTION);
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 

@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.mic.cloud.framework.redis.anno.RedisLockAnnotation;
 import cn.mic.cloud.framework.redis.common.RedisLockDefinitionHolder;
+import cn.mic.cloud.freamework.common.exception.RepeatRequestException;
 import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -74,7 +75,7 @@ public class RedisLockAop {
             boolean isSuccess = redisTemplate.opsForValue().setIfAbsent(businessKey, uniqueValue);
             if (!isSuccess) {
                 log.info("-------------businessKey={} , 当前已有对象持有锁----------", businessKey);
-                throw new Exception("当前已有对象持有锁，请稍后再试");
+                throw new RepeatRequestException("当前已有对象持有锁，请稍后再试");
             }
             /**
              * 设置标识
