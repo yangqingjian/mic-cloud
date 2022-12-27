@@ -44,6 +44,7 @@
         <spring-cloud-openfeign-core.version>3.1.1</spring-cloud-openfeign-core.version>
         <org.slf4j.version>1.7.25</org.slf4j.version>
         <rocketmq-spring-boot-starter.version>2.1.0</rocketmq-spring-boot-starter.version>
+        <mybatis-plus-core.version>3.5.2</mybatis-plus-core.version>
     </properties>
 
     <dependencyManagement>
@@ -187,6 +188,11 @@
                 <artifactId>rocketmq-spring-boot-starter</artifactId>
                 <version>${rocketmq-spring-boot-starter.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
+                <version>${mybatis-plus-core.version}</version>
+            </dependency>
 
             <!-- mic框架本身 -->
             <dependency>
@@ -239,6 +245,8 @@
                 <artifactId>mic-spring-boot-starter-service</artifactId>
                 <version>${revision}</version>
             </dependency>
+
+
 
         </dependencies>
     </dependencyManagement>

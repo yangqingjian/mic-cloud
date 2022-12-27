@@ -2,20 +2,20 @@ package cn.mic.cloud.biz.test.web.controller;
 
 import cn.mic.cloud.biz.test.domain.Demo;
 import cn.mic.cloud.biz.test.feign.DemoFeign;
+import cn.mic.cloud.biz.test.vo.DemoConverterVo;
 import cn.mic.cloud.biz.test.vo.DemoMessageVo;
+import cn.mic.cloud.freamework.common.vos.Result;
 import cn.mic.cloud.rocket.mq.constants.MqDelayLevel;
 import cn.mic.cloud.rocket.mq.mq.RocketMqKit;
 import cn.mic.cloud.web.core.AbstractBaseEntityController;
 import com.alibaba.fastjson2.JSON;
 import io.seata.spring.annotation.GlobalTransactional;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -101,6 +101,18 @@ public class DemoController extends AbstractBaseEntityController<Demo> {
         DemoMessageVo demoMessageVo = new DemoMessageVo();
         demoMessageVo.setUserName(userName);
         rocketMqKit.sendDelay(demoMessageVo, MqDelayLevel.DELAY_1M);
+    }
+
+    /**
+     * 测试枚举转换
+     * @param request
+     * @return
+     */
+    @ApiOperation("测试枚举转换")
+    @PostMapping("/testEnum")
+    public Result<DemoConverterVo> testEnum(@RequestBody DemoConverterVo request){
+        log.info("request = {}" , JSON.toJSONString(request));
+        return Result.ok(demoFeign.testEnum(request));
     }
 
 

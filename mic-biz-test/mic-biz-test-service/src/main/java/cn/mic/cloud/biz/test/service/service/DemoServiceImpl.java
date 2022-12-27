@@ -2,8 +2,11 @@ package cn.mic.cloud.biz.test.service.service;
 
 import cn.mic.cloud.biz.test.domain.Demo;
 import cn.mic.cloud.biz.test.service.repository.DemoRepository;
+import cn.mic.cloud.biz.test.vo.DemoConverterVo;
 import cn.mic.cloud.mybatis.plus.core.BaseEntityServiceImpl;
+import com.alibaba.fastjson2.JSON;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DemoServiceImpl extends BaseEntityServiceImpl<Demo> implements DemoService {
 
     private final DemoRepository demoRepository;
@@ -26,6 +30,18 @@ public class DemoServiceImpl extends BaseEntityServiceImpl<Demo> implements Demo
     @Override
     public String sayHello(String word) {
         return word;
+    }
+
+    /**
+     * 测试枚举
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public DemoConverterVo testEnum(DemoConverterVo request) {
+        log.info("request = {}", JSON.toJSONString(request));
+        return request;
     }
 
 }

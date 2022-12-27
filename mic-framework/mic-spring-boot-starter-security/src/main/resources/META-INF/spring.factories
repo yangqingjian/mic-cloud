@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.mic.cloud.security.config.SecurityConfig,\
+  cn.mic.cloud.security.controller.AuthController,\
+  cn.mic.cloud.security.core.UserDetailsServiceImpl,\
+  cn.mic.cloud.security.filter.TokenAuthenticationFilter
