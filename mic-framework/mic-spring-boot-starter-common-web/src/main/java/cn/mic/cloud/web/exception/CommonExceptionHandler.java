@@ -3,10 +3,10 @@ package cn.mic.cloud.web.exception;
 import cn.hutool.core.util.StrUtil;
 import cn.mic.cloud.freamework.common.exception.AuthenticationException;
 import cn.mic.cloud.freamework.common.exception.BusinessException;
-import cn.mic.cloud.freamework.common.exception.CalculateException;
 import cn.mic.cloud.freamework.common.exception.RepeatRequestException;
 import cn.mic.cloud.freamework.common.vos.Result;
 import cn.mic.cloud.freamework.common.vos.ResultStatusEnum;
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.netflix.client.ClientException;
@@ -24,6 +24,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -64,26 +65,22 @@ public class CommonExceptionHandler {
         Result result = constructExceptionByCode(e, ResultStatusEnum.REPEAT_REQUEST_EXCEPTION);
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
-
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<Result> handleFeignException(FeignException e) {
         Result result = constructExceptionByCode(e, ResultStatusEnum.FEIGN_EXCEPTION);
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(CalculateException.class)
-    public ResponseEntity<Result> handleCalulateException(CalculateException e) {
-        Result result = constructExceptionByCode(e, ResultStatusEnum.CALCULATE_EXCEPTION);
-        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(HttpClientErrorException.class)
+    public ResponseEntity<Result> handleHttpClientErrorException(HttpClientErrorException e) {
+        String message = e.getResponseBodyAsString();
+        Result result = JSON.parseObject(message,Result.class);
+        return new ResponseEntity<>(result, e.getStatusCode());
     }
-
-
     @ExceptionHandler(TooManyResultsException.class)
     public ResponseEntity<Result> handleTooManyResultsException(TooManyResultsException e) {
         Result result = constructExceptionByCode(e, ResultStatusEnum.TOO_MANY_RESULTS_EXCEPTION);
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
-
     /**
      * 针对Exception需要再次处理一下
      *
@@ -106,7 +103,6 @@ public class CommonExceptionHandler {
         }
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
-
     /**
      * 类型转换错误
      *
@@ -129,8 +125,6 @@ public class CommonExceptionHandler {
         Result result = constructExceptionByCode(e, ResultStatusEnum.AUTHENTICATION_EXCEPTION);
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
-
-
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Result> handleBusinessException(Exception e) {
@@ -167,40 +161,6 @@ public class CommonExceptionHandler {
         Result result = constructExceptionByCode(e, ResultStatusEnum.CLIENT_EXCEPTION);
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
-
-
-    /*
-    @ExceptionHandler(AccountExpiredException.class)
-    public ResponseEntity<Result> handleAccountExpiredException(Exception e) {
-        Result result = constructExceptionByCode(e, ResultStatusEnum.ACCOUNT_EXPIRED_EXCEPTION);
-        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
-    }
-    @ExceptionHandler(DisabledException.class)
-    public ResponseEntity<Result> handleDisabledException(Exception e) {
-        Result result = constructExceptionByCode(e, ResultStatusEnum.DISABLED_EXCEPTION);
-        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
-    }
-    @ExceptionHandler(LockedException.class)
-    public ResponseEntity<Result> handleLockedException(Exception e) {
-        Result result = constructExceptionByCode(e, ResultStatusEnum.LOCKED_EXCEPTION);
-        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
-    }
-    @ExceptionHandler(CredentialsExpiredException.class)
-    public ResponseEntity<Result> handleCredentialsExpiredException(Exception e) {
-        Result result = constructExceptionByCode(e, ResultStatusEnum.CREDENTIALS_EXPIRED_EXCEPTION);
-        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
-    }
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<Result> handleUsernameNotFoundException(Exception e) {
-        Result result = constructExceptionByCode(e, ResultStatusEnum.USERNAME_NOT_FOUND_EXCEPTION);
-        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
-    }
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Result> handleBadCredentialsException(Exception e) {
-        Result result = constructExceptionByCode(e, ResultStatusEnum.AUTHENTICATION_EXCEPTION);
-        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
-    }
-    */
 
     protected Result constructExceptionByCode(Exception e, ResultStatusEnum statusEnum) {
         e = (Exception) recursionException(e);

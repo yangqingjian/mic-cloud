@@ -1,7 +1,7 @@
 package cn.mic.cloud.security.core;
 
-import cn.mic.cloud.freamework.common.core.LoginUser;
-import cn.mic.cloud.security.vo.LoginRequest;
+import cn.mic.cloud.freamework.common.core.login.LoginUser;
+import cn.mic.cloud.freamework.common.core.login.LoginRequest;
 
 /**
  * @author : YangQingJian

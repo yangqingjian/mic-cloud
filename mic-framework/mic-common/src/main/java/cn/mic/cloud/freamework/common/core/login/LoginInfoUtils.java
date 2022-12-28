@@ -1,4 +1,4 @@
-package cn.mic.cloud.freamework.common.core;
+package cn.mic.cloud.freamework.common.core.login;
 
 /**
  * 用户登录 本地线程信息

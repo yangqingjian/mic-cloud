@@ -1,6 +1,7 @@
 package cn.mic.cloud.freamework.common.vos;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.MDC;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * @Date 2020/4/28
  */
 @Getter
+@Setter
 public class Result<T> implements Serializable {
 
     private static final String REQUEST_ID = "request_id";
@@ -43,6 +45,12 @@ public class Result<T> implements Serializable {
      */
     private String errorSystem;
 
+    /**
+     * 默认构造函数
+     */
+    public Result(){
+
+    }
     /**
      * 增加requestId
      *

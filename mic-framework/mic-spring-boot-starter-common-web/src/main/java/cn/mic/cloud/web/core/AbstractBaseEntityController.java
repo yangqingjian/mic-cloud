@@ -2,7 +2,7 @@ package cn.mic.cloud.web.core;
 
 import cn.mic.cloud.freamework.common.core.BaseEntity;
 import cn.mic.cloud.freamework.common.core.BaseEntityFeign;
-import cn.mic.cloud.freamework.common.core.LoginInfoUtils;
+import cn.mic.cloud.freamework.common.core.login.LoginInfoUtils;
 import cn.mic.cloud.freamework.common.vos.Result;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;

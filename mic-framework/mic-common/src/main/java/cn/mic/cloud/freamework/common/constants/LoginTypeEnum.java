@@ -1,4 +1,4 @@
-package cn.mic.cloud.security.constants;
+package cn.mic.cloud.freamework.common.constants;
 
 import cn.mic.cloud.freamework.common.constants.CommonEnum;
 import lombok.Getter;

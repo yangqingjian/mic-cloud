@@ -5,24 +5,26 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.Method;
 import cn.mic.cloud.framework.redis.comp.RedisKit;
-import cn.mic.cloud.freamework.common.core.LoginUser;
+import cn.mic.cloud.freamework.common.core.login.LoginUser;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
 import cn.mic.cloud.freamework.common.exception.SystemException;
 import cn.mic.cloud.freamework.common.vos.Result;
+import cn.mic.cloud.freamework.common.vos.login.LoginSmsCodeSendRequest;
+import cn.mic.cloud.security.config.SecurityCommonConfig;
 import cn.mic.cloud.security.core.HttpSecurityUtils;
 import cn.mic.cloud.security.core.LoginInterface;
-import cn.mic.cloud.security.vo.LoginRequest;
+import cn.mic.cloud.freamework.common.core.login.LoginRequest;
 import cn.mic.cloud.security.vo.TokenResult;
 import com.alibaba.fastjson2.JSON;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static cn.mic.cloud.security.constants.SecurityConstants.*;
@@ -52,6 +53,9 @@ public class AuthController {
 
     @Resource
     private  HttpSecurityUtils httpSecurityUtils;
+
+    @Resource
+    private SecurityCommonConfig securityCommonConfig;
 
     /**
      * 登录
@@ -107,16 +111,14 @@ public class AuthController {
     /**
      * 获取手机验证码
      *
-     * @param mobile
+     * @param request
      * @return
      */
     @ApiOperation("获取手机验证码")
     @PostMapping("/getSmsCode")
-    public Result<String> getSmsCode(@RequestParam("mobile") String mobile, @RequestParam(name = "timeout", required = false, defaultValue = "300") Long timeout) {
-        Integer code = new Random().nextInt(100000);
-        String cacheCode = String.format("%06d", code);
-        log.info("mobile = {} , cacheCode = {}", mobile, cacheCode);
-        redisKit.set(CACHE_SMS_CODE + mobile, cacheCode, timeout, TimeUnit.SECONDS);
+    public Result<String> getSmsCode(@Validated @RequestBody LoginSmsCodeSendRequest request) {
+        String result = httpSecurityUtils.getRemoteObject(securityCommonConfig.getSendSmsCodeUrl(), Method.POST, request, String.class);
+        log.info("getSmsCode , request = {} , result = {}" , JSON.toJSONString(request) , result);
         return Result.ok();
     }
 

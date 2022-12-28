@@ -1,7 +1,9 @@
 package cn.mic.cloud.biz.test.api;
 
 import cn.mic.cloud.biz.test.vo.DemoConverterVo;
-import cn.mic.cloud.freamework.common.core.LoginUser;
+import cn.mic.cloud.freamework.common.core.login.LoginRequest;
+import cn.mic.cloud.freamework.common.core.login.LoginUser;
+import cn.mic.cloud.freamework.common.vos.login.LoginSmsCodeSendRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,18 +36,17 @@ public interface DemoApi {
     /**
      * 根据用户名查询
      *
-     * @param username
+     * @param loginRequest
      * @return
      */
-    @PostMapping("/selectByLoginName")
-    LoginUser selectByLoginName(@RequestParam("username") String username);
+    @PostMapping("/getLoginUser")
+    LoginUser getLoginUser(@RequestBody LoginRequest loginRequest);
 
     /**
-     * 根据手机号查询
-     *
-     * @param mobile
-     * @return
+     * 发送验证码
+     * @param request
      */
-    @PostMapping("/selectByMobile")
-    LoginUser selectByMobile(@RequestParam("mobile") String mobile);
+    @PostMapping("/sendSmsCode")
+    String  sendSmsCode (@RequestBody  LoginSmsCodeSendRequest request);
+
 }

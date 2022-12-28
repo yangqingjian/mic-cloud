@@ -27,12 +27,17 @@ public class SecurityCommonConfig {
     /**
      * 根据登录名获取用户信息
      */
-    private String selectByLoginNameUrl = "lb://mic-biz-test-service/demo/selectByLoginName?username=%s";
+    private String getLoginUserForUsernameUrl = "lb://mic-biz-test-service/demo/getLoginUser";
 
     /**
      * 根据手机号获取用户信息
      */
-    private String selectByMobileUrl = "lb://mic-biz-test-service/demo/selectByMobile?mobile=%s";;
+    private String getLoginUserForSmsUrl = "lb://mic-biz-test-service/demo/getLoginUser";
+
+    /**
+     * 发送手机验证码
+     */
+    private String sendSmsCodeUrl = "lb://mic-biz-test-service/demo/sendSmsCode";;
 
     /**
      * 根据微信号获取用户信息
@@ -42,7 +47,7 @@ public class SecurityCommonConfig {
     /**
      * 超时时间为3秒
      */
-    private Integer readTimeOut = 3000;
+    private Integer readTimeOut = 300000;
 
     /**
      * 连接时间为1秒

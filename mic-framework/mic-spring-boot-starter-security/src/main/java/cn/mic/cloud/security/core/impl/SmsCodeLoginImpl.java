@@ -1,24 +1,20 @@
 package cn.mic.cloud.security.core.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.Method;
 import cn.mic.cloud.framework.redis.comp.RedisKit;
-import cn.mic.cloud.freamework.common.core.LoginUser;
+import cn.mic.cloud.freamework.common.core.login.LoginUser;
 import cn.mic.cloud.freamework.common.exception.AuthenticationException;
 import cn.mic.cloud.freamework.common.exception.SystemException;
 import cn.mic.cloud.security.config.SecurityCommonConfig;
-import cn.mic.cloud.security.constants.LoginTypeEnum;
+import cn.mic.cloud.freamework.common.constants.LoginTypeEnum;
 import cn.mic.cloud.security.core.HttpSecurityUtils;
 import cn.mic.cloud.security.core.LoginInterface;
-import cn.mic.cloud.security.vo.LoginRequest;
-import lombok.RequiredArgsConstructor;
+import cn.mic.cloud.freamework.common.core.login.LoginRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import static cn.mic.cloud.security.constants.SecurityConstants.CACHE_SMS_CODE;
 
 /**
  * @author : YangQingJian
@@ -29,13 +25,11 @@ import static cn.mic.cloud.security.constants.SecurityConstants.CACHE_SMS_CODE;
 public class SmsCodeLoginImpl implements LoginInterface {
 
     @Resource
-    private  SecurityCommonConfig securityCommonConfig;
+    private SecurityCommonConfig securityCommonConfig;
 
     @Resource
-    private  HttpSecurityUtils httpSecurityUtils;
+    private HttpSecurityUtils httpSecurityUtils;
 
-    @Resource
-    private  RedisKit redisKit;
 
     /**
      * 判断是否当前支持处理
@@ -56,21 +50,13 @@ public class SmsCodeLoginImpl implements LoginInterface {
      */
     @Override
     public LoginUser auth(LoginRequest loginRequest) {
-        if (ObjectUtil.isNull(securityCommonConfig.getSelectByMobileUrl())) {
+        if (ObjectUtil.isNull(securityCommonConfig.getGetLoginUserForSmsUrl())) {
             throw new SystemException("手机号接口地址查询未配置");
         }
-        String smsCode = redisKit.getStr(CACHE_SMS_CODE + loginRequest.getLoginName());
-        if (StrUtil.isBlank(smsCode)) {
-            throw new AuthenticationException("手机验证码不对或者手机验证码已超时");
-        }
-        if (!ObjectUtil.equals(loginRequest.getLoginSecret(), smsCode)) {
-            throw new AuthenticationException("手机号或者验证码错误");
-        }
-        String remoteUrl = securityCommonConfig.getSelectByMobileUrl();
-        remoteUrl = String.format(remoteUrl, loginRequest.getLoginName());
-        LoginUser loginUser = httpSecurityUtils.remoteGetLoginUser(remoteUrl, Method.POST);
+        String remoteUrl = securityCommonConfig.getGetLoginUserForSmsUrl();
+        LoginUser loginUser = httpSecurityUtils.getRemoteObject(remoteUrl, Method.POST, loginRequest, LoginUser.class);
         if (ObjectUtil.isNull(loginUser)) {
-            throw new AuthenticationException("用户名不存在");
+            throw new AuthenticationException("手机号或者验证码不存在");
         }
         return loginUser;
     }

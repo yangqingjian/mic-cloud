@@ -1,4 +1,4 @@
-package cn.mic.cloud.freamework.common.core;
+package cn.mic.cloud.freamework.common.core.login;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

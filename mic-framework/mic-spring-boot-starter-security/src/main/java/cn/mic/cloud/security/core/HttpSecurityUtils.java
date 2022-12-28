@@ -1,19 +1,19 @@
 package cn.mic.cloud.security.core;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.Method;
-import cn.mic.cloud.freamework.common.core.LoginUser;
-import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
-import cn.mic.cloud.freamework.common.exception.RepeatRequestException;
+import cn.mic.cloud.freamework.common.core.login.LoginUser;
 import cn.mic.cloud.freamework.common.exception.SystemException;
+import cn.mic.cloud.freamework.common.vos.Result;
 import cn.mic.cloud.security.config.SecurityCommonConfig;
 import cn.mic.cloud.security.constants.SecurityConstants;
 import com.alibaba.fastjson2.JSON;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -32,49 +32,79 @@ import static cn.mic.cloud.security.constants.SecurityConstants.LB_PRE_STR;
 public class HttpSecurityUtils {
 
     @Resource
-    private  SecurityCommonConfig securityCommonConfig;
+    private SecurityCommonConfig securityCommonConfig;
 
     @Resource
-    private  RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
-    public LoginUser remoteGetLoginUser(String remoteUrl, Method method){
+    public <T> T getRemoteObject(String remoteUrl, Method method, Object body, Class<T> clazz) {
         boolean lbFlag = isLoadBalancedUrl(remoteUrl);
-        if (lbFlag){
-            return executeLb(remoteUrl , method);
+        if (lbFlag) {
+            return executeLb(remoteUrl, method, body, clazz);
         }
-        HttpResponse httpResponse = HttpUtil.createRequest(method , remoteUrl)
+        HttpRequest httpRequest = HttpUtil.createRequest(method, remoteUrl)
                 .setConnectionTimeout(securityCommonConfig.getConnectTimeOut())
-                .setReadTimeout(securityCommonConfig.getReadTimeOut())
-                .execute();
-        if (!httpResponse.isOk()){
-            log.error("获取用户信息失败，url = {} , response = {}" , remoteUrl , httpResponse.body());
-            throw new SystemException("获取登录用户信息失败");
+                .setReadTimeout(securityCommonConfig.getReadTimeOut());
+        String requestBodyStr = getRequestBodyStr(method, body);
+        if (StrUtil.isNotBlank(requestBodyStr)) {
+            httpRequest = httpRequest.body(requestBodyStr);
         }
-        return JSON.parseObject(httpResponse.body() ,LoginUser.class);
+        HttpResponse httpResponse = httpRequest.execute();
+        if (!httpResponse.isOk()) {
+            log.error("获取用户信息失败，url = {} , response = {}", remoteUrl, httpResponse.body());
+            throw new SystemException(getErrorMessage(httpResponse.body()));
+        }
+        return JSON.parseObject(httpResponse.body(), clazz);
     }
 
-    private LoginUser executeLb(String remoteUrl, Method method){
-        remoteUrl = remoteUrl.replace(LB_PRE_STR , "http://");
+    private String getErrorMessage(String httpResponseBody) {
+        String errorMessage = "获取用户信息失败";
+        if (StrUtil.isBlank(httpResponseBody)) {
+            return errorMessage;
+        }
+        Result result = JSON.parseObject(httpResponseBody, Result.class);
+        if (null != result && StrUtil.isNotBlank(result.getMessage())) {
+            errorMessage = result.getMessage();
+        }
+        return errorMessage;
+    }
+
+    private String getRequestBodyStr(Method method, Object body) {
+        if (null == body || ObjectUtil.notEqual(method, Method.POST)) {
+            return null;
+        }
+        if (body instanceof String) {
+            return (String) body;
+        }
+        return JSON.toJSONString(body);
+    }
+
+    private <T> T executeLb(String remoteUrl, Method method, Object body, Class<T> clazz) {
+        remoteUrl = remoteUrl.replace(LB_PRE_STR, "http://");
         ResponseEntity<String> responseEntity;
-        switch (method){
+        switch (method) {
             case GET:
-                responseEntity = restTemplate.getForEntity(remoteUrl,String.class);
+                responseEntity = restTemplate.getForEntity(remoteUrl, String.class);
                 break;
             case POST:
-                responseEntity = restTemplate.postForEntity(remoteUrl,null , String.class);
+                responseEntity = restTemplate.postForEntity(remoteUrl, body, String.class);
                 break;
             default:
-                throw new SystemException("请求方式【%s】不对" , method.name());
+                throw new SystemException("请求方式【%s】不对", method.name());
         }
-        if (null == responseEntity){
-            log.error("获取用户信息失败，url = {} " , remoteUrl);
-            throw new SystemException("获取登录用户信息失败");
+        if (ObjectUtil.notEqual(responseEntity.getStatusCode(), HttpStatus.OK)) {
+            log.error("获取用户信息失败，url = {} ", remoteUrl);
+            throw new SystemException(getErrorMessage(responseEntity));
         }
-        return JSON.parseObject(responseEntity.getBody(),LoginUser.class) ;
+        return JSON.parseObject(responseEntity.getBody(), clazz);
     }
 
-    private boolean isLoadBalancedUrl(String remoteUrl){
-        if (remoteUrl.startsWith(LB_PRE_STR)){
+    private String getErrorMessage(ResponseEntity<String> responseEntity) {
+        return getErrorMessage(responseEntity.getBody());
+    }
+
+    private boolean isLoadBalancedUrl(String remoteUrl) {
+        if (remoteUrl.startsWith(LB_PRE_STR)) {
             return true;
         }
         return false;

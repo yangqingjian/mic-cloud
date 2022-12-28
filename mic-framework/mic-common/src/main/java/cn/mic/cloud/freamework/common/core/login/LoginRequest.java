@@ -1,6 +1,6 @@
-package cn.mic.cloud.security.vo;
+package cn.mic.cloud.freamework.common.core.login;
 
-import cn.mic.cloud.security.constants.LoginTypeEnum;
+import cn.mic.cloud.freamework.common.constants.LoginTypeEnum;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
