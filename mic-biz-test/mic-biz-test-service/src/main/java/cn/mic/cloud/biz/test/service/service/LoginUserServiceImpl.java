@@ -11,6 +11,7 @@ import cn.mic.cloud.freamework.common.core.login.LoginUser;
 import cn.mic.cloud.freamework.common.core.login.SimpleAuthority;
 import cn.mic.cloud.freamework.common.exception.AuthenticationException;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
+import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
 import cn.mic.cloud.freamework.common.vos.login.LoginSmsCodeSendRequest;
 import com.alibaba.fastjson2.JSON;
 import com.google.common.collect.Lists;
@@ -97,6 +98,7 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public Date redisStoreToken(String key,Integer expireSeconds, LoginUser loginUser) {
         Assert.hasText(key, "key不能为空");
+        key = SecurityCoreUtils.removeHeaderPrefix(key);
         redisKit.set(CACHE_TOKEN_CODE + key, JSON.toJSONString(loginUser), expireSeconds, TimeUnit.SECONDS);
         DateTime expireDate = DateUtil.offset(new Date(), DateField.SECOND, expireSeconds);
         return expireDate;
@@ -111,6 +113,7 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public LoginUser redisGetToken(String key) {
         Assert.hasText(key, "key不能为空");
+        key = SecurityCoreUtils.removeHeaderPrefix(key);
         return redisKit.getObj(CACHE_TOKEN_CODE + key, LoginUser.class);
     }
 
@@ -123,6 +126,7 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public Boolean redisRemoveToken(String key) {
         Assert.hasText(key, "key不能为空");
+        key = SecurityCoreUtils.removeHeaderPrefix(key);
         redisKit.remove(CACHE_TOKEN_CODE + key);
         return true;
     }
@@ -136,7 +140,6 @@ public class LoginUserServiceImpl implements LoginUserService {
             loginUser.setUsername(request.getLoginName());
             //loginUser.setMobile("13880981076");
         }
-
         //SHA-256+随机盐+密钥对密码进行加密。
         loginUser.setPassword(encoder.encode("123456"));
         loginUser.setDepartPositionId("123");

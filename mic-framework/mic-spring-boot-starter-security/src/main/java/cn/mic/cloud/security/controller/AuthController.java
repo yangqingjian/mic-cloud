@@ -76,7 +76,7 @@ public class AuthController {
         /**
          * 同是也存入redis(把前缀去掉)
          */
-        loginAuthInterface.redisStoreToken(SecurityCoreUtils.removeHeaderPrefix(token), securityCommonConfig.getExpireTimeSeconds(), loginUser);
+        loginAuthInterface.redisStoreToken(token, securityCommonConfig.getExpireTimeSeconds(), loginUser);
         TokenResult tokenResult = new TokenResult();
         tokenResult.setToken(token);
         tokenResult.setExpireDate(expireDate);

@@ -46,5 +46,10 @@ public interface SecurityConstants {
      */
     String TOKEN_BAD_EXCEPTION_ATTR = "tokenBadExceptionAtt";
 
+    /**
+     * token前缀
+     */
+    String TOKEN_PRE = "Bearer ";
+
 
 }

@@ -133,7 +133,7 @@ public class SecurityCoreUtils {
                 .setKey(publicKey.getBytes())
                 .sign();
         byte[] encodeToken = Base64.getEncoder().encode(token.getBytes());
-        return HEADER_TOKEN_PARAM + new String(encodeToken);
+        return TOKEN_PRE + new String(encodeToken);
     }
 
     /**
@@ -143,7 +143,7 @@ public class SecurityCoreUtils {
      * @return
      */
     public static LoginUser parseToken(String token, String publicKey, HttpServletResponse response) {
-        token = token.replace(HEADER_TOKEN_PARAM, "");
+        token = token.replace(TOKEN_PRE, "");
         /**
          * base64解码
          */
@@ -195,7 +195,7 @@ public class SecurityCoreUtils {
         if (StrUtil.isBlank(token)) {
             return token;
         }
-        return token = token.replace(HEADER_TOKEN_PARAM, "");
+        return  token.replace(TOKEN_PRE, "");
     }
 
 
