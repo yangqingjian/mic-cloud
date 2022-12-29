@@ -7,8 +7,6 @@ import cn.mic.cloud.freamework.common.core.login.LoginUser;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
 import cn.mic.cloud.freamework.common.exception.TokenExpireException;
 import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
-import cn.mic.cloud.freamework.common.vos.Result;
-import cn.mic.cloud.freamework.common.vos.ResultStatusEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
