@@ -102,7 +102,7 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public Date redisStoreToken(String key, Integer expireSeconds, LoginUser loginUser) {
         Assert.hasText(key, "key不能为空");
-        key = SecurityCoreUtils.removeHeaderPrefix(key);
+        key = SecurityCoreUtils.getTokenRedisKey(key);
         redisKit.set(CACHE_TOKEN_CODE + key, JSON.toJSONString(loginUser), expireSeconds, TimeUnit.SECONDS);
         DateTime expireDate = DateUtil.offset(new Date(), DateField.SECOND, expireSeconds);
         return expireDate;
@@ -117,7 +117,7 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public LoginUser redisGetToken(String key) {
         Assert.hasText(key, "key不能为空");
-        key = SecurityCoreUtils.removeHeaderPrefix(key);
+        key = SecurityCoreUtils.getTokenRedisKey(key);
         return redisKit.getObj(CACHE_TOKEN_CODE + key, LoginUser.class);
     }
 
@@ -130,7 +130,7 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public Boolean redisRemoveToken(String key) {
         Assert.hasText(key, "key不能为空");
-        key = SecurityCoreUtils.removeHeaderPrefix(key);
+        key = SecurityCoreUtils.getTokenRedisKey(key);
         redisKit.remove(CACHE_TOKEN_CODE + key);
         return true;
     }

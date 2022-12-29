@@ -3,6 +3,8 @@ package cn.mic.cloud.freamework.common.utils;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.crypto.digest.MD5;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTHeader;
 import cn.hutool.jwt.RegisteredPayload;
@@ -173,8 +175,8 @@ public class SecurityCoreUtils {
         Object password = jwt.getPayload(JWT_LOGIN_PASSWORD);
         Object departPositionId = jwt.getPayload(JWT_DEPART_POSITION_ID);
         Object authorities = jwt.getPayload(JWT_AUTHORITIES);
-        Assert.notNull(username , "jwt中的用户名为空");
-        Assert.notNull(password , "jwt中的密钥为空");
+        Assert.notNull(username, "jwt中的用户名为空");
+        Assert.notNull(password, "jwt中的密钥为空");
         /**
          * 设置loginUser
          */
@@ -195,7 +197,19 @@ public class SecurityCoreUtils {
         if (StrUtil.isBlank(token)) {
             return token;
         }
-        return  token.replace(TOKEN_PRE, "");
+        return token.replace(TOKEN_PRE, "");
+    }
+
+    /**
+     * token的md5
+     *
+     * @param token
+     * @return
+     */
+    public static String getTokenRedisKey(String token) {
+        Assert.hasText(token, "token不能为空");
+        token = removeHeaderPrefix(token);
+        return DigestUtil.md5Hex(token);
     }
 
 
