@@ -60,6 +60,10 @@ public class LoginUserServiceImpl implements LoginUserService {
                 if (ObjectUtil.notEqual(cacheSmsCode, loginRequest.getLoginSecret())) {
                     throw new AuthenticationException("验证码错误或者已过期");
                 }
+                /**
+                 * 认证成功之后要清楚验证码
+                 */
+                redisKit.remove(CACHE_SMS_CODE + loginRequest.getLoginName());
                 break;
             case USERNAME_PASSWORD:
                 /**
@@ -96,7 +100,7 @@ public class LoginUserServiceImpl implements LoginUserService {
      * @return
      */
     @Override
-    public Date redisStoreToken(String key,Integer expireSeconds, LoginUser loginUser) {
+    public Date redisStoreToken(String key, Integer expireSeconds, LoginUser loginUser) {
         Assert.hasText(key, "key不能为空");
         key = SecurityCoreUtils.removeHeaderPrefix(key);
         redisKit.set(CACHE_TOKEN_CODE + key, JSON.toJSONString(loginUser), expireSeconds, TimeUnit.SECONDS);

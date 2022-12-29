@@ -44,7 +44,7 @@ public class ServiceCommonTokenAuthenticationFilter extends OncePerRequestFilter
     /**
      * jwt密钥
      */
-    @Value("${security.publicKey:123456789")
+    @Value("${security.publicKey:123456789}")
     private String publicKey;
 
     private final LoginAuthInterface loginAuthInterface;
