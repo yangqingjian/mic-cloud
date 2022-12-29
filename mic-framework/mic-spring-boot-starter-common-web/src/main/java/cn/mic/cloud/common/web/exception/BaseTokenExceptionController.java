@@ -25,19 +25,9 @@ public interface BaseTokenExceptionController {
      * @param request
      */
     @RequestMapping(SecurityConstants.TOKEN_BAD_EXCEPTION_URL)
-    default void handleException(HttpServletRequest request, HttpServletResponse response) {
+    default void handleException(HttpServletRequest request) throws Exception {
         Exception exception = (Exception) request.getAttribute(TOKEN_BAD_EXCEPTION_ATTR);
-        Result result = Result.error(ResultStatusEnum.UNKNOWN_EXCEPTION.getCode(), exception.getMessage());
-        if (exception instanceof InvalidParameterException) {
-            result = Result.error(ResultStatusEnum.INVALID_PARAM.getCode(), exception.getMessage());
-        }
-        if (exception instanceof IllegalArgumentException) {
-            result = Result.error(ResultStatusEnum.INVALID_PARAM.getCode(), exception.getMessage());
-        }
-        if (exception instanceof TokenExpireException) {
-            result = Result.error(ResultStatusEnum.TOKEN_EXPIRE_EXCEPTION.getCode(), exception.getMessage());
-        }
-        SecurityCoreUtils.printTokenException(response, result);
+        throw exception;
     }
 
 

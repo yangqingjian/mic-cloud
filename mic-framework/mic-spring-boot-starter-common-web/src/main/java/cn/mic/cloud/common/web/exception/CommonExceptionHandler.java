@@ -1,10 +1,7 @@
 package cn.mic.cloud.common.web.exception;
 
 import cn.hutool.core.util.StrUtil;
-import cn.mic.cloud.freamework.common.exception.AuthenticationException;
-import cn.mic.cloud.freamework.common.exception.BusinessException;
-import cn.mic.cloud.freamework.common.exception.RepeatRequestException;
-import cn.mic.cloud.freamework.common.exception.TokenExpireException;
+import cn.mic.cloud.freamework.common.exception.*;
 import cn.mic.cloud.freamework.common.vos.Result;
 import cn.mic.cloud.freamework.common.vos.ResultStatusEnum;
 import com.alibaba.fastjson.JSON;
@@ -20,14 +17,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
@@ -35,11 +30,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Optional;
 
 @ControllerAdvice
+//@Component
 //@RestControllerAdvice
 @Configuration
 @Slf4j

@@ -86,6 +86,9 @@ public class LoginUserServiceImpl implements LoginUserService {
      */
     @Override
     public String sendSmsCode(LoginSmsCodeSendRequest request) {
+        if (ObjectUtil.notEqual(request.getMobile() , "13880981076")){
+            throw new InvalidParameterException("手机号【%s】在系统中不存在" , request.getMobile());
+        }
         Integer code = new Random().nextInt(100000);
         String cacheCode = String.format("%06d", code);
         log.info("mobile = {} , cacheCode = {}", request.getMobile(), cacheCode);

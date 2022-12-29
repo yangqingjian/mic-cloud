@@ -16,10 +16,6 @@ public class InvalidParameterException extends RuntimeException {
         super(message);
     }
 
-    public InvalidParameterException(String parameterName, String message) {
-        super(parameterName + message);
-    }
-
     public InvalidParameterException(Object code, Object... params) {
         super(String.format((String) code, params));
     }
