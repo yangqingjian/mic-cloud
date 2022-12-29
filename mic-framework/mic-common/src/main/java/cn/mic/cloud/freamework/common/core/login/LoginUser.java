@@ -1,6 +1,7 @@
 package cn.mic.cloud.freamework.common.core.login;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -12,7 +13,10 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public class LoginUser implements org.springframework.security.core.userdetails.UserDetails {
+@EqualsAndHashCode
+public class LoginUser implements org.springframework.security.core.userdetails.UserDetails , Serializable {
+    private static final long serialVersionUID = 1L;
+
     /**
      * 角色集合
      */
@@ -29,14 +33,9 @@ public class LoginUser implements org.springframework.security.core.userdetails.
     private String password;
 
     /**
-     * 手机号
-     */
-    private String mobile;
-
-    /**
      * 当前职位
      */
-    private Serializable currentDepartPosition;
+    private String departPositionId;
 
     /**
      * 是否过期

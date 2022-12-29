@@ -9,6 +9,7 @@ import java.util.Date;
 
 /**
  * 登录抽象的接口
+ *
  * @author : YangQingJian
  * @date : 2022/12/28
  */
@@ -38,7 +39,7 @@ public interface LoginAuthInterface {
      * @return
      */
     @PostMapping("/redisStoreToken")
-    Date redisStoreToken(@RequestParam("key") String key, @RequestBody LoginUser loginUser);
+    Date redisStoreToken(@RequestParam("key") String key, @RequestParam(name = "expireSeconds", required = false, defaultValue = "3600") Integer expireSeconds, @RequestBody LoginUser loginUser);
 
     /**
      * 查询token

@@ -80,5 +80,11 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> error(int code, String message, String errorPath, String errorSystem, T data) {
         return new Result<>(code, message, data, errorPath, errorSystem);
     }
+    public static <T> Result<T> error(int code, String message) {
+        return new Result<>(code, message, null, null, null);
+    }
+    public static <T> Result<T> error(int code, String message , T data) {
+        return new Result<>(code, message, data, null, null);
+    }
 
 }

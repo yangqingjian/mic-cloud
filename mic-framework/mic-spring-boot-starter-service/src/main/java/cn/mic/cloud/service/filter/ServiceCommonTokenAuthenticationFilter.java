@@ -4,8 +4,11 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.mic.cloud.freamework.common.core.login.LoginAuthInterface;
 import cn.mic.cloud.freamework.common.core.login.LoginUser;
-import cn.mic.cloud.freamework.common.exception.AuthenticationException;
+import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
+import cn.mic.cloud.freamework.common.exception.TokenExpireException;
 import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
+import cn.mic.cloud.freamework.common.vos.Result;
+import cn.mic.cloud.freamework.common.vos.ResultStatusEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static cn.mic.cloud.freamework.common.constants.SecurityConstants.TOKEN_BAD_EXCEPTION_ATTR;
+import static cn.mic.cloud.freamework.common.constants.SecurityConstants.TOKEN_BAD_EXCEPTION_URL;
+
 /**
  * @author : YangQingJian
  * @date : 2022/12/23
@@ -35,7 +41,14 @@ public class ServiceCommonTokenAuthenticationFilter extends OncePerRequestFilter
     @Value("${security:/loginUser}")
     private String loginUserPath;
 
+    /**
+     * jwt密钥
+     */
+    @Value("${security.publicKey:123456789")
+    private String publicKey;
+
     private final LoginAuthInterface loginAuthInterface;
+
 
     /**
      * Same contract as for {@code doFilter}, but guaranteed to be
@@ -68,10 +81,27 @@ public class ServiceCommonTokenAuthenticationFilter extends OncePerRequestFilter
             filterChain.doFilter(request, response);
             return;
         }
-        LoginUser loginUser = loginAuthInterface.redisGetToken(authorization);
-        if (ObjectUtil.isNull(loginUser)) {
-            log.error("token=【%s】查询缓存失败", authorization);
-            throw new AuthenticationException("token【%s】过期", authorization);
+        /**
+         * 获取token中的信息,已经在里面处理了异常
+         */
+        LoginUser loginUser = null;
+        try {
+            LoginUser tokenLoginUser = SecurityCoreUtils.parseToken(authorization, publicKey, response);
+            loginUser = loginAuthInterface.redisGetToken(authorization);
+            if (ObjectUtil.isNull(loginUser)) {
+                log.error("token=【%s】查询缓存失败", authorization);
+                throw new TokenExpireException("token在redis中已失效");
+            }
+            if (ObjectUtil.notEqual(tokenLoginUser, loginUser)) {
+                log.error("token=【%s】查询缓存失败", authorization);
+                throw new InvalidParameterException("redis中的对象和token解析对象不一致");
+            }
+        } catch (Exception e) {
+            // 传递异常信息
+            request.setAttribute(TOKEN_BAD_EXCEPTION_ATTR, e);
+            // 指定处理该请求的处理器
+            request.getRequestDispatcher(TOKEN_BAD_EXCEPTION_URL).forward(request, response);
+            return;
         }
         // 构建AuthenticationToken
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
@@ -80,4 +110,6 @@ public class ServiceCommonTokenAuthenticationFilter extends OncePerRequestFilter
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
+
+
 }

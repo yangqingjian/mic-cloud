@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -48,6 +47,15 @@ public class SecurityCommonConfig {
     private Integer connectTimeOut = 1000;
 
 
+    /**
+     * jwt密钥
+     */
+    private String publicKey = "123456789";
+
+    /**
+     * 失效日期，秒 默认为10小时 = 36000
+     */
+    private Integer expireTimeSeconds = 36000;
 
 
 }

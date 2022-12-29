@@ -26,7 +26,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static cn.mic.cloud.biz.test.service.constants.MicBizTestServiceConstants.CACHE_SMS_CODE;
-import static cn.mic.cloud.biz.test.service.constants.MicBizTestServiceConstants.CACHE_TOKEN_HOURS;
+import static cn.mic.cloud.biz.test.service.constants.MicBizTestServiceConstants.CACHE_TOKEN_CODE;
 
 /**
  * @author : YangQingJian
@@ -95,10 +95,10 @@ public class LoginUserServiceImpl implements LoginUserService {
      * @return
      */
     @Override
-    public Date redisStoreToken(String key, LoginUser loginUser) {
+    public Date redisStoreToken(String key,Integer expireSeconds, LoginUser loginUser) {
         Assert.hasText(key, "key不能为空");
-        redisKit.set(key, JSON.toJSONString(loginUser), CACHE_TOKEN_HOURS, TimeUnit.HOURS);
-        DateTime expireDate = DateUtil.offset(new Date(), DateField.HOUR, CACHE_TOKEN_HOURS);
+        redisKit.set(CACHE_TOKEN_CODE + key, JSON.toJSONString(loginUser), expireSeconds, TimeUnit.SECONDS);
+        DateTime expireDate = DateUtil.offset(new Date(), DateField.SECOND, expireSeconds);
         return expireDate;
     }
 
@@ -111,7 +111,7 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public LoginUser redisGetToken(String key) {
         Assert.hasText(key, "key不能为空");
-        return redisKit.getObj(key, LoginUser.class);
+        return redisKit.getObj(CACHE_TOKEN_CODE + key, LoginUser.class);
     }
 
     /**
@@ -123,23 +123,23 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public Boolean redisRemoveToken(String key) {
         Assert.hasText(key, "key不能为空");
-        redisKit.remove(key);
+        redisKit.remove(CACHE_TOKEN_CODE + key);
         return true;
     }
 
     private LoginUser getTempLoginUser(LoginRequest request) {
         LoginUser loginUser = new LoginUser();
         if (request.getLoginName().length() == 11) {
-            loginUser.setMobile(request.getLoginName());
+            //loginUser.setMobile(request.getLoginName());
             loginUser.setUsername("admin");
         } else {
             loginUser.setUsername(request.getLoginName());
-            loginUser.setMobile("13880981076");
+            //loginUser.setMobile("13880981076");
         }
 
         //SHA-256+随机盐+密钥对密码进行加密。
         loginUser.setPassword(encoder.encode("123456"));
-        loginUser.setCurrentDepartPosition("123");
+        loginUser.setDepartPositionId("123");
         SimpleAuthority adminRole = new SimpleAuthority("admin");
         SimpleAuthority clientRole = new SimpleAuthority("client");
         List<SimpleAuthority> authorities = Lists.newArrayList(adminRole, clientRole);

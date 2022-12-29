@@ -51,8 +51,8 @@ public class WebLoginAuthServiceImpl implements LoginAuthInterface {
      * @return
      */
     @Override
-    public Date redisStoreToken(String key, LoginUser loginUser) {
-        return webLoginUserFeign.redisStoreToken(key, loginUser);
+    public Date redisStoreToken(String key, Integer expireSeconds ,  LoginUser loginUser) {
+        return webLoginUserFeign.redisStoreToken(key,expireSeconds , loginUser);
     }
 
     /**

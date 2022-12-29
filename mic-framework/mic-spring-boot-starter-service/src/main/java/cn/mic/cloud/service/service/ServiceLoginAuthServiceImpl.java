@@ -51,8 +51,8 @@ public class ServiceLoginAuthServiceImpl implements LoginAuthInterface {
      * @return
      */
     @Override
-    public Date redisStoreToken(String key, LoginUser loginUser) {
-        return serviceLoginUserFeign.redisStoreToken(key, loginUser);
+    public Date redisStoreToken(String key,  Integer expireSeconds,LoginUser loginUser) {
+        return serviceLoginUserFeign.redisStoreToken(key, expireSeconds , loginUser);
     }
 
     /**

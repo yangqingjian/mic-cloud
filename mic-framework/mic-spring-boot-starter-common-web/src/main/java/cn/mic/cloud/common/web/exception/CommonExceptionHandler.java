@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.mic.cloud.freamework.common.exception.AuthenticationException;
 import cn.mic.cloud.freamework.common.exception.BusinessException;
 import cn.mic.cloud.freamework.common.exception.RepeatRequestException;
+import cn.mic.cloud.freamework.common.exception.TokenExpireException;
 import cn.mic.cloud.freamework.common.vos.Result;
 import cn.mic.cloud.freamework.common.vos.ResultStatusEnum;
 import com.alibaba.fastjson.JSON;
@@ -19,11 +20,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
@@ -36,6 +40,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @ControllerAdvice
+//@RestControllerAdvice
 @Configuration
 @Slf4j
 public class CommonExceptionHandler {
@@ -132,7 +137,19 @@ public class CommonExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Result> handleAuthenticationException(AuthenticationException e) {
         Result result = constructExceptionByCode(e, ResultStatusEnum.AUTHENTICATION_EXCEPTION);
-        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * token过期(状态码直接为401)，401不会有输出
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(TokenExpireException.class)
+    public ResponseEntity<Result> handleTokenExpireException(TokenExpireException e) {
+        Result result = constructExceptionByCode(e, ResultStatusEnum.TOKEN_EXPIRE_EXCEPTION);
+        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BusinessException.class)
@@ -248,7 +265,9 @@ public class CommonExceptionHandler {
          * 组装message
          */
         //message = "【" + errorSystem + "】" + statusEnum.getMessage() + ":" + message;
-        message = "【" + statusEnum.getMessage() + "】" + message;
+        if (StrUtil.isNotBlank(statusEnum.getMessage())) {
+            message = "【" + statusEnum.getMessage() + "】" + message;
+        }
         /**
          * 处理message(针对如下异常，只显示)
          */

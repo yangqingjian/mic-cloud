@@ -1,7 +1,8 @@
 package cn.mic.cloud.security.controller;
 
-import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.mic.cloud.freamework.common.constants.SecurityConstants;
 import cn.mic.cloud.freamework.common.core.login.LoginAuthInterface;
 import cn.mic.cloud.freamework.common.core.login.LoginRequest;
 import cn.mic.cloud.freamework.common.core.login.LoginUser;
@@ -10,11 +11,13 @@ import cn.mic.cloud.freamework.common.exception.SystemException;
 import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
 import cn.mic.cloud.freamework.common.vos.Result;
 import cn.mic.cloud.freamework.common.vos.login.LoginSmsCodeSendRequest;
+import cn.mic.cloud.security.config.SecurityCommonConfig;
 import cn.mic.cloud.security.core.LoginTypeInterface;
 import cn.mic.cloud.security.vo.TokenResult;
 import com.alibaba.fastjson2.JSON;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,6 +33,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.Optional;
+
+import static cn.mic.cloud.freamework.common.constants.SecurityConstants.TOKEN_BAD_EXCEPTION_ATTR;
 
 /**
  * @author : YangQingJian
@@ -48,6 +53,9 @@ public class AuthController {
     @Resource
     private LoginAuthInterface loginAuthInterface;
 
+    @Resource
+    private SecurityCommonConfig securityCommonConfig;
+
     /**
      * 登录
      */
@@ -63,10 +71,14 @@ public class AuthController {
         // 把authentication放到当前线程,便是认证完成
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String fastUUID = IdUtil.fastUUID();
-        Date expireDate = loginAuthInterface.redisStoreToken(fastUUID, loginUser);
+        Date expireDate = DateUtil.offsetSecond(new Date(), securityCommonConfig.getExpireTimeSeconds());
+        String token = SecurityCoreUtils.createToken(loginUser, securityCommonConfig.getPublicKey(), expireDate);
+        /**
+         * 同是也存入redis(把前缀去掉)
+         */
+        loginAuthInterface.redisStoreToken(SecurityCoreUtils.removeHeaderPrefix(token), securityCommonConfig.getExpireTimeSeconds(), loginUser);
         TokenResult tokenResult = new TokenResult();
-        tokenResult.setToken(fastUUID);
+        tokenResult.setToken(token);
         tokenResult.setExpireDate(expireDate);
         return Result.ok(tokenResult);
     }

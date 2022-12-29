@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.mic.cloud.common.web.config.WebCommonConfiguration
+  cn.mic.cloud.common.web.config.WebCommonConfiguration,\
+  cn.mic.cloud.common.web.exception.CommonExceptionHandler

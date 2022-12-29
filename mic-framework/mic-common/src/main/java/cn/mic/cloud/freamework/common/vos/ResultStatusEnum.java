@@ -19,7 +19,8 @@ public enum ResultStatusEnum {
     CLIENT_EXCEPTION(800, "微服务未发现异常"),
     FEIGN_EXCEPTION(801, "远程调用异常"),
     AUTHENTICATION_EXCEPTION(401, "认证异常"),
-    UNKNOWN_EXCEPTION(802, "未知异常");
+    TOKEN_EXPIRE_EXCEPTION(801, "token过期"),
+    UNKNOWN_EXCEPTION(500, "");//未知异常直接message为空
 
     @Getter
     private int code;

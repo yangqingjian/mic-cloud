@@ -12,9 +12,9 @@ public interface MicBizTestServiceConstants {
     String CACHE_SMS_CODE = "sms:code:";
 
     /**
-     * token的有效期
+     * 前缀
      */
-    Integer CACHE_TOKEN_HOURS = 6 ;
+    String CACHE_TOKEN_CODE = "security:token:";
 
 
 }
