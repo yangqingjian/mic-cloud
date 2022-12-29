@@ -34,8 +34,6 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @ControllerAdvice
-//@Component
-//@RestControllerAdvice
 @Configuration
 @Slf4j
 public class CommonExceptionHandler {
