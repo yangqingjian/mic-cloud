@@ -20,7 +20,6 @@ import java.util.List;
 @NoArgsConstructor
 @ConfigurationProperties(prefix = "security")
 @ComponentScan("cn.mic.cloud.security")
-@EnableFeignClients(basePackages = "cn.mic.cloud.security.feign")
 public class SecurityCommonConfig {
 
     /**

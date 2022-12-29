@@ -5,6 +5,7 @@ import feign.RequestInterceptor;
 import org.slf4j.MDC;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @date : 2022/12/6
  */
 @Configuration
+@ComponentScan(basePackages = "cn.mic.cloud.mdc")
 public class MdcAutoConfiguration {
 
     /**

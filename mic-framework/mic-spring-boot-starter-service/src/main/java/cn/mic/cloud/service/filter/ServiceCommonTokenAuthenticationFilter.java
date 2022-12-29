@@ -2,10 +2,10 @@ package cn.mic.cloud.service.filter;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.mic.cloud.freamework.common.core.login.LoginAuthInterface;
 import cn.mic.cloud.freamework.common.core.login.LoginUser;
 import cn.mic.cloud.freamework.common.exception.AuthenticationException;
 import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
-import cn.mic.cloud.service.feign.DefaultServiceLoginUserFeign;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,10 +32,10 @@ import java.io.IOException;
 @Slf4j
 public class ServiceCommonTokenAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${loginUserPath:/loginUser}")
+    @Value("${security:/loginUser}")
     private String loginUserPath;
 
-    private final DefaultServiceLoginUserFeign defaultServiceLoginUserFeign;
+    private final LoginAuthInterface loginAuthInterface;
 
     /**
      * Same contract as for {@code doFilter}, but guaranteed to be
@@ -54,12 +54,12 @@ public class ServiceCommonTokenAuthenticationFilter extends OncePerRequestFilter
          * 如果是登录的uri则直接放行
          */
         String requestURI = request.getRequestURI();
-        if (StrUtil.startWith(requestURI,loginUserPath)){
+        if (StrUtil.startWith(requestURI, loginUserPath)) {
             filterChain.doFilter(request, response);
             return;
         }
         Authentication currentAuthentication = SecurityContextHolder.getContext().getAuthentication();
-        if (ObjectUtil.isNotNull(currentAuthentication)){
+        if (ObjectUtil.isNotNull(currentAuthentication)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -68,7 +68,7 @@ public class ServiceCommonTokenAuthenticationFilter extends OncePerRequestFilter
             filterChain.doFilter(request, response);
             return;
         }
-        LoginUser loginUser = defaultServiceLoginUserFeign.redisGetToken(authorization);
+        LoginUser loginUser = loginAuthInterface.redisGetToken(authorization);
         if (ObjectUtil.isNull(loginUser)) {
             log.error("token=【%s】查询缓存失败", authorization);
             throw new AuthenticationException("token【%s】过期", authorization);

@@ -25,8 +25,10 @@ public class ServiceRestTemplateRequestInterceptor {
     RequestInterceptor getServiceAuthorizationRequestInterceptor() {
         return requestTemplate -> {
             ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            //将token传入到header
-            requestTemplate.header(SecurityConstants.HEADER_TOKEN_PARAM, servletRequestAttributes.getRequest().getHeader(SecurityConstants.HEADER_TOKEN_PARAM));
+            if (null != servletRequestAttributes && null != servletRequestAttributes.getRequest()){
+                //将token传入到header
+                requestTemplate.header(SecurityConstants.HEADER_TOKEN_PARAM, servletRequestAttributes.getRequest().getHeader(SecurityConstants.HEADER_TOKEN_PARAM));
+            }
         };
     }
 }

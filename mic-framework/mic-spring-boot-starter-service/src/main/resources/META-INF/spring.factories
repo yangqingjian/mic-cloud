@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.mic.cloud.service.config.MicSpringBootStarterServiceConfig
+  cn.mic.cloud.service.config.ServiceCommonConfig

@@ -1,4 +1,4 @@
-package cn.mic.cloud.web.core;
+package cn.mic.cloud.common.web.core;
 
 import cn.mic.cloud.freamework.common.core.BaseEntity;
 import cn.mic.cloud.freamework.common.core.BaseEntityFeign;

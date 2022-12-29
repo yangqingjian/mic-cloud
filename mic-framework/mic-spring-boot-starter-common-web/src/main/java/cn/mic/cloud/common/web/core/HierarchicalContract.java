@@ -1,4 +1,4 @@
-package cn.mic.cloud.web.core;
+package cn.mic.cloud.common.web.core;
 
 import feign.MethodMetadata;
 import feign.Util;

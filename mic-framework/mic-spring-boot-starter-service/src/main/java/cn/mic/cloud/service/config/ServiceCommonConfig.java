@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableFeignClients(basePackages = {"cn.mic.cloud.service.feign"})
 @ComponentScan("cn.mic.cloud.service")
 @Slf4j
-public class MicSpringBootStarterServiceConfig {
+public class ServiceCommonConfig {
 
 
 

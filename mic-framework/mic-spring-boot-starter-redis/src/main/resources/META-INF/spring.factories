@@ -1,5 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.mic.cloud.framework.redis.config.RedissonAutoConfiguration,\
-  cn.mic.cloud.framework.redis.config.RedissonProperties,\
-  cn.mic.cloud.framework.redis.comp.RedisLockAop,\
-  cn.mic.cloud.framework.redis.comp.RedisKit
+  cn.mic.cloud.framework.redis.config.RedissonAutoConfiguration

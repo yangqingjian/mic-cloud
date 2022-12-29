@@ -1,4 +1,4 @@
-package cn.mic.cloud.web.exception;
+package cn.mic.cloud.common.web.exception;
 
 import cn.hutool.core.util.StrUtil;
 import cn.mic.cloud.freamework.common.exception.AuthenticationException;
@@ -35,9 +35,6 @@ import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Optional;
 
-/**
- *
- */
 @ControllerAdvice
 @Configuration
 @Slf4j
@@ -65,15 +62,17 @@ public class CommonExceptionHandler {
         Result result = constructExceptionByCode(e, ResultStatusEnum.REPEAT_REQUEST_EXCEPTION);
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<Result> handleFeignException(FeignException e) {
         Result result = constructExceptionByCode(e, ResultStatusEnum.FEIGN_EXCEPTION);
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<Result> handleHttpClientErrorException(HttpClientErrorException e) {
         String message = e.getResponseBodyAsString();
-        Result result = JSON.parseObject(message,Result.class);
+        Result result = JSON.parseObject(message, Result.class);
         /**
          * 为空
          */
@@ -82,11 +81,13 @@ public class CommonExceptionHandler {
         }
         return new ResponseEntity<>(result, e.getStatusCode());
     }
+
     @ExceptionHandler(TooManyResultsException.class)
     public ResponseEntity<Result> handleTooManyResultsException(TooManyResultsException e) {
         Result result = constructExceptionByCode(e, ResultStatusEnum.TOO_MANY_RESULTS_EXCEPTION);
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
+
     /**
      * 针对Exception需要再次处理一下
      *
@@ -109,6 +110,7 @@ public class CommonExceptionHandler {
         }
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
+
     /**
      * 类型转换错误
      *
@@ -123,6 +125,7 @@ public class CommonExceptionHandler {
 
     /**
      * 认证异常
+     *
      * @param e
      * @return
      */
@@ -245,7 +248,7 @@ public class CommonExceptionHandler {
          * 组装message
          */
         //message = "【" + errorSystem + "】" + statusEnum.getMessage() + ":" + message;
-        message = "【"+statusEnum.getMessage()+ "】" + message;
+        message = "【" + statusEnum.getMessage() + "】" + message;
         /**
          * 处理message(针对如下异常，只显示)
          */

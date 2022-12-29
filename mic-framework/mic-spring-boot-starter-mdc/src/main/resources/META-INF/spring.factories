@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.mic.cloud.mdc.config.MdcAutoConfiguration,\
-  cn.mic.cloud.mdc.filter.MdcLogFilter
+  cn.mic.cloud.mdc.config.MdcAutoConfiguration

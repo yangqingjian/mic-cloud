@@ -2,14 +2,15 @@ package cn.mic.cloud.security.filter;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.mic.cloud.freamework.common.core.login.LoginAuthInterface;
 import cn.mic.cloud.freamework.common.core.login.LoginUser;
 import cn.mic.cloud.freamework.common.exception.AuthenticationException;
 import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
 import cn.mic.cloud.security.config.SecurityCommonConfig;
-import cn.mic.cloud.security.feign.DefaultLoginUserFeign;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,7 +35,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final SecurityCommonConfig securityCommonConfig;
 
-    private final DefaultLoginUserFeign defaultLoginUserFeign;
+    private final LoginAuthInterface loginAuthInterface;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -54,7 +55,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        LoginUser loginUser = defaultLoginUserFeign.redisGetToken(authorization);
+        LoginUser loginUser = loginAuthInterface.redisGetToken(authorization);
         if (ObjectUtil.isNull(loginUser)) {
             log.error("token=【%s】查询缓存失败", authorization);
             throw new AuthenticationException("token【%s】过期", authorization);

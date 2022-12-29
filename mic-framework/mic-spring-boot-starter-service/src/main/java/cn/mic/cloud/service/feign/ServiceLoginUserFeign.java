@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
  * @author : YangQingJian
  * @date : 2022/12/28
  */
-@FeignClient(value = "${security.value:mic-biz-test-service}", path = "${security.path:/loginUser}", contextId = "security.contextId:defaultServiceLoginUserFeign")
-public interface DefaultServiceLoginUserFeign extends LoginAuthInterface {
+@FeignClient(value = "${security.value:mic-biz-test-service}", path = "${security.path:/loginUser}")
+public interface ServiceLoginUserFeign extends LoginAuthInterface {
 
 }

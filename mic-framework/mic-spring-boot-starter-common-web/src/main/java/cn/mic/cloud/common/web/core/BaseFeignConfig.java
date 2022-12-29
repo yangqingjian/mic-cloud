@@ -1,4 +1,4 @@
-package cn.mic.cloud.web.core;
+package cn.mic.cloud.common.web.core;
 
 import feign.Contract;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

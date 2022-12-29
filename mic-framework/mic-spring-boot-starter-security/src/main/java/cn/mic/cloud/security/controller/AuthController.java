@@ -2,6 +2,7 @@ package cn.mic.cloud.security.controller;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.mic.cloud.freamework.common.core.login.LoginAuthInterface;
 import cn.mic.cloud.freamework.common.core.login.LoginRequest;
 import cn.mic.cloud.freamework.common.core.login.LoginUser;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
@@ -10,7 +11,6 @@ import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
 import cn.mic.cloud.freamework.common.vos.Result;
 import cn.mic.cloud.freamework.common.vos.login.LoginSmsCodeSendRequest;
 import cn.mic.cloud.security.core.LoginTypeInterface;
-import cn.mic.cloud.security.feign.DefaultLoginUserFeign;
 import cn.mic.cloud.security.vo.TokenResult;
 import com.alibaba.fastjson2.JSON;
 import io.swagger.annotations.ApiOperation;
@@ -42,9 +42,11 @@ public class AuthController {
 
     @Resource
     private ObjectProvider<LoginTypeInterface> loginInterfaces;
-
+    /**
+     * 此实现交给web去实现
+     */
     @Resource
-    private DefaultLoginUserFeign defaultLoginUserFeign;
+    private LoginAuthInterface loginAuthInterface;
 
     /**
      * 登录
@@ -62,7 +64,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String fastUUID = IdUtil.fastUUID();
-        Date expireDate = defaultLoginUserFeign.redisStoreToken(fastUUID, loginUser);
+        Date expireDate = loginAuthInterface.redisStoreToken(fastUUID, loginUser);
         TokenResult tokenResult = new TokenResult();
         tokenResult.setToken(fastUUID);
         tokenResult.setExpireDate(expireDate);
@@ -90,7 +92,7 @@ public class AuthController {
         if (StrUtil.isBlank(authorization)) {
             throw new InvalidParameterException("token为空");
         }
-        defaultLoginUserFeign.redisRemoveToken(authorization);
+        loginAuthInterface.redisRemoveToken(authorization);
         SecurityContextHolder.clearContext();
         return Result.ok("退出成功");
     }
@@ -104,7 +106,7 @@ public class AuthController {
     @ApiOperation("获取手机验证码")
     @PostMapping("/getSmsCode")
     public Result<String> getSmsCode(@Validated @RequestBody LoginSmsCodeSendRequest request) {
-        String result = defaultLoginUserFeign.sendSmsCode(request);
+        String result = loginAuthInterface.sendSmsCode(request);
         log.info("getSmsCode , request = {} , result = {}", JSON.toJSONString(request), result);
         return Result.ok();
     }

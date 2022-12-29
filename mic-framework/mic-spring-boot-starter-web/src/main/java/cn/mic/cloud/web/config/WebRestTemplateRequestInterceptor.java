@@ -1,4 +1,4 @@
-package cn.mic.cloud.security.config;
+package cn.mic.cloud.web.config;
 
 import cn.mic.cloud.freamework.common.constants.SecurityConstants;
 import feign.RequestInterceptor;
@@ -25,8 +25,10 @@ public class WebRestTemplateRequestInterceptor {
     RequestInterceptor getWebAuthorizationRequestInterceptor() {
         return requestTemplate -> {
             ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            //将token传入到header
-            requestTemplate.header(SecurityConstants.HEADER_TOKEN_PARAM, servletRequestAttributes.getRequest().getHeader(SecurityConstants.HEADER_TOKEN_PARAM));
+            if (null != servletRequestAttributes && null != servletRequestAttributes.getRequest()){
+                //将token传入到header
+                requestTemplate.header(SecurityConstants.HEADER_TOKEN_PARAM, servletRequestAttributes.getRequest().getHeader(SecurityConstants.HEADER_TOKEN_PARAM));
+            }
         };
     }
 }

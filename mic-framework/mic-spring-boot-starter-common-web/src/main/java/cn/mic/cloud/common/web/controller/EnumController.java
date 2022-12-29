@@ -1,4 +1,4 @@
-package cn.mic.cloud.web.controller;
+package cn.mic.cloud.common.web.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.mic.cloud.freamework.common.constants.CommonEnum;
