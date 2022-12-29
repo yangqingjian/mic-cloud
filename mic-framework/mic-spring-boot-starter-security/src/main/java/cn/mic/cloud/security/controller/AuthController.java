@@ -2,7 +2,6 @@ package cn.mic.cloud.security.controller;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.mic.cloud.freamework.common.constants.SecurityConstants;
 import cn.mic.cloud.freamework.common.core.login.LoginAuthInterface;
 import cn.mic.cloud.freamework.common.core.login.LoginRequest;
 import cn.mic.cloud.freamework.common.core.login.LoginUser;
@@ -17,7 +16,6 @@ import cn.mic.cloud.security.vo.TokenResult;
 import com.alibaba.fastjson2.JSON;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,8 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.Optional;
-
-import static cn.mic.cloud.freamework.common.constants.SecurityConstants.TOKEN_BAD_EXCEPTION_ATTR;
 
 /**
  * @author : YangQingJian

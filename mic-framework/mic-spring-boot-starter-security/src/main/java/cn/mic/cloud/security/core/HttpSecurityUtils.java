@@ -33,7 +33,16 @@ public class HttpSecurityUtils {
 
     private final RestTemplate restTemplate;
 
-    public <T> T getRemoteObject(String remoteUrl, Method method, Object body, Class<T> clazz) {
+    /**
+     * 使用接口的方式来调用
+     * @param remoteUrl
+     * @param method
+     * @param body
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public <T> T executeRemote(String remoteUrl, Method method, Object body, Class<T> clazz) {
         boolean lbFlag = isLoadBalancedUrl(remoteUrl);
         if (lbFlag) {
             return executeLb(remoteUrl, method, body, clazz);

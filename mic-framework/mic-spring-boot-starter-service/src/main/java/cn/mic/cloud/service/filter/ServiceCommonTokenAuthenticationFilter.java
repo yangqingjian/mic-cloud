@@ -84,15 +84,15 @@ public class ServiceCommonTokenAuthenticationFilter extends OncePerRequestFilter
         /**
          * 获取token中的信息,已经在里面处理了异常
          */
-        LoginUser loginUser = null;
+        LoginUser redisLoginUser = null;
         try {
             LoginUser tokenLoginUser = SecurityCoreUtils.parseToken(authorization, publicKey, response);
-            loginUser = loginAuthInterface.redisGetToken(authorization);
-            if (ObjectUtil.isNull(loginUser)) {
+            redisLoginUser = loginAuthInterface.redisGetToken(authorization);
+            if (ObjectUtil.isNull(redisLoginUser)) {
                 log.error("token=【%s】查询缓存失败", authorization);
                 throw new TokenExpireException("token在redis中已失效");
             }
-            if (ObjectUtil.notEqual(tokenLoginUser, loginUser)) {
+            if (ObjectUtil.notEqual(tokenLoginUser, redisLoginUser)) {
                 log.error("token=【%s】查询缓存失败", authorization);
                 throw new InvalidParameterException("redis中的对象和token解析对象不一致");
             }
@@ -104,8 +104,8 @@ public class ServiceCommonTokenAuthenticationFilter extends OncePerRequestFilter
             return;
         }
         // 构建AuthenticationToken
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
-        authentication.setDetails(loginUser);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(redisLoginUser, null, redisLoginUser.getAuthorities());
+        authentication.setDetails(redisLoginUser);
         // 把AuthenticationToken放到当前线程,表示认证完成
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
