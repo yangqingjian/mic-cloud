@@ -6,22 +6,19 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.Method;
-import cn.mic.cloud.freamework.common.core.login.LoginUser;
 import cn.mic.cloud.freamework.common.exception.SystemException;
 import cn.mic.cloud.freamework.common.vos.Result;
 import cn.mic.cloud.security.config.SecurityCommonConfig;
-import cn.mic.cloud.security.constants.SecurityConstants;
 import com.alibaba.fastjson2.JSON;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import static cn.mic.cloud.freamework.common.constants.SecurityConstants.LB_PRE_STR;
 
-import static cn.mic.cloud.security.constants.SecurityConstants.LB_PRE_STR;
 
 /**
  * @author : YangQingJian
@@ -29,13 +26,12 @@ import static cn.mic.cloud.security.constants.SecurityConstants.LB_PRE_STR;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class HttpSecurityUtils {
 
-    @Resource
-    private SecurityCommonConfig securityCommonConfig;
+    private final SecurityCommonConfig securityCommonConfig;
 
-    @Resource
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public <T> T getRemoteObject(String remoteUrl, Method method, Object body, Class<T> clazz) {
         boolean lbFlag = isLoadBalancedUrl(remoteUrl);
@@ -108,18 +104,6 @@ public class HttpSecurityUtils {
             return true;
         }
         return false;
-    }
-
-
-    /**
-     * 从 request 的 header 中获取 Authorization
-     *
-     * @param request 请求
-     * @return JWT
-     */
-    public static String getAuthorization(HttpServletRequest request) {
-        String bearerToken = request.getHeader(SecurityConstants.TOKEN_PARAM);
-        return StrUtil.isBlank(bearerToken) ? request.getParameter(SecurityConstants.TOKEN_PARAM) : bearerToken;
     }
 
 

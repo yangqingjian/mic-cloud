@@ -23,7 +23,7 @@
     </appender>
 
     <springProfile name="local,dev">
-        <root level="info">
+        <root level="debug">
             <appender-ref ref="ConsoleAppender"/>
         </root>
         <logger name="cn.mic" level="debug" additivity="false">

@@ -3,6 +3,8 @@ package cn.mic.cloud.security.config;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,9 +16,11 @@ import java.util.List;
  */
 @Configuration
 @Data
+@RefreshScope
 @NoArgsConstructor
 @ConfigurationProperties(prefix = "security")
 @ComponentScan("cn.mic.cloud.security")
+@EnableFeignClients(basePackages = "cn.mic.cloud.security.feign")
 public class SecurityCommonConfig {
 
     /**
@@ -25,19 +29,9 @@ public class SecurityCommonConfig {
     private List<String> ignoreUrls;
 
     /**
-     * 根据登录名获取用户信息
+     * 忽略token转换
      */
-    private String getLoginUserForUsernameUrl = "lb://mic-biz-test-service/demo/getLoginUser";
-
-    /**
-     * 根据手机号获取用户信息
-     */
-    private String getLoginUserForSmsUrl = "lb://mic-biz-test-service/demo/getLoginUser";
-
-    /**
-     * 发送手机验证码
-     */
-    private String sendSmsCodeUrl = "lb://mic-biz-test-service/demo/sendSmsCode";;
+    private List<String> ignoreTokenAuthentication;
 
     /**
      * 根据微信号获取用户信息
@@ -47,7 +41,7 @@ public class SecurityCommonConfig {
     /**
      * 超时时间为3秒
      */
-    private Integer readTimeOut = 300000;
+    private Integer readTimeOut = 3000;
 
     /**
      * 连接时间为1秒

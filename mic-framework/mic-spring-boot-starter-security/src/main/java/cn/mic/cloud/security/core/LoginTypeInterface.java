@@ -7,10 +7,11 @@ import cn.mic.cloud.freamework.common.core.login.LoginRequest;
  * @author : YangQingJian
  * @date : 2022/12/27
  */
-public interface LoginInterface {
+public interface LoginTypeInterface {
 
     /**
      * 判断是否当前支持处理
+     *
      * @param loginRequest
      * @return
      */
@@ -18,6 +19,7 @@ public interface LoginInterface {
 
     /**
      * 认证
+     *
      * @param loginRequest
      * @return
      */

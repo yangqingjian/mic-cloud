@@ -2,6 +2,7 @@ package cn.mic.cloud.freamework.common.core.login;
 
 import cn.mic.cloud.freamework.common.constants.LoginTypeEnum;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * @date : 2022/12/23
  */
 @Data
+@NoArgsConstructor
 public class LoginRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -24,8 +24,8 @@ public class DefaultMetaObjectHandler implements MetaObjectHandler {
         this.setFieldValByName(BaseEntity.CREATED_TIME, new Date(), metaObject);
         this.setFieldValByName(BaseEntity.IS_DELETED, 0, metaObject);
         this.setFieldValByName(BaseEntity.LAST_UPDATED_TIME, new Date(), metaObject);
-        if (LoginInfoUtils.getUserId() != null && this.getFieldValByName(BaseEntity.CREATED_BY, metaObject) == null) {
-            this.setFieldValByName(BaseEntity.CREATED_BY, String.valueOf(LoginInfoUtils.getUserId()), metaObject);
+        if (LoginInfoUtils.getLoginName() != null && this.getFieldValByName(BaseEntity.CREATED_BY, metaObject) == null) {
+            this.setFieldValByName(BaseEntity.CREATED_BY, String.valueOf(LoginInfoUtils.getLoginName()), metaObject);
         }
     }
 
@@ -35,8 +35,8 @@ public class DefaultMetaObjectHandler implements MetaObjectHandler {
             log.debug("start updating fill for time columns...");
         }
         this.setFieldValByName(BaseEntity.LAST_UPDATED_TIME, new Date(), metaObject);
-        if (LoginInfoUtils.getUserId() != null && this.getFieldValByName(BaseEntity.MODIFIED_BY, metaObject) == null) {
-            this.setFieldValByName(BaseEntity.MODIFIED_BY, String.valueOf(LoginInfoUtils.getUserId()), metaObject);
+        if (LoginInfoUtils.getLoginName() != null && this.getFieldValByName(BaseEntity.MODIFIED_BY, metaObject) == null) {
+            this.setFieldValByName(BaseEntity.MODIFIED_BY, String.valueOf(LoginInfoUtils.getLoginName()), metaObject);
         }
     }
 }

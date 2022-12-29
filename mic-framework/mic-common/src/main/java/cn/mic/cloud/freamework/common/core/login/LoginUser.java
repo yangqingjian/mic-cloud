@@ -2,11 +2,9 @@ package cn.mic.cloud.freamework.common.core.login;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : YangQingJian
@@ -18,7 +16,7 @@ public class LoginUser implements org.springframework.security.core.userdetails.
     /**
      * 角色集合
      */
-    private Collection<SimpleGrantedAuthority> authorities;
+    private List<SimpleAuthority> authorities;
 
     /**
      * 用户名

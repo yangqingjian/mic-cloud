@@ -29,7 +29,7 @@ public abstract class AbstractBaseEntityController<T extends BaseEntity> {
     @ApiOperation("根据ID删除")
     @DeleteMapping("/deleteById/{id}")
     public Result<String> deleteById(@PathVariable("id") Serializable id) {
-        String workNumber = LoginInfoUtils.getUserId();
+        String workNumber = LoginInfoUtils.getLoginName();
         baseEntityFeign.deleteById(id, workNumber);
         return Result.ok();
     }
@@ -43,7 +43,7 @@ public abstract class AbstractBaseEntityController<T extends BaseEntity> {
     @ApiOperation("保存")
     @PostMapping("/saveOrUpdate")
     public Result<T> saveOrUpdate(@RequestBody T entity) {
-        String workNumber = LoginInfoUtils.getUserId();
+        String workNumber = LoginInfoUtils.getLoginName();
         entity.fillOperationInfo(workNumber);
         return  Result.ok(baseEntityFeign.saveOrUpdate(entity));
     }

@@ -1,15 +1,15 @@
-package cn.mic.cloud.security.filter;
+package cn.mic.cloud.service.filter;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.mic.cloud.freamework.common.core.login.LoginUser;
 import cn.mic.cloud.freamework.common.exception.AuthenticationException;
 import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
-import cn.mic.cloud.security.config.SecurityCommonConfig;
-import cn.mic.cloud.security.feign.DefaultLoginUserFeign;
-import com.google.common.collect.Lists;
+import cn.mic.cloud.service.feign.DefaultServiceLoginUserFeign;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,40 +21,54 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author : YangQingJian
  * @date : 2022/12/23
  */
 @Component
-@Slf4j
 @RequiredArgsConstructor
-public class TokenAuthenticationFilter extends OncePerRequestFilter {
+@Order(value = Integer.MIN_VALUE + 1)
+@Slf4j
+public class ServiceCommonTokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private final SecurityCommonConfig securityCommonConfig;
+    @Value("${loginUserPath:/loginUser}")
+    private String loginUserPath;
 
-    private final DefaultLoginUserFeign defaultLoginUserFeign;
+    private final DefaultServiceLoginUserFeign defaultServiceLoginUserFeign;
 
+    /**
+     * Same contract as for {@code doFilter}, but guaranteed to be
+     * just invoked once per request within a single request thread.
+     * See {@link #shouldNotFilterAsyncDispatch()} for details.
+     * <p>Provides HttpServletRequest and HttpServletResponse arguments instead of the
+     * default ServletRequest and ServletResponse ones.
+     *
+     * @param request
+     * @param response
+     * @param filterChain
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        /**
+         * 如果是登录的uri则直接放行
+         */
+        String requestURI = request.getRequestURI();
+        if (StrUtil.startWith(requestURI,loginUserPath)){
+            filterChain.doFilter(request, response);
+            return;
+        }
         Authentication currentAuthentication = SecurityContextHolder.getContext().getAuthentication();
-        if (ObjectUtil.isNotNull(currentAuthentication)) {
+        if (ObjectUtil.isNotNull(currentAuthentication)){
             filterChain.doFilter(request, response);
             return;
         }
-        if (SecurityCoreUtils.matches(request.getRequestURI(), getAllIgnoreUrl())) {
-            log.info("requestUri = {} , 不需要转换token", request.getRequestURI());
-            filterChain.doFilter(request, response);
-            return;
-        }
-        // 获取AuthorizationToken
         String authorization = SecurityCoreUtils.getAuthorization(request);
         if (StrUtil.isBlank(authorization)) {
             filterChain.doFilter(request, response);
             return;
         }
-        LoginUser loginUser = defaultLoginUserFeign.redisGetToken(authorization);
+        LoginUser loginUser = defaultServiceLoginUserFeign.redisGetToken(authorization);
         if (ObjectUtil.isNull(loginUser)) {
             log.error("token=【%s】查询缓存失败", authorization);
             throw new AuthenticationException("token【%s】过期", authorization);
@@ -66,23 +80,4 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
-
-    private List<String> getAllIgnoreUrl() {
-        List<String> ignoreTokenAuthentication = securityCommonConfig.getIgnoreTokenAuthentication();
-        List<String> ignoreUrls = securityCommonConfig.getIgnoreUrls();
-        List<String> defaultIgnores = SecurityCoreUtils.getDefaultIgnoresAuthUrl();
-        List<String> resultList = Lists.newArrayList();
-        if (ObjectUtil.isNotEmpty(ignoreTokenAuthentication)) {
-            resultList.addAll(ignoreTokenAuthentication);
-        }
-        if (ObjectUtil.isNotEmpty(ignoreUrls)) {
-            resultList.addAll(ignoreUrls);
-        }
-        if (ObjectUtil.isNotEmpty(defaultIgnores)) {
-            resultList.addAll(defaultIgnores);
-        }
-        return resultList;
-    }
-
-
 }

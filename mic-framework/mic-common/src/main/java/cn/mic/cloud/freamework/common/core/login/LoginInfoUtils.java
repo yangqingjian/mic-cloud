@@ -1,5 +1,9 @@
 package cn.mic.cloud.freamework.common.core.login;
 
+import cn.hutool.core.util.ObjectUtil;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 /**
  * 用户登录 本地线程信息
  * 需要 在业务系统内 继承 配置类 LoginUserConfig
@@ -10,16 +14,31 @@ package cn.mic.cloud.freamework.common.core.login;
  */
 public class LoginInfoUtils {
 
-
-    public static String getUserId() {
-        return null;
+    /**
+     * 获取登录名称
+     *
+     * @return
+     */
+    public static String getLoginName() {
+        LoginUser loginUser = getLoginUser();
+        if (ObjectUtil.isNull(loginUser)) {
+            return null;
+        }
+        return loginUser.getUsername();
     }
 
-    public static String getDepPosId() {
-        return null;
+    /**
+     * 获取当前用户
+     *
+     * @return
+     */
+    public static LoginUser getLoginUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (ObjectUtil.isNull(authentication)) {
+            return null;
+        }
+        return (LoginUser) authentication;
     }
-
-
 
 
 }

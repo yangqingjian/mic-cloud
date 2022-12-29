@@ -74,6 +74,12 @@ public class CommonExceptionHandler {
     public ResponseEntity<Result> handleHttpClientErrorException(HttpClientErrorException e) {
         String message = e.getResponseBodyAsString();
         Result result = JSON.parseObject(message,Result.class);
+        /**
+         * 为空
+         */
+        if (null == result || 0 == result.getCode()) {
+            return new ResponseEntity<>(constructExceptionByCode(e, ResultStatusEnum.FEIGN_EXCEPTION), e.getStatusCode());
+        }
         return new ResponseEntity<>(result, e.getStatusCode());
     }
     @ExceptionHandler(TooManyResultsException.class)
@@ -123,7 +129,7 @@ public class CommonExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Result> handleAuthenticationException(AuthenticationException e) {
         Result result = constructExceptionByCode(e, ResultStatusEnum.AUTHENTICATION_EXCEPTION);
-        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(BusinessException.class)

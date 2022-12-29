@@ -11,6 +11,8 @@ spring:
     pathmatch:
       # 配置策略
       matching-strategy: ant-path-matcher
+#  main:
+#    allow-bean-definition-overriding: false
 
 #mybatis配置
 mybatis-plus:
@@ -50,7 +52,7 @@ knife4j:
   # 开启增强配置
   enable: true
   basic:
-    enable: true
+    enable: false
     # Basic认证用户名
     username: test
     # Basic认证密码
@@ -75,5 +77,7 @@ mic-swagger:
   contactEmail: yqj@qq.com
   contactUrl: gateway.shj.cn
 
-
+#service还是不建议直接加权限
+security:
+  ignoreUrls: /loginUser/**
 

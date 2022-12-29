@@ -22,6 +22,12 @@
             <artifactId>mic-biz-test-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- 增加权限验证 -->
+        <!--<dependency>
+            <groupId>cn.mic.cloud</groupId>
+            <artifactId>mic-spring-boot-starter-security</artifactId>
+            <version>${project.version}</version>
+        </dependency>-->
     </dependencies>
 
 </project>

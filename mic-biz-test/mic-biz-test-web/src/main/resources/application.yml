@@ -10,6 +10,8 @@ spring:
     pathmatch:
       # 配置策略
       matching-strategy: ant-path-matcher
+  main:
+    allow-circular-references: true
 
 #knife4j-swagger配置
 knife4j:

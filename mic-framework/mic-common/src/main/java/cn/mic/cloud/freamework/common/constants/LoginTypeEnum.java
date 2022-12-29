@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 public enum LoginTypeEnum implements CommonEnum {
 
-    USERNAME_PASSWORD("username_password", "用户名密码"),
+    USERNAME_PASSWORD("usernamePassword", "用户名密码"),
     SMS_CODE("smsCode", "手机验证码"),
     WE_CHAT_CODE("weChatCode", "微信验证码");
 

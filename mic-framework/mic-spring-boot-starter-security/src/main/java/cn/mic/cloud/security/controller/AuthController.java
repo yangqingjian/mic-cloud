@@ -1,21 +1,16 @@
 package cn.mic.cloud.security.controller;
 
-import cn.hutool.core.date.DateField;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.Method;
-import cn.mic.cloud.framework.redis.comp.RedisKit;
+import cn.mic.cloud.freamework.common.core.login.LoginRequest;
 import cn.mic.cloud.freamework.common.core.login.LoginUser;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
 import cn.mic.cloud.freamework.common.exception.SystemException;
+import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
 import cn.mic.cloud.freamework.common.vos.Result;
 import cn.mic.cloud.freamework.common.vos.login.LoginSmsCodeSendRequest;
-import cn.mic.cloud.security.config.SecurityCommonConfig;
-import cn.mic.cloud.security.core.HttpSecurityUtils;
-import cn.mic.cloud.security.core.LoginInterface;
-import cn.mic.cloud.freamework.common.core.login.LoginRequest;
+import cn.mic.cloud.security.core.LoginTypeInterface;
+import cn.mic.cloud.security.feign.DefaultLoginUserFeign;
 import cn.mic.cloud.security.vo.TokenResult;
 import com.alibaba.fastjson2.JSON;
 import io.swagger.annotations.ApiOperation;
@@ -25,16 +20,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-
-import static cn.mic.cloud.security.constants.SecurityConstants.*;
 
 /**
  * @author : YangQingJian
@@ -46,16 +41,10 @@ import static cn.mic.cloud.security.constants.SecurityConstants.*;
 public class AuthController {
 
     @Resource
-    private  RedisKit redisKit;
+    private ObjectProvider<LoginTypeInterface> loginInterfaces;
 
     @Resource
-    private  ObjectProvider<LoginInterface> loginInterfaces;
-
-    @Resource
-    private  HttpSecurityUtils httpSecurityUtils;
-
-    @Resource
-    private SecurityCommonConfig securityCommonConfig;
+    private DefaultLoginUserFeign defaultLoginUserFeign;
 
     /**
      * 登录
@@ -63,7 +52,7 @@ public class AuthController {
     @ApiOperation("登录")
     @PostMapping("/login")
     public Result<TokenResult> login(@Valid @RequestBody LoginRequest loginRequest) {
-        Optional<LoginInterface> loginInterfaceOptional = loginInterfaces.stream().filter(temp -> temp.support(loginRequest)).findFirst();
+        Optional<LoginTypeInterface> loginInterfaceOptional = loginInterfaces.stream().filter(temp -> temp.support(loginRequest)).findFirst();
         if (!loginInterfaceOptional.isPresent()) {
             throw new SystemException("登录类型【%s】未实现", loginRequest.getLoginType().getDesc());
         }
@@ -73,9 +62,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String fastUUID = IdUtil.fastUUID();
-        DateTime expireDate = DateUtil.offset(new Date(), DateField.HOUR, CACHE_TOKEN_HOURS);
-        // 把用户信息存到redis,并设置有效期
-        redisKit.set(fastUUID, JSON.toJSONString(authentication.getPrincipal()), CACHE_TOKEN_HOURS, TimeUnit.HOURS);
+        Date expireDate = defaultLoginUserFeign.redisStoreToken(fastUUID, loginUser);
         TokenResult tokenResult = new TokenResult();
         tokenResult.setToken(fastUUID);
         tokenResult.setExpireDate(expireDate);
@@ -99,12 +86,12 @@ public class AuthController {
     @PostMapping("/logout")
     public Result<String> logout(HttpServletRequest request) {
         // 清除认证信息
-        String authorization = httpSecurityUtils.getAuthorization(request);
+        String authorization = SecurityCoreUtils.getAuthorization(request);
         if (StrUtil.isBlank(authorization)) {
             throw new InvalidParameterException("token为空");
         }
+        defaultLoginUserFeign.redisRemoveToken(authorization);
         SecurityContextHolder.clearContext();
-        redisKit.remove(authorization);
         return Result.ok("退出成功");
     }
 
@@ -117,8 +104,8 @@ public class AuthController {
     @ApiOperation("获取手机验证码")
     @PostMapping("/getSmsCode")
     public Result<String> getSmsCode(@Validated @RequestBody LoginSmsCodeSendRequest request) {
-        String result = httpSecurityUtils.getRemoteObject(securityCommonConfig.getSendSmsCodeUrl(), Method.POST, request, String.class);
-        log.info("getSmsCode , request = {} , result = {}" , JSON.toJSONString(request) , result);
+        String result = defaultLoginUserFeign.sendSmsCode(request);
+        log.info("getSmsCode , request = {} , result = {}", JSON.toJSONString(request), result);
         return Result.ok();
     }
 

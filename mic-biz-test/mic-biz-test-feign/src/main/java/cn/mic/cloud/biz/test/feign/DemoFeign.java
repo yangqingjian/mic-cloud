@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
  * @author : YangQingJian
  * @date : 2022/12/22
  */
-@FeignClient(name = "mic-biz-test-service", path = "/demo")
+@FeignClient(value = "mic-biz-test-service", path = "/demo" , contextId = "demoFeign")
 public interface DemoFeign extends DemoApi, BaseEntityFeign<Demo> {
 
 }

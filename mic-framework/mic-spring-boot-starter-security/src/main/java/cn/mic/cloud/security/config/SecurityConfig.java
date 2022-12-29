@@ -2,13 +2,12 @@ package cn.mic.cloud.security.config;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
 import cn.mic.cloud.security.filter.TokenAuthenticationFilter;
-import com.google.common.collect.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -23,7 +22,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Resource;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -33,16 +31,14 @@ import java.util.List;
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private TokenAuthenticationFilter tokenAuthenticationFilter;
+    private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
-    @Autowired
-    private SecurityCommonConfig securityCommonConfig;
+    private final SecurityCommonConfig securityCommonConfig;
 
     @Bean
     public BCryptPasswordEncoder encoder() {
@@ -65,11 +61,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         /**
          * 组装默认的免登陆
          */
-        assembleIgnoreUrls(getDefaultIgnores(), http);
+        assembleIgnoreUrls(SecurityCoreUtils.getDefaultIgnoresAuthUrl(), http);
         /**
          * 组装自定义的免登陆
          */
         assembleIgnoreUrls(securityCommonConfig.getIgnoreUrls(), http);
+        /**
+         * 组装不需要转换token的地址
+         */
+        assembleIgnoreUrls(securityCommonConfig.getIgnoreTokenAuthentication(), http);
 
         // @formatter:off
         http.cors()
@@ -89,19 +89,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 // 因为使用了JWT，所以这里不管理Session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                // 异常处理
+        // 异常处理
 
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    /**
-     * 登录以及swagger放开
-     *
-     * @return
-     */
-    private List<String> getDefaultIgnores() {
-        return Lists.newArrayList("/api/auth/**", "/v2/**", "/doc.html", "/swagger-resources/**", "/webjars/**");
-    }
 
     private void assembleIgnoreUrls(List<String> ignores, HttpSecurity http) throws Exception {
         if (ObjectUtil.isEmpty(ignores)) {
@@ -134,4 +126,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         });
         return restTemplate;
     }
+
+
 }
