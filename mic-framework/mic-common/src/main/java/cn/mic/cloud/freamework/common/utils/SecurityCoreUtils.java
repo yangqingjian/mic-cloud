@@ -4,24 +4,21 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import cn.hutool.crypto.digest.MD5;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTHeader;
 import cn.hutool.jwt.RegisteredPayload;
 import cn.mic.cloud.freamework.common.constants.SecurityConstants;
-import cn.mic.cloud.freamework.common.core.login.LoginUser;
+import cn.mic.cloud.freamework.common.core.login.LoginAuthUser;
 import cn.mic.cloud.freamework.common.core.login.SimpleAuthority;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
 import cn.mic.cloud.freamework.common.exception.TokenExpireException;
 import cn.mic.cloud.freamework.common.vos.Result;
-import cn.mic.cloud.freamework.common.vos.ResultStatusEnum;
 import com.alibaba.fastjson2.JSON;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +27,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
-import static cn.mic.cloud.freamework.common.constants.SecurityConstants.APPLICATION_JSON_UTF8;
 import static cn.mic.cloud.freamework.common.constants.SecurityConstants.*;
 
 /**
@@ -114,7 +110,7 @@ public class SecurityCoreUtils {
      * @param expireDate
      * @return
      */
-    public static String createToken(LoginUser loginUser, String publicKey, Date expireDate) {
+    public static String createToken(LoginAuthUser loginUser, String publicKey, Date expireDate) {
         String token = JWT.create()
                 .setPayload(JWT_USER_NAME, loginUser.getUsername())
                 .setPayload(JWT_LOGIN_PASSWORD, loginUser.getPassword())
@@ -144,7 +140,7 @@ public class SecurityCoreUtils {
      * @param token
      * @return
      */
-    public static LoginUser parseToken(String token, String publicKey, HttpServletResponse response) {
+    public static LoginAuthUser parseToken(String token, String publicKey, HttpServletResponse response) {
         token = token.replace(TOKEN_PRE, "");
         /**
          * base64解码
@@ -176,11 +172,11 @@ public class SecurityCoreUtils {
         Object departPositionId = jwt.getPayload(JWT_DEPART_POSITION_ID);
         Object authorities = jwt.getPayload(JWT_AUTHORITIES);
         Assert.notNull(username, "jwt中的用户名为空");
-        Assert.notNull(password, "jwt中的密钥为空");
+        //Assert.notNull(password, "jwt中的密钥为空");
         /**
          * 设置loginUser
          */
-        LoginUser loginUser = new LoginUser();
+        LoginAuthUser loginUser = new LoginAuthUser();
         loginUser.setUsername((String) username);
         loginUser.setPassword((String) password);
         loginUser.setDepartPositionId((String) departPositionId);

@@ -1,7 +1,7 @@
 package cn.mic.cloud.security.core;
 
-import cn.mic.cloud.freamework.common.core.login.LoginUser;
-import cn.mic.cloud.freamework.common.core.login.LoginRequest;
+import cn.mic.cloud.freamework.common.core.login.LoginAuthUser;
+import cn.mic.cloud.freamework.common.core.login.request.LoginAuthRequest;
 
 /**
  * @author : YangQingJian
@@ -12,17 +12,17 @@ public interface LoginTypeInterface {
     /**
      * 判断是否当前支持处理
      *
-     * @param loginRequest
+     * @param loginAuthRequest
      * @return
      */
-    boolean support(LoginRequest loginRequest);
+    boolean support(LoginAuthRequest loginAuthRequest);
 
     /**
      * 认证
      *
-     * @param loginRequest
+     * @param loginAuthRequest
      * @return
      */
-    LoginUser auth(LoginRequest loginRequest);
+    LoginAuthUser auth(LoginAuthRequest loginAuthRequest);
 
 }

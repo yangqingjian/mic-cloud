@@ -3,13 +3,17 @@ package cn.mic.cloud.security.controller;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.mic.cloud.freamework.common.core.login.LoginAuthInterface;
-import cn.mic.cloud.freamework.common.core.login.LoginRequest;
-import cn.mic.cloud.freamework.common.core.login.LoginUser;
+import cn.mic.cloud.freamework.common.core.login.request.LoginAuthRequest;
+import cn.mic.cloud.freamework.common.core.login.LoginAuthUser;
+import cn.mic.cloud.freamework.common.core.login.request.LoginTokenRedisRemoveRequest;
+import cn.mic.cloud.freamework.common.core.login.request.LoginTokenRedisStoreRequest;
+import cn.mic.cloud.freamework.common.core.login.response.LoginAuthSmsCodeSendResponse;
+import cn.mic.cloud.freamework.common.core.login.response.LoginTokenRedisStoreResponse;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
 import cn.mic.cloud.freamework.common.exception.SystemException;
 import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
 import cn.mic.cloud.freamework.common.vos.Result;
-import cn.mic.cloud.freamework.common.vos.login.LoginSmsCodeSendRequest;
+import cn.mic.cloud.freamework.common.core.login.request.LoginSmsCodeSendRequest;
 import cn.mic.cloud.security.config.SecurityCommonConfig;
 import cn.mic.cloud.security.core.LoginTypeInterface;
 import cn.mic.cloud.security.vo.TokenResult;
@@ -57,12 +61,12 @@ public class AuthController {
      */
     @ApiOperation("登录")
     @PostMapping("/login")
-    public Result<TokenResult> login(@Valid @RequestBody LoginRequest loginRequest) {
-        Optional<LoginTypeInterface> loginInterfaceOptional = loginInterfaces.stream().filter(temp -> temp.support(loginRequest)).findFirst();
+    public Result<TokenResult> login(@Valid @RequestBody LoginAuthRequest loginAuthRequest) {
+        Optional<LoginTypeInterface> loginInterfaceOptional = loginInterfaces.stream().filter(temp -> temp.support(loginAuthRequest)).findFirst();
         if (!loginInterfaceOptional.isPresent()) {
-            throw new SystemException("登录类型【%s】未实现", loginRequest.getLoginType().getDesc());
+            throw new SystemException("登录类型【%s】未实现", loginAuthRequest.getLoginType().getDesc());
         }
-        LoginUser loginUser = loginInterfaceOptional.get().auth(loginRequest);
+        LoginAuthUser loginUser = loginInterfaceOptional.get().auth(loginAuthRequest);
         Authentication authentication = getAuthentication(loginUser);
         // 把authentication放到当前线程,便是认证完成
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -72,14 +76,14 @@ public class AuthController {
         /**
          * 同是也存入redis(把前缀去掉)
          */
-        loginAuthInterface.redisStoreToken(token, securityCommonConfig.getExpireTimeSeconds(), loginUser);
+        LoginTokenRedisStoreResponse response = loginAuthInterface.redisStoreToken(LoginTokenRedisStoreRequest.builder().key(token).expireSeconds(securityCommonConfig.getExpireTimeSeconds()).loginUser(loginUser).build());
         TokenResult tokenResult = new TokenResult();
         tokenResult.setToken(token);
-        tokenResult.setExpireDate(expireDate);
+        tokenResult.setExpireDate(response.getExpireDate());
         return Result.ok(tokenResult);
     }
 
-    private Authentication getAuthentication(LoginUser loginUser) {
+    private Authentication getAuthentication(LoginAuthUser loginUser) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginUser,
                 null, loginUser.getAuthorities());
         usernamePasswordAuthenticationToken.setDetails(loginUser);
@@ -100,7 +104,7 @@ public class AuthController {
         if (StrUtil.isBlank(authorization)) {
             throw new InvalidParameterException("token为空");
         }
-        loginAuthInterface.redisRemoveToken(authorization);
+        loginAuthInterface.redisRemoveToken(LoginTokenRedisRemoveRequest.builder().key(authorization).build());
         SecurityContextHolder.clearContext();
         return Result.ok("退出成功");
     }
@@ -114,8 +118,8 @@ public class AuthController {
     @ApiOperation("获取手机验证码")
     @PostMapping("/getSmsCode")
     public Result<String> getSmsCode(@Validated @RequestBody LoginSmsCodeSendRequest request) {
-        String result = loginAuthInterface.sendSmsCode(request);
-        log.info("getSmsCode , request = {} , result = {}", JSON.toJSONString(request), result);
+        LoginAuthSmsCodeSendResponse response = loginAuthInterface.sendSmsCode(request);
+        log.info("getSmsCode , request = {} , result = {} ", JSON.toJSONString(request), response);
         return Result.ok();
     }
 

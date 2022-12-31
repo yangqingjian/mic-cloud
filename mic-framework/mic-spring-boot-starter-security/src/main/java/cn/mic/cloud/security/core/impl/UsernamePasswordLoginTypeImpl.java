@@ -3,8 +3,8 @@ package cn.mic.cloud.security.core.impl;
 import cn.hutool.core.util.ObjectUtil;
 import cn.mic.cloud.freamework.common.constants.LoginTypeEnum;
 import cn.mic.cloud.freamework.common.core.login.LoginAuthInterface;
-import cn.mic.cloud.freamework.common.core.login.LoginRequest;
-import cn.mic.cloud.freamework.common.core.login.LoginUser;
+import cn.mic.cloud.freamework.common.core.login.request.LoginAuthRequest;
+import cn.mic.cloud.freamework.common.core.login.LoginAuthUser;
 import cn.mic.cloud.freamework.common.exception.AuthenticationException;
 import cn.mic.cloud.security.core.LoginTypeInterface;
 import lombok.RequiredArgsConstructor;
@@ -25,23 +25,23 @@ public class UsernamePasswordLoginTypeImpl implements LoginTypeInterface {
     /**
      * 判断是否当前支持处理
      *
-     * @param loginRequest
+     * @param loginAuthRequest
      * @return
      */
     @Override
-    public boolean support(LoginRequest loginRequest) {
-        return ObjectUtil.equals(loginRequest.getLoginType()  , LoginTypeEnum.USERNAME_PASSWORD);
+    public boolean support(LoginAuthRequest loginAuthRequest) {
+        return ObjectUtil.equals(loginAuthRequest.getLoginType()  , LoginTypeEnum.USERNAME_PASSWORD);
     }
 
     /**
      * 认证
      *
-     * @param loginRequest
+     * @param loginAuthRequest
      * @return
      */
     @Override
-    public LoginUser auth(LoginRequest loginRequest) {
-        LoginUser loginUser = loginAuthInterface.getLoginUser(loginRequest);
+    public LoginAuthUser auth(LoginAuthRequest loginAuthRequest) {
+        LoginAuthUser loginUser = loginAuthInterface.getLoginUser(loginAuthRequest);
         if (ObjectUtil.isNull(loginUser)){
             throw new AuthenticationException("用户名不存在");
         }

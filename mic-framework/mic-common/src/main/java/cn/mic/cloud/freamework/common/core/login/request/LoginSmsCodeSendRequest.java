@@ -1,6 +1,9 @@
-package cn.mic.cloud.freamework.common.vos.login;
+package cn.mic.cloud.freamework.common.core.login.request;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -10,6 +13,9 @@ import java.io.Serializable;
  * @date : 2022/12/28
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class LoginSmsCodeSendRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;

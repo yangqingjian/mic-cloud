@@ -20,7 +20,7 @@ public class LoginInfoUtils {
      * @return
      */
     public static String getLoginName() {
-        LoginUser loginUser = getLoginUser();
+        LoginAuthUser loginUser = getLoginUser();
         if (ObjectUtil.isNull(loginUser)) {
             return null;
         }
@@ -32,12 +32,12 @@ public class LoginInfoUtils {
      *
      * @return
      */
-    public static LoginUser getLoginUser() {
+    public static LoginAuthUser getLoginUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (ObjectUtil.isNull(authentication)) {
             return null;
         }
-        return (LoginUser) authentication;
+        return (LoginAuthUser) authentication;
     }
 
 

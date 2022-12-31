@@ -1,5 +1,6 @@
 package cn.mic.cloud.freamework.common.core.login;
 
+import cn.mic.cloud.freamework.common.core.login.SimpleAuthority;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode
-public class LoginUser implements org.springframework.security.core.userdetails.UserDetails , Serializable {
+public class LoginAuthUser implements org.springframework.security.core.userdetails.UserDetails , Serializable {
+
     private static final long serialVersionUID = 1L;
 
     /**

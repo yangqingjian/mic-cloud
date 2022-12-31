@@ -3,17 +3,16 @@ package cn.mic.cloud.security.filter;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.mic.cloud.freamework.common.core.login.LoginAuthInterface;
-import cn.mic.cloud.freamework.common.core.login.LoginUser;
+import cn.mic.cloud.freamework.common.core.login.LoginAuthUser;
+import cn.mic.cloud.freamework.common.core.login.request.LoginTokenRedisGetRequest;
+import cn.mic.cloud.freamework.common.exception.AuthenticationException;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
 import cn.mic.cloud.freamework.common.exception.TokenExpireException;
 import cn.mic.cloud.freamework.common.utils.SecurityCoreUtils;
-import cn.mic.cloud.freamework.common.vos.Result;
-import cn.mic.cloud.freamework.common.vos.ResultStatusEnum;
 import cn.mic.cloud.security.config.SecurityCommonConfig;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -55,22 +54,19 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        // 获取AuthorizationToken
-        String authorization = SecurityCoreUtils.getAuthorization(request);
-        if (StrUtil.isBlank(authorization)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
         /**
          * 获取token中的信息,已经在里面处理了异常
          */
-        /**
-         * 获取token中的信息,已经在里面处理了异常
-         */
-        LoginUser redisLoginUser = null;
+        LoginAuthUser redisLoginUser = null;
         try {
-            LoginUser tokenLoginUser = SecurityCoreUtils.parseToken(authorization, securityCommonConfig.getPublicKey(), response);
-            redisLoginUser = loginAuthInterface.redisGetToken(authorization);
+            // 获取AuthorizationToken
+            String authorization = SecurityCoreUtils.getAuthorization(request);
+            if (StrUtil.isBlank(authorization)) {
+                log.error("token为空");
+                throw new AuthenticationException("token为空");
+            }
+            LoginAuthUser tokenLoginUser = SecurityCoreUtils.parseToken(authorization, securityCommonConfig.getPublicKey(), response);
+            redisLoginUser = loginAuthInterface.redisGetToken(LoginTokenRedisGetRequest.builder().key(authorization).build());
             if (ObjectUtil.isNull(redisLoginUser)) {
                 log.error("token=【%s】查询缓存失败", authorization);
                 throw new TokenExpireException("token在redis中已失效");

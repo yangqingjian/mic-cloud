@@ -1,6 +1,8 @@
-package cn.mic.cloud.freamework.common.core.login;
+package cn.mic.cloud.freamework.common.core.login.request;
 
 import cn.mic.cloud.freamework.common.constants.LoginTypeEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +16,9 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
-public class LoginRequest implements Serializable {
+@AllArgsConstructor
+@Builder
+public class LoginAuthRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

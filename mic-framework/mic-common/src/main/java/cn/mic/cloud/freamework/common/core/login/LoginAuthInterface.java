@@ -1,11 +1,12 @@
 package cn.mic.cloud.freamework.common.core.login;
 
-import cn.mic.cloud.freamework.common.vos.login.LoginSmsCodeSendRequest;
+import cn.mic.cloud.freamework.common.core.login.request.*;
+import cn.mic.cloud.freamework.common.core.login.response.LoginAuthSmsCodeSendResponse;
+import cn.mic.cloud.freamework.common.core.login.response.LoginTokenRedisRemoveResponse;
+import cn.mic.cloud.freamework.common.core.login.response.LoginTokenRedisStoreResponse;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Date;
 
 /**
  * 登录抽象的接口
@@ -18,11 +19,11 @@ public interface LoginAuthInterface {
     /**
      * 根据用户名查询
      *
-     * @param loginRequest
+     * @param request
      * @return
      */
     @PostMapping("/getLoginUser")
-    LoginUser getLoginUser(@RequestBody LoginRequest loginRequest);
+    LoginAuthUser getLoginUser(@Validated @RequestBody LoginAuthRequest request);
 
     /**
      * 发送验证码
@@ -30,34 +31,34 @@ public interface LoginAuthInterface {
      * @param request
      */
     @PostMapping("/sendSmsCode")
-    String sendSmsCode(@RequestBody LoginSmsCodeSendRequest request);
+    LoginAuthSmsCodeSendResponse sendSmsCode(@Validated @RequestBody LoginSmsCodeSendRequest request);
 
     /**
      * 存储token，返回过期时间
      *
-     * @param loginUser
+     * @param request
      * @return
      */
     @PostMapping("/redisStoreToken")
-    Date redisStoreToken(@RequestParam("key") String key, @RequestParam(name = "expireSeconds", required = false, defaultValue = "3600") Integer expireSeconds, @RequestBody LoginUser loginUser);
+    LoginTokenRedisStoreResponse redisStoreToken(@Validated @RequestBody LoginTokenRedisStoreRequest request);
 
     /**
      * 查询token
      *
-     * @param key
+     * @param request
      * @return
      */
     @PostMapping("/redisGetToken")
-    LoginUser redisGetToken(@RequestParam("key") String key);
+    LoginAuthUser redisGetToken(@Validated @RequestBody LoginTokenRedisGetRequest request);
 
     /**
      * 删除token
      *
-     * @param key
+     * @param request
      * @return
      */
     @PostMapping("/redisRemoveToken")
-    Boolean redisRemoveToken(@RequestParam("key") String key);
+    LoginTokenRedisRemoveResponse redisRemoveToken(@Validated @RequestBody LoginTokenRedisRemoveRequest request);
 
 
 }
