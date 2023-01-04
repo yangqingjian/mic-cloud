@@ -12,6 +12,7 @@
     <artifactId>mic-spring-boot-starter-redis</artifactId>
 
     <dependencies>
+
         <!-- hu-tool -->
         <dependency>
             <groupId>cn.hutool</groupId>
