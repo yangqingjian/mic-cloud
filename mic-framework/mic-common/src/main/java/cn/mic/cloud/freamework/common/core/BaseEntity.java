@@ -44,12 +44,14 @@ public abstract class BaseEntity<T> implements Serializable {
     protected T id;
 
     /**
-     * 版本（乐观锁）
+     * 版本（乐观锁）放在子类自己定义吧
      */
+    /*
     @Version
     @ApiModelProperty(value = "版本")
     @TableField(value = "version")
     protected Integer version;
+    */
 
     /**
      * 创建时间

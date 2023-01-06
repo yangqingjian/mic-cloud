@@ -37,6 +37,10 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.mic.cloud</groupId>
+            <artifactId>mic-common</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

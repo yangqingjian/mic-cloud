@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>mic-common</module>
+        <module>mic-common-code-generate</module>
         <module>mic-spring-boot-starter-swagger</module>
         <module>mic-spring-boot-starter-redis</module>
         <module>mic-spring-boot-starter-common-web</module>

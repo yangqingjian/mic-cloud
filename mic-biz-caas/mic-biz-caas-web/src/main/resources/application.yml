@@ -1,0 +1,48 @@
+server:
+  port: 10020
+
+spring:
+  profiles:
+    active: local
+  application:
+    name: mic-biz-caas-web
+  mvc:
+    pathmatch:
+      # 配置策略
+      matching-strategy: ant-path-matcher
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+
+#knife4j-swagger配置
+knife4j:
+  # 开启增强配置
+  enable: false
+  #有登录之后就不需要用basic了
+  basic:
+    enable: false
+    # Basic认证用户名
+    username: test
+    # Basic认证密码
+    password: 123
+
+#swagger2参数配置
+mic-swagger:
+  groupName: mic-biz-caas-web
+  #基础controller包路径
+  base-package: cn.mic.cloud
+  #停用
+  enable: true
+  #接口文档名称
+  tittle: caas-swagger
+  #描述
+  description: caas-swagger
+  #版本号
+  version: 1.0
+  #接口文档联系人
+  contactName: yqj
+  contactEmail: yqj@qq.com
+  contactUrl: cn.cloud.cn
+
+
+

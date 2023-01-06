@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>mic-biz-caas</artifactId>
+        <groupId>cn.mic.cloud</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mic-biz-caas-web</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.mic.cloud</groupId>
+            <artifactId>mic-biz-caas-feign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.mic.cloud</groupId>
+            <artifactId>mic-spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.mic.cloud</groupId>
+            <artifactId>mic-spring-boot-starter-security</artifactId>
+        </dependency>
+    </dependencies>
+
+
+</project>

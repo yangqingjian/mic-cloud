@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.mic.cloud.biz.caas.feign.config.MicBizCaasFeignAutoConfig

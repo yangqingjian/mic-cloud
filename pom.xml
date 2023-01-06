@@ -20,12 +20,7 @@
         <module>mic-framework</module>
         <module>mic-biz-test</module>
         <module>mic-dependencies</module>
-        <module>mic-caas</module>
-        <module>mic-caas/mic-caas-api</module>
-        <module>mic-caas/mic-caas-domain</module>
-        <module>mic-caas/mic-caas-feign</module>
-        <module>mic-caas/mic-caas-service</module>
-        <module>mic-caas/mic-caas-web</module>
+        <module>mic-biz-caas</module>
     </modules>
 
     <properties>

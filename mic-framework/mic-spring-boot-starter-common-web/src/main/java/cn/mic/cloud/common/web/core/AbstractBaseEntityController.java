@@ -6,9 +6,9 @@ import cn.mic.cloud.freamework.common.core.login.LoginInfoUtils;
 import cn.mic.cloud.freamework.common.vos.Result;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 
 /**
@@ -17,7 +17,7 @@ import java.io.Serializable;
  */
 public abstract class AbstractBaseEntityController<T extends BaseEntity> {
 
-    @Resource
+    @Autowired
     private BaseEntityFeign<T> baseEntityFeign;
 
     /**
