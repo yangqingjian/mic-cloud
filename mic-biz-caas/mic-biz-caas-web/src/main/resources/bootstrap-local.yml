@@ -1,6 +1,15 @@
 spring:
   cloud:
     nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        group: ${spring.profiles.active}
+        namespace: ${spring.profiles.active}
+        file-extension: yml
+        extension-configs:
+          - data-id: global.yaml
+            group: ${spring.profiles.active}
+            refresh: true
       discovery:
         server-addr: 127.0.0.1:8848
         group: ${spring.profiles.active}

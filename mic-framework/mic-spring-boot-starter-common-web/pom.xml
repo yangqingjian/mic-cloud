@@ -69,6 +69,11 @@
             <artifactId>spring-cloud-context</artifactId>
         </dependency>
         <!-- bootstrap的生效依赖 -->
+        <!-- 添加Nacos Config配置项 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
