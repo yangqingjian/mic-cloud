@@ -3,8 +3,10 @@ package cn.mic.cloud.biz.caas.service.basic.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.mic.cloud.biz.caas.domain.basic.CaasRegion;
+import cn.mic.cloud.biz.caas.domain.constants.CaasConstants;
 import cn.mic.cloud.biz.caas.service.basic.CaasRegionService;
 import cn.mic.cloud.freamework.common.exception.BusinessException;
+import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
 import cn.mic.cloud.freamework.common.exception.SystemException;
 import cn.mic.cloud.mybatis.plus.core.BaseEntityServiceImpl;
 import com.google.common.collect.Lists;
@@ -73,6 +75,35 @@ public class CaasRegionServiceImpl extends BaseEntityServiceImpl<CaasRegion> imp
             super.getRepository().saveBatch(regionList);
         }
         return "操作成功";
+    }
+
+    /**
+     * 根据编码，进行查询，顶层编码为0
+     *
+     * @param code
+     * @return
+     * @see CaasConstants#REGION_TOP_PARENT_CODE
+     */
+    @Override
+    public CaasRegion selectByCode(String code) {
+        List<CaasRegion> list = super.list(CaasRegion.builder().regionCode(code).build());
+        if (ObjectUtil.isNotEmpty(list) && list.size() == 1) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    /**
+     * 根据编码，进行查询，顶层编码为0
+     *
+     * @param parentCode
+     * @return
+     * @see CaasConstants#REGION_TOP_PARENT_CODE
+     */
+    @Override
+    public List<CaasRegion> selectByParentCode(String parentCode) {
+        List<CaasRegion> list = super.list(CaasRegion.builder().parentCode(parentCode).build());
+        return list;
     }
 
     private boolean assembleAllInitRegion(List<CaasRegion> regionList, String text, String href) {

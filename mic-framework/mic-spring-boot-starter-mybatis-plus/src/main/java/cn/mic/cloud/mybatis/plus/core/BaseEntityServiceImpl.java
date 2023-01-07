@@ -9,11 +9,14 @@ import cn.mic.cloud.mybatis.plus.constants.MybatisPlusConsts;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.Serializable;
 import java.util.List;
@@ -247,6 +250,29 @@ public class BaseEntityServiceImpl<T extends BaseEntity> implements BaseEntitySe
     }
 
     protected void postSelectBatchIds(List<T> list) {
+    }
+
+    /**
+     * 根据对象实体查询个数
+     *
+     * @param entity
+     * @return
+     */
+    @Override
+    public long count(@RequestBody T entity) {
+        LambdaQueryWrapper<T> wrapper = new LambdaQueryWrapper<>(entity);
+        beforeCount(wrapper, entity);
+        wrapper.setEntity(entity);
+        return this.repository.count(wrapper);
+    }
+
+    /**
+     * 设置查询条件
+     *
+     * @param wrapper
+     * @param entity
+     */
+    protected void beforeCount(LambdaQueryWrapper<T> wrapper, T entity) {
     }
 
 }

@@ -99,4 +99,15 @@ public interface BaseEntityService<T extends BaseEntity>  {
     @ApiOperation("批量查询")
     List<T> selectBatchIds(@RequestBody List<? extends Serializable> idList);
 
+    /**
+     * 根据对象实体查询个数
+     *
+     * @param entity
+     * @return
+     */
+    @ApiOperation("查询个数")
+    @PostMapping(value = "/count")
+    long count(@RequestBody T entity);
+
+
 }
