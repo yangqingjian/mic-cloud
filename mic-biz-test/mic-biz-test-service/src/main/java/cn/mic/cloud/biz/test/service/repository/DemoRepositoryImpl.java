@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @RequiredArgsConstructor
-public class DemoRepositoryImpl extends BaseEntityRepositoryImpl<Demo> implements DemoRepository {
+public class DemoRepositoryImpl extends BaseEntityRepositoryImpl<DemoMapper,Demo> implements DemoRepository {
 
     private final DemoMapper demoMapper;
 

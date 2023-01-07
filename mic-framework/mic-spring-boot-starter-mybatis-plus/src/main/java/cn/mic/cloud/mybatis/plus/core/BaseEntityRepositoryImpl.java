@@ -6,17 +6,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 /**
  * 数据仓库基类
  */
-public abstract class BaseEntityRepositoryImpl<T> extends ServiceImpl<BaseMapper<T>, T> implements BaseEntityRepository<T> {
-
-    /**
-     * 重写
-     *
-     * @return
-     */
-    //@Override
-    //@SuppressWarnings("unchecked")
-    //protected Class<T> currentModelClass() {
-    //    return (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), BaseEntity.class, 0);
-    //}
+public abstract class BaseEntityRepositoryImpl<M extends BaseMapper<T> , T> extends ServiceImpl<M, T> implements BaseEntityRepository<T> {
 
 }

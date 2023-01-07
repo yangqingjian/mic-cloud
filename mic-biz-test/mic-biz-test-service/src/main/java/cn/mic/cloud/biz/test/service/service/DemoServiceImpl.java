@@ -1,8 +1,10 @@
 package cn.mic.cloud.biz.test.service.service;
 
 import cn.mic.cloud.biz.test.domain.Demo;
+import cn.mic.cloud.biz.test.service.mapper.DemoMapper;
 import cn.mic.cloud.biz.test.service.repository.DemoRepository;
 import cn.mic.cloud.biz.test.vo.DemoConverterVo;
+import cn.mic.cloud.mybatis.plus.core.BaseEntityRepository;
 import cn.mic.cloud.mybatis.plus.core.BaseEntityServiceImpl;
 import com.alibaba.fastjson2.JSON;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +16,8 @@ import org.springframework.stereotype.Service;
  * @date : 2022/12/22
  */
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class DemoServiceImpl extends BaseEntityServiceImpl<Demo> implements DemoService {
-
-    private final DemoRepository demoRepository;
 
     /**
      * sayHello方法

@@ -77,3 +77,21 @@ mic-swagger:
   contactName: yqj
   contactEmail: yqj@qq.com
   contactUrl: gateway.shj.cn
+
+#编码规则配置
+caas:
+  code:
+    rule:
+      #重试次数
+      generateCodeRetryTimes: 5
+      #不用校验编码长度
+      noNeedCheckLengthCodeList:
+        - omsOrder
+      #key 数据库识别的格式
+      #value java识别的日期格式
+      dataBase2JavaMap:
+        YYYYMMDD: yyyyMMdd
+        YYYYMM: yyyyMM
+        YYMM: yyMM
+      #重复编码校验的list的长度
+      dataCacheRepeatListSize: 1000

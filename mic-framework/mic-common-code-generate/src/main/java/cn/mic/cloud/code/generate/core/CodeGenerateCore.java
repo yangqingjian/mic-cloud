@@ -37,7 +37,7 @@ public class CodeGenerateCore {
 
     public void startGenerate(String tableName) {
         beforeStartGenerate();
-        log.info("tableName = {} , startGenerate", tableName);
+        log.info("tableName={}, startGenerate", tableName);
         ResultSet resultSet = null;
         Connection connection = null;
         try {

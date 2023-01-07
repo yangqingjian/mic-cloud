@@ -20,6 +20,11 @@
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-service</artifactId>
         </dependency>
+        <!-- Jsoup 解析HTML文本 -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,6 +1,7 @@
 package ${repositoryImplPackage};
 
 import ${domainPackage}.${tableNameFirstUpper};
+import ${mapperPackage}.${tableNameFirstUpper}Mapper;
 import cn.mic.cloud.mybatis.plus.core.BaseEntityRepositoryImpl;
 import org.springframework.stereotype.Repository;
 import ${repositoryPackage}.${tableNameFirstUpper}Repository;
@@ -12,7 +13,7 @@ import ${repositoryPackage}.${tableNameFirstUpper}Repository;
 * @date : ${date}
 */
 @Repository
-public class ${tableNameFirstUpper}RepositoryImpl extends BaseEntityRepositoryImpl<${tableNameFirstUpper}> implements ${tableNameFirstUpper}Repository {
+public class ${tableNameFirstUpper}RepositoryImpl extends BaseEntityRepositoryImpl<${tableNameFirstUpper}Mapper,${tableNameFirstUpper}> implements ${tableNameFirstUpper}Repository {
 
 
 }

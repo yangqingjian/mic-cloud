@@ -9,6 +9,7 @@ import cn.mic.cloud.mybatis.plus.constants.MybatisPlusConsts;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,7 @@ import static cn.mic.cloud.mybatis.plus.constants.MybatisPlusConsts.ENTITY_ID_CO
 public class BaseEntityServiceImpl<T extends BaseEntity> implements BaseEntityService<T> {
 
     @Autowired
+    @Getter
     private BaseEntityRepository<T> repository;
 
     /**

@@ -19,9 +19,10 @@ public class CodeGenerateApplication {
          * 2 确定要生成的文件路径，建议不要直接生成到项目里面去了 例子：“D:\\code-generate”
          * 3 确定要子包的路径,注意加.号的位置，为空时，直接为空字符串,例子：“.test”
          */
-        CodeGenerateConfig config = new CodeGenerateConfig("YangQingJian", "caas", "E:\\code\\gitee\\mic-cloud\\mic-biz-caas", ".test");
+        CodeGenerateConfig config = new CodeGenerateConfig("YangQingJian", "caas", "E:\\code\\gitee\\mic-cloud\\mic-biz-caas", ".basic");
         CodeGenerateCore codeGenerateCore = new CodeGenerateCore(config);
-        Stream.of("demo", "new_table").forEach(temp -> codeGenerateCore.startGenerate(temp));
+        String[] tableNames = "caas_region".split(",");
+        Stream.of(tableNames).forEach(temp -> codeGenerateCore.startGenerate(temp.trim()));
     }
 
 }

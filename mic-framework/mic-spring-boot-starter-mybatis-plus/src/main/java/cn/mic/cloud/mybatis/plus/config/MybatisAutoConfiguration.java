@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.IllegalSQLInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
@@ -20,7 +22,7 @@ import org.springframework.context.annotation.Primary;
  * @date 2020-10-01
  */
 @Configuration
-@MapperScan(basePackages = {"${mybatis-plus.mapper-scanner:cn.mic.cloud.mybatis.config}"})
+@MapperScan(basePackages = {"${mybatis-plus.mapper-scanner}"})
 public class MybatisAutoConfiguration {
 
     /**
@@ -37,6 +39,14 @@ public class MybatisAutoConfiguration {
          * 乐观锁
          */
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+        /**
+         * 防全表更新与删除插件
+         */
+        interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
+        /**
+         * 性能插件
+         */
+        //interceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
         return interceptor;
     }
 

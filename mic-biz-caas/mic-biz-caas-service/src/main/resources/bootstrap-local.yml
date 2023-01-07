@@ -16,7 +16,7 @@ spring:
         group: ${spring.profiles.active}
         namespace: ${spring.profiles.active}
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/mic-test?useUnicode=true&serverTimezone=CTT&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&useSSL=false&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    url: jdbc:mysql://127.0.0.1:3306/mic-caas?useUnicode=true&serverTimezone=CTT&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&useSSL=false&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -30,7 +30,7 @@ public class CodeGenerateConfig {
      * 数据库配置
      */
     @Getter
-    private String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/mic-test?useUnicode=true&serverTimezone=CTT&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&useSSL=false&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true";
+    private String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/mic-caas?useUnicode=true&serverTimezone=CTT&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&useSSL=false&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true";
     @Getter
     private String jdbcUser = "root";
     @Getter
@@ -222,22 +222,6 @@ public class CodeGenerateConfig {
         this.moduleName = moduleName;
         this.basePath = basePath;
         this.subPackage = subPackage;
-    }
-
-    public CodeGenerateConfig(String moduleName, String basePath, String subPackage) {
-        this.moduleName = moduleName;
-        this.basePath = basePath;
-        this.subPackage = subPackage;
-    }
-
-    /**
-     * 模块和主目录
-     * @param moduleName
-     * @param basePath
-     */
-    public CodeGenerateConfig(String moduleName, String basePath) {
-        this.moduleName = moduleName;
-        this.basePath = basePath;
     }
 
 }
