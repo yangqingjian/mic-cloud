@@ -3,7 +3,7 @@ package cn.mic.cloud.biz.caas.service.code.impl;
 import cn.hutool.core.util.ObjectUtil;
 import cn.mic.cloud.biz.caas.config.CaasCodeRuleConfig;
 import cn.mic.cloud.biz.caas.domain.code.CaasCodeRule;
-import cn.mic.cloud.biz.caas.service.CaasCodeRuleService;
+import cn.mic.cloud.biz.caas.service.code.CaasCodeRuleService;
 import cn.mic.cloud.freamework.common.exception.BusinessException;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
 import cn.mic.cloud.freamework.common.exception.SystemException;
@@ -39,31 +39,31 @@ public class CaasCodeRuleServiceImpl extends BaseEntityServiceImpl<CaasCodeRule>
     /**
      * 编码生成
      *
-     * @param key
+     * @param code
      * @param bizKey
      * @return
      */
     @Override
-    public String generateCode(String key, String bizKey) {
-        if (ObjectUtil.isEmpty(key)) {
+    public String generateCode(String code, String bizKey) {
+        if (ObjectUtil.isEmpty(code)) {
             throw new InvalidParameterException("key不能为空");
         }
         /**
          * 去除空格
          */
-        key = key.trim();
+        code = code.trim();
         bizKey = ObjectUtil.isNotEmpty(bizKey) ? bizKey.trim() : bizKey;
         String message = "";
-        RLock lock = redissonClient.getLock(key + bizKey);
+        RLock lock = redissonClient.getLock(code + bizKey);
         for (int i = 0; i < caasCodeRuleConfig.getGenerateCodeRetryTimes(); i++) {
             try {
                 lock.lock(30L, TimeUnit.SECONDS);
-                return caasCodeRuleFacade.generateCodeByJava(key, bizKey);
+                return caasCodeRuleFacade.generateCodeByJava(code, bizKey);
             } catch (BusinessException e) {
-                log.error("key={},biz_key={}获取编码失败，错误信息={}", key, bizKey, e.getMessage());
+                log.error("code={},biz_key={}获取编码失败，错误信息={}", code, bizKey, e.getMessage());
                 throw e;
             } catch (InvalidParameterException e) {
-                log.error("key={},biz_key={}获取编码失败，错误信息={}", key, bizKey, e.getMessage());
+                log.error("code={},biz_key={}获取编码失败，错误信息={}", code, bizKey, e.getMessage());
                 throw e;
             } catch (Exception e) {
                 message = e.getMessage();
@@ -76,6 +76,6 @@ public class CaasCodeRuleServiceImpl extends BaseEntityServiceImpl<CaasCodeRule>
                 }
             }
         }
-        throw new SystemException(MessageFormat.format("生成编码失败:{0}", message));
+        throw new SystemException("code[%s]bizKey[%s]生成编码失败,错误信息[%s]", code, bizKey, message);
     }
 }
