@@ -15,41 +15,50 @@
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-redis</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-swagger</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-common-web</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-mybatis-plus</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!-- mybatis-plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!-- 服务发现 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-mdc</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!-- 集成mq -->
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-rocket-mq</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

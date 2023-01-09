@@ -15,10 +15,12 @@
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-biz-caas-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-openfeign-core</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
