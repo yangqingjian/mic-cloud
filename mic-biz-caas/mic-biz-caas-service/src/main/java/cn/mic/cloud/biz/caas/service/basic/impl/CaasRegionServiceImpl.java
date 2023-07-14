@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.mic.cloud.biz.caas.domain.basic.CaasRegion;
 import cn.mic.cloud.biz.caas.domain.constants.CaasConstants;
 import cn.mic.cloud.biz.caas.service.basic.CaasRegionService;
+import cn.mic.cloud.biz.caas.util.IpRegionUtil;
 import cn.mic.cloud.freamework.common.exception.BusinessException;
 import cn.mic.cloud.freamework.common.exception.InvalidParameterException;
 import cn.mic.cloud.freamework.common.exception.SystemException;
@@ -104,6 +105,17 @@ public class CaasRegionServiceImpl extends BaseEntityServiceImpl<CaasRegion> imp
     public List<CaasRegion> selectByParentCode(String parentCode) {
         List<CaasRegion> list = super.list(CaasRegion.builder().parentCode(parentCode).build());
         return list;
+    }
+
+    /**
+     * 查询IP的归属地
+     *
+     * @param ip
+     * @return
+     */
+    @Override
+    public String getCurrentIpRegion(String ip) {
+        return IpRegionUtil.getCityInfo(ip);
     }
 
     private boolean assembleAllInitRegion(List<CaasRegion> regionList, String text, String href) {

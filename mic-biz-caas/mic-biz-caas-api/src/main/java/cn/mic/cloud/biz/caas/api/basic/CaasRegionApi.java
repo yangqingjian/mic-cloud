@@ -4,6 +4,7 @@ import cn.mic.cloud.biz.caas.domain.basic.CaasRegion;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -42,5 +43,14 @@ public interface CaasRegionApi {
      */
     @GetMapping("/selectByParentCode/{parentCode}")
     List<CaasRegion> selectByParentCode(@PathVariable("parentCode") String parentCode);
+
+    /**
+     * 查询IP的归属地
+     *
+     * @param ip
+     * @return
+     */
+    @GetMapping("/getCurrentIpRegion")
+    String getCurrentIpRegion(@RequestParam("ip") String ip);
 
 }
