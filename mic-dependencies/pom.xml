@@ -18,8 +18,8 @@
         <lombok.version>1.18.20</lombok.version>
         <!-- 统一依赖管理 -->
         <spring.boot.version>2.6.9</spring.boot.version>
-        <spring.cloud.version>2021.0.1</spring.cloud.version>
-        <spring.cloud.alibaba.version>2021.0.1.0</spring.cloud.alibaba.version>
+        <spring.cloud.version>2021.0.4</spring.cloud.version>
+        <spring.cloud.alibaba.version>2021.0.4.0</spring.cloud.alibaba.version>
         <!-- maven -->
         <java.version>8</java.version>
         <project.encoding>UTF-8</project.encoding>
