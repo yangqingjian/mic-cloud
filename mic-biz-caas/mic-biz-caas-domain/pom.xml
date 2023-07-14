@@ -15,7 +15,6 @@
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-common</artifactId>
             <version>${revision}</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

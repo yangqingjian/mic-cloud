@@ -15,78 +15,78 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-common</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <dependency>
             <groupId>com.netflix.ribbon</groupId>
             <artifactId>ribbon-core</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <!-- 负载均衡 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <!-- 集成seata - 1.4.2 -->
         <dependency>
             <groupId>io.seata</groupId>
             <artifactId>seata-spring-boot-starter</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <!-- spring-cloud项目必须引入 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <!-- bootstrap的生效依赖 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
-            <scope>provided</scope>
+
         </dependency>
         <!-- bootstrap的生效依赖 -->
         <!-- 添加Nacos Config配置项 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-            <scope>provided</scope>
+
         </dependency>
     </dependencies>
 

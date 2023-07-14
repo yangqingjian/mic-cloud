@@ -16,7 +16,6 @@
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-biz-test-domain</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
