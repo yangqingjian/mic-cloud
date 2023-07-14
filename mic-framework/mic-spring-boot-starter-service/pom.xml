@@ -15,50 +15,41 @@
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-redis</artifactId>
-
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-swagger</artifactId>
-
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-common-web</artifactId>
-
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-mybatis-plus</artifactId>
-
         </dependency>
         <!-- mybatis-plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-
         </dependency>
         <!-- 服务发现 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-
         </dependency>
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-mdc</artifactId>
-
         </dependency>
         <!-- 集成mq -->
         <dependency>
             <groupId>cn.mic.cloud</groupId>
             <artifactId>mic-spring-boot-starter-rocket-mq</artifactId>
-
         </dependency>
     </dependencies>
 
