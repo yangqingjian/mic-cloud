@@ -1,3 +1,5 @@
+[![Security Status](https://www.murphysec.com/platform3/v31/badge/1679794218040320000.svg)](https://www.murphysec.com/console/report/1679794209190338560/1679794218040320000)
+
 # mic-cloud
 使用微服务架构
 
