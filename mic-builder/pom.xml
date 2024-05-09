@@ -16,9 +16,9 @@
     <properties>
         <revision>0.1-snapshot</revision>
         <!-- 统一依赖管理 -->
-        <spring.boot.version>2.6.9</spring.boot.version>
+        <spring.boot.version>3.2.4</spring.boot.version>
         <!-- maven -->
-        <java.version>8</java.version>
+        <java.version>17</java.version>
         <project.encoding>UTF-8</project.encoding>
         <maven.plugin.compiler.version>3.7.0</maven.plugin.compiler.version>
         <maven.plugin.deploy.version>3.0.0-M1</maven.plugin.deploy.version>

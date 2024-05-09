@@ -3,13 +3,13 @@ package cn.mic.cloud.freamework.common.core;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.groups.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.Default;
 import java.io.Serializable;
 import java.util.Date;
 

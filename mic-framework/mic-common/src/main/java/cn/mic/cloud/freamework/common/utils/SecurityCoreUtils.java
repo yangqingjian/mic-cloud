@@ -15,13 +15,13 @@ import cn.mic.cloud.freamework.common.exception.TokenExpireException;
 import cn.mic.cloud.freamework.common.vos.Result;
 import com.alibaba.fastjson2.JSON;
 import com.google.common.collect.Lists;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.util.Base64;
 import java.util.Date;
