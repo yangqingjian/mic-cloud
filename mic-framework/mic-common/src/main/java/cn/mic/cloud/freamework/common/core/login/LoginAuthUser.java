@@ -1,6 +1,5 @@
 package cn.mic.cloud.freamework.common.core.login;
 
-import cn.mic.cloud.freamework.common.core.login.SimpleAuthority;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

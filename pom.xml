@@ -1,58 +1,310 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cn.mic.cloud</groupId>
+	<artifactId>mic-cloud</artifactId>
+	<version>0.1-snapshot</version>
+	<name>${project.artifactId}</name>
+	<packaging>pom</packaging>
+	<parent>
+		<groupId>net.guerlab.builder</groupId>
+		<artifactId>guerlab-builder</artifactId>
+		<version>1.6.0</version>
+	</parent>
 
-    <groupId>cn.mic.cloud</groupId>
-    <artifactId>mic-cloud</artifactId>
-    <version>${revision}</version>
-    <name>${project.artifactId}</name>
-    <packaging>pom</packaging>
+	<modules>
+		<module>mic-framework</module>
+		<module>mic-biz-test</module>
+		<module>mic-biz-caas</module>
+	</modules>
 
-    <parent>
-        <artifactId>mic-builder</artifactId>
-        <groupId>cn.mic.cloud</groupId>
-        <version>0.1-snapshot</version>
-    </parent>
+	<properties>
+		<revision>0.1-snapshot</revision>
+		<!-- Maven 相关 -->
+		<java.version>17</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<!--<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>-->
+		<!-- 看看咋放到 bom 里 -->
+		<lombok.version>1.18.20</lombok.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<lombok.version>1.18.20</lombok.version>
+		<!-- 统一依赖管理 -->
+		<spring.boot.version>3.2.4</spring.boot.version>
+		<spring.cloud.version>2023.0.1</spring.cloud.version>
+		<spring.cloud.alibaba.version>2023.0.1.0</spring.cloud.alibaba.version>
+		<!-- maven -->
+		<project.encoding>UTF-8</project.encoding>
+		<!-- hu-tool -->
+		<hutool.version>5.8.10</hutool.version>
+		<!-- swagger -->
+		<knife4j.version>2.0.9</knife4j.version>
+		<!-- fastjson -->
+		<fastjson2.version>2.0.14</fastjson2.version>
+		<!-- guava -->
+		<guava.version>31.1-jre</guava.version>
+		<!-- 工具类 -->
+		<commons-lang3.version>3.8.1</commons-lang3.version>
+		<!-- redis版本 -->
+		<redisson.version>3.10.7</redisson.version>
+		<!-- mybatis -->
+		<mybatis.version>3.5.10</mybatis.version>
+		<ribbon-core.version>2.3.0</ribbon-core.version>
+		<mybatis-plus-boot-starter.version>3.5.2</mybatis-plus-boot-starter.version>
+		<swagger-annotations.version>1.5.22</swagger-annotations.version>
+		<mysql.driver.version>8.0.19</mysql.driver.version>
+		<spring-cloud-openfeign-core.version>3.1.1</spring-cloud-openfeign-core.version>
+		<org.slf4j.version>1.7.25</org.slf4j.version>
+		<rocketmq-spring-boot-starter.version>2.1.0</rocketmq-spring-boot-starter.version>
+		<jsonp.version>1.11.3</jsonp.version>
+		<mybatis-plus-core.version>3.5.2</mybatis-plus-core.version>
+	</properties>
 
-    <modules>
-        <module>mic-framework</module>
-        <module>mic-biz-test</module>
-        <module>mic-dependencies</module>
-        <module>mic-biz-caas</module>
-    </modules>
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+	</dependencies>
 
-    <properties>
-        <revision>0.1-snapshot</revision>
-        <!-- Maven 相关 -->
-        <java.version>17</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <!--<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
-        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>-->
-        <!-- 看看咋放到 bom 里 -->
-        <lombok.version>1.18.20</lombok.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+	<dependencyManagement>
+		<dependencies>
+			<!-- Jsoup 解析HTML文本 -->
+			<dependency>
+				<groupId>org.jsoup</groupId>
+				<artifactId>jsoup</artifactId>
+				<version>${jsonp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+			<!-- 统一依赖管理 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring.cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>${spring.cloud.alibaba.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-    </dependencies>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-framework</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>cn.mic.cloud</groupId>
-                <artifactId>mic-dependencies</artifactId>
-                <version>${revision}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-biz-test</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-biz-caas</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+
+			<!-- 业务组件 -->
+			<!-- Spring 核心 -->
+			<dependency>
+				<!-- 用于生成自定义的 Spring @ConfigurationProperties 配置类的说明文件 -->
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-configuration-processor</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<version>${spring.boot.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>asm</artifactId>
+						<groupId>org.ow2.asm</groupId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.mockito</groupId>
+						<artifactId>mockito-core</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<!-- hu-tool -->
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-all</artifactId>
+				<version>${hutool.version}</version>
+			</dependency>
+			<!--引入Knife4j的官方start包,Swagger2基于Springfox2.10.5项目-->
+			<dependency>
+				<groupId>com.github.xiaoymin</groupId>
+				<!--使用Swagger2-->
+				<artifactId>knife4j-spring-boot-starter</artifactId>
+				<version>${knife4j.version}</version>
+			</dependency>
+			<!-- fastJson2    -->
+			<dependency>
+				<groupId>com.alibaba.fastjson2</groupId>
+				<artifactId>fastjson2</artifactId>
+				<version>${fastjson2.version}</version>
+			</dependency>
+			<!-- guava -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<!-- 工具类 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.redisson</groupId>
+				<artifactId>redisson</artifactId>
+				<version>${redisson.version}</version>
+			</dependency>
+			<!-- mybatis -->
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>${mybatis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.netflix.ribbon</groupId>
+				<artifactId>ribbon-core</artifactId>
+				<version>${ribbon-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-boot-starter</artifactId>
+				<version>${mybatis-plus-boot-starter.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-annotations</artifactId>
+				<version>${swagger-annotations.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.driver.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-annotation</artifactId>
+				<version>${mybatis-plus-boot-starter.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-extension</artifactId>
+				<version>${mybatis-plus-boot-starter.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-openfeign-core</artifactId>
+				<version>${spring-cloud-openfeign-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${org.slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.rocketmq</groupId>
+				<artifactId>rocketmq-spring-boot-starter</artifactId>
+				<version>${rocketmq-spring-boot-starter.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-core</artifactId>
+				<version>${mybatis-plus-core.version}</version>
+			</dependency>
+
+			<!-- mic框架本身 -->
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-common</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-spring-boot-starter-common-web</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-spring-boot-starter-es</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-spring-boot-starter-mdc</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-spring-boot-starter-redis</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-spring-boot-starter-rocket-mq</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-spring-boot-starter-swagger</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-spring-boot-starter-web</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-spring-boot-starter-mybatis-plus</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-spring-boot-starter-service</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.mic.cloud</groupId>
+				<artifactId>mic-spring-boot-starter-security</artifactId>
+				<version>0.1-snapshot</version>
+			</dependency>
+			<!-- ip归属地 -->
+			<dependency>
+				<groupId>org.lionsoul</groupId>
+				<artifactId>ip2region</artifactId>
+				<version>2.6.5</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 </project>

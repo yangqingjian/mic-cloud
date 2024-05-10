@@ -2,12 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>mic-cloud</artifactId>
         <groupId>cn.mic.cloud</groupId>
-        <version>${revision}</version>
+        <version>0.1-snapshot</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>mic-framework</artifactId>
     <packaging>pom</packaging>
     <modules>
         <module>mic-common</module>
@@ -23,7 +24,7 @@
         <module>mic-spring-boot-starter-rocket-mq</module>
         <module>mic-spring-boot-starter-security</module>
     </modules>
-    <artifactId>mic-framework</artifactId>
+
     <description>
         该包是技术组件，每个子包，代表一个组件。每个组件包括两部分：
             1. core 包：是该组件的核心封装

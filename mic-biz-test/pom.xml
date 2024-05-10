@@ -6,7 +6,7 @@
     <parent>
         <artifactId>mic-cloud</artifactId>
         <groupId>cn.mic.cloud</groupId>
-        <version>${revision}</version>
+        <version>0.1-snapshot</version>
     </parent>
     <packaging>pom</packaging>
     <modules>
