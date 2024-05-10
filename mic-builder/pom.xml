@@ -3,37 +3,80 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>cn.mic.cloud</groupId>
     <artifactId>mic-builder</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
-
     <name>${project.artifactId}</name>
     <description>基础 bom 文件，管理整个项目的依赖版本</description>
     <url>xxx</url>
-
     <properties>
-        <revision>0.1-snapshot</revision>
-        <!-- 统一依赖管理 -->
-        <spring.boot.version>3.2.4</spring.boot.version>
-        <!-- maven -->
         <java.version>17</java.version>
         <project.encoding>UTF-8</project.encoding>
-        <maven.plugin.compiler.version>3.7.0</maven.plugin.compiler.version>
+        <!-- Plugins -->
+        <maven.plugin.compiler.version>3.10.1</maven.plugin.compiler.version>
         <maven.plugin.deploy.version>3.0.0-M1</maven.plugin.deploy.version>
-        <maven.plugin.failsafe.version>3.0.0-M5</maven.plugin.failsafe.version>
-        <maven.plugin.gpg.version>3.0.1</maven.plugin.gpg.version>
-        <maven.plugin.javadoc.version>3.3.0</maven.plugin.javadoc.version>
-        <maven.plugin.resources.version>2.6</maven.plugin.resources.version>
-        <maven.plugin.flatten.version>1.1.0</maven.plugin.flatten.version>
-        <maven.plugin.spring-boot.version>1.5.9.RELEASE</maven.plugin.spring-boot.version>
-        <maven.plugin.versions-maven>2.6</maven.plugin.versions-maven>
-        <maven.plugin.source-maven>3.0.0</maven.plugin.source-maven>
+        <maven.plugin.failsafe.version>3.0.0-M6</maven.plugin.failsafe.version>
+        <maven.plugin.javadoc.version>3.4.0</maven.plugin.javadoc.version>
+        <maven.plugin.source.version>3.2.1</maven.plugin.source.version>
+        <maven.plugin.resources.version>3.2.0</maven.plugin.resources.version>
+        <maven.plugin.flatten.version>1.2.7</maven.plugin.flatten.version>
+        <maven.plugin.spring-boot.version>2.7.0</maven.plugin.spring-boot.version>
+        <maven.plugin.git-commit-id-plugin.version>4.9.10</maven.plugin.git-commit-id-plugin.version>
+        <maven.plugin.checkstyle.version>3.1.2</maven.plugin.checkstyle.version>
+        <puppycrawl-tools-checkstyle.version>9.3</puppycrawl-tools-checkstyle.version>
+        <spring-javaformat-checkstyle.version>0.0.31</spring-javaformat-checkstyle.version>
+        <shj-saas-build.version>0.1-SNAPSHOT</shj-saas-build.version>
+
+        <!-- Plugins config-->
+        <disable.checks>false</disable.checks>
+        <checkstyle.suppressions.file>
+            xxx
+        </checkstyle.suppressions.file>
+        <maven-checkstyle-plugin.includeTestSourceDirectory>true</maven-checkstyle-plugin.includeTestSourceDirectory>
+        <maven-checkstyle-plugin.failsOnError>true</maven-checkstyle-plugin.failsOnError>
+        <maven-checkstyle-plugin.failOnViolation>true</maven-checkstyle-plugin.failOnViolation>
+        <duplicate-finder-maven-plugin.version>1.5.1</duplicate-finder-maven-plugin.version>
+        <duplicate-finder-maven-plugin.printEqualFiles>false</duplicate-finder-maven-plugin.printEqualFiles>
+        <duplicate-finder-maven-plugin.failBuildInCaseOfDifferentContentConflict>false
+        </duplicate-finder-maven-plugin.failBuildInCaseOfDifferentContentConflict>
+        <duplicate-finder-maven-plugin.failBuildInCaseOfEqualContentConflict>false
+        </duplicate-finder-maven-plugin.failBuildInCaseOfEqualContentConflict>
+        <duplicate-finder-maven-plugin.failBuildInCaseOfConflict>true
+        </duplicate-finder-maven-plugin.failBuildInCaseOfConflict>
+        <duplicate-finder-maven-plugin.checkCompileClasspath>true</duplicate-finder-maven-plugin.checkCompileClasspath>
+        <duplicate-finder-maven-plugin.checkRuntimeClasspath>true</duplicate-finder-maven-plugin.checkRuntimeClasspath>
+        <duplicate-finder-maven-plugin.checkTestClasspath>true</duplicate-finder-maven-plugin.checkTestClasspath>
+        <duplicate-finder-maven-plugin.skip>false</duplicate-finder-maven-plugin.skip>
+        <duplicate-finder-maven-plugin.quiet>false</duplicate-finder-maven-plugin.quiet>
+        <duplicate-finder-maven-plugin.preferLocal>true</duplicate-finder-maven-plugin.preferLocal>
+        <duplicate-finder-maven-plugin.useResultFile>true</duplicate-finder-maven-plugin.useResultFile>
+        <duplicate-finder-maven-plugin.resultFileMinClasspathCount>2
+        </duplicate-finder-maven-plugin.resultFileMinClasspathCount>
+        <duplicate-finder-maven-plugin.resultFile>${project.build.directory}/duplicate-finder-result.xml
+        </duplicate-finder-maven-plugin.resultFile>
+        <duplicate-finder-maven-plugin.includeBootClasspath>false</duplicate-finder-maven-plugin.includeBootClasspath>
+        <duplicate-finder-maven-plugin.bootClasspathProperty>sun.boot.class.path
+        </duplicate-finder-maven-plugin.bootClasspathProperty>
+        <duplicate-finder-maven-plugin.useDefaultResourceIgnoreList>true
+        </duplicate-finder-maven-plugin.useDefaultResourceIgnoreList>
+        <duplicate-finder-maven-plugin.includePomProjects>false</duplicate-finder-maven-plugin.includePomProjects>
     </properties>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>shj-snapshots</id>
+            <name>Snapshot Repository</name>
+            <url>${SnapshotRepository}</url>
+        </snapshotRepository>
+        <repository>
+            <id>shj-releases</id>
+            <name>Release Repository</name>
+            <url>${ReleaseRepository}</url>
+        </repository>
+    </distributionManagement>
+
     <build>
-        <finalName>${project.artifactId}-${project.version}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -57,6 +100,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>${maven.plugin.deploy.version}</version>
+                    <configuration>
+                        <deployAtEnd>false</deployAtEnd>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -73,20 +119,6 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-gpg-plugin</artifactId>
-                    <version>${maven.plugin.gpg.version}</version>
-                    <executions>
-                        <execution>
-                            <id>sign-artifacts</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>sign</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven.plugin.javadoc.version}</version>
                     <configuration>
@@ -94,6 +126,22 @@
                         <charset>${project.encoding}</charset>
                         <docencoding>${project.encoding}</docencoding>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven.plugin.source.version}</version>
+                    <configuration>
+                        <attach>true</attach>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -131,23 +179,6 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.springframework</groupId>
-                            <artifactId>springloaded</artifactId>
-                            <version>${spring.boot.version}</version>
-                        </dependency>
-                    </dependencies>
-                    <version>${maven.plugin.spring-boot.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>repackage</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <!--<groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${maven.plugin.spring-boot.version}</version>
                     <configuration>
                         <layout>ZIP</layout>
@@ -156,10 +187,22 @@
                             <enabled>true</enabled>
                         </layers>
                         <image>
+                            <buildCache>
+                                <volume>
+                                    <name>cache-${project.artifactId}.build</name>
+                                </volume>
+                            </buildCache>
+                            <launchCache>
+                                <volume>
+                                    <name>cache-${project.artifactId}.launch</name>
+                                </volume>
+                            </launchCache>
                             <builder>${docker.image.builder}</builder>
                             <runImage>${docker.image.runImage}</runImage>
-                            <name>${docker.repository.url}/${docker.repository.namespace}/${project.artifactId}:${project.version}</name>
-                            <publish>true</publish>
+                            <name>
+                                ${docker.repository.url}/${docker.repository.namespace}/${project.artifactId}:${project.version}
+                            </name>
+                            <publish>${docker.image.publish}</publish>
                         </image>
                         <docker>
                             <publishRegistry>
@@ -176,7 +219,7 @@
                                 <goal>build-info</goal>
                             </goals>
                         </execution>
-                    </executions>-->
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>pl.project13.maven</groupId>
@@ -197,28 +240,49 @@
                         </generateGitPropertiesFilename>
                     </configuration>
                 </plugin>
-                <!-- 要将源码放上去，需要加入这个插件 -->
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>${maven.plugin.source-maven}</version>
-                    <configuration>
-                        <attach>true</attach>
-                    </configuration>
+                    <groupId>org.basepom.maven</groupId>
+                    <artifactId>duplicate-finder-maven-plugin</artifactId>
+                    <version>${duplicate-finder-maven-plugin.version}</version>
                     <executions>
                         <execution>
-                            <phase>compile</phase>
+                            <id>duplicate-validation</id>
+                            <phase>verify</phase>
                             <goals>
-                                <goal>jar</goal>
+                                <goal>check</goal>
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
-                <!-- 版本管理 -->
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>versions-maven-plugin</artifactId>
-                    <version>${maven.plugin.versions-maven}</version>
+                    <configuration>
+                        <printEqualFiles>${duplicate-finder-maven-plugin.printEqualFiles}</printEqualFiles>
+                        <failBuildInCaseOfDifferentContentConflict>
+                            ${duplicate-finder-maven-plugin.failBuildInCaseOfDifferentContentConflict}
+                        </failBuildInCaseOfDifferentContentConflict>
+                        <failBuildInCaseOfEqualContentConflict>
+                            ${duplicate-finder-maven-plugin.failBuildInCaseOfEqualContentConflict}
+                        </failBuildInCaseOfEqualContentConflict>
+                        <failBuildInCaseOfConflict>${duplicate-finder-maven-plugin.failBuildInCaseOfConflict}
+                        </failBuildInCaseOfConflict>
+                        <checkCompileClasspath>${duplicate-finder-maven-plugin.checkCompileClasspath}
+                        </checkCompileClasspath>
+                        <checkRuntimeClasspath>${duplicate-finder-maven-plugin.checkRuntimeClasspath}
+                        </checkRuntimeClasspath>
+                        <checkTestClasspath>${duplicate-finder-maven-plugin.checkTestClasspath}</checkTestClasspath>
+                        <skip>${duplicate-finder-maven-plugin.skip}</skip>
+                        <quiet>${duplicate-finder-maven-plugin.quiet}</quiet>
+                        <preferLocal>${duplicate-finder-maven-plugin.preferLocal}</preferLocal>
+                        <useResultFile>${duplicate-finder-maven-plugin.useResultFile}</useResultFile>
+                        <resultFileMinClasspathCount>${duplicate-finder-maven-plugin.resultFileMinClasspathCount}
+                        </resultFileMinClasspathCount>
+                        <resultFile>${duplicate-finder-maven-plugin.resultFile}</resultFile>
+                        <includeBootClasspath>${duplicate-finder-maven-plugin.includeBootClasspath}
+                        </includeBootClasspath>
+                        <bootClasspathProperty>${duplicate-finder-maven-plugin.bootClasspathProperty}
+                        </bootClasspathProperty>
+                        <useDefaultResourceIgnoreList>${duplicate-finder-maven-plugin.useDefaultResourceIgnoreList}
+                        </useDefaultResourceIgnoreList>
+                        <includePomProjects>${duplicate-finder-maven-plugin.includePomProjects}</includePomProjects>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -227,42 +291,40 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
             </plugin>
-            <!-- 要将源码放上去，需要加入这个插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <configuration>
-                    <attach>true</attach>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- 版本管理 -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-            </plugin>
         </plugins>
     </build>
 
-    <!-- deploy -->
-    <distributionManagement>
-        <snapshotRepository>
-            <id>shj-snapshots</id>
-            <name>Snapshot Repository</name>
-            <url>${SnapshotRepository}</url>
-        </snapshotRepository>
-        <repository>
-            <id>shj-releases</id>
-            <name>Release Repository</name>
-            <url>${ReleaseRepository}</url>
-        </repository>
-    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
+        <profile>
+            <id>spring-boot</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>pl.project13.maven</groupId>
+                        <artifactId>git-commit-id-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
